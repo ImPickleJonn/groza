@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: groza
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: node server.js
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: PORT
+        value: "10000"

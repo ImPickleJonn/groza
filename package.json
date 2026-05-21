@@ -1,0 +1,16 @@
+{
+  "name": "groza",
+  "version": "0.1.0",
+  "description": "GROZA — bullet-heaven survivor Telegram Mini App. Single-file HTML game.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "author": "Pickle",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
