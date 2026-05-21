@@ -2111,10 +2111,7 @@ function renderIap(){
     c.appendChild(b);
   }
 }
-// keep legacy attribute-driven attachment as no-op in case any old elements stick around
-$$('[data-iap]').forEach(b=>{
-  b.addEventListener('click',()=>{
-});
+// (legacy [data-iap] elements removed from HTML — IAP rendered in renderIap above)
 
 // telegram back button
 try{
