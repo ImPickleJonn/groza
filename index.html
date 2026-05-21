@@ -19,8 +19,8 @@
     /* Telegram WebView reports contentSafeAreaInset via JS; CSS env() returns 0 inside the WebView. JS sets these vars on :root from tg.contentSafeAreaInset. We use max() to fall back to env() outside TG. */
     --tg-safe-top:0px;
     --tg-safe-bot:0px;
-    --safe-top:max(24px, var(--tg-safe-top), env(safe-area-inset-top,0px));
-    --safe-bot:max(8px, var(--tg-safe-bot), env(safe-area-inset-bottom,0px));
+    --safe-top:max(44px, var(--tg-safe-top), env(safe-area-inset-top,0px));
+    --safe-bot:max(12px, var(--tg-safe-bot), env(safe-area-inset-bottom,0px));
     --bnav-h:64px; /* bottom nav height (without safe-bot) */
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;}
