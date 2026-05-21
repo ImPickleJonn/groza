@@ -16,8 +16,12 @@
     --panel:rgba(255,255,255,0.06);
     --panel-2:rgba(255,255,255,0.10);
     --stroke:rgba(255,255,255,0.14);
-    --safe-top:env(safe-area-inset-top,0px);
-    --safe-bot:env(safe-area-inset-bottom,0px);
+    /* Telegram WebView reports contentSafeAreaInset via JS; CSS env() returns 0 inside the WebView. JS sets these vars on :root from tg.contentSafeAreaInset. We use max() to fall back to env() outside TG. */
+    --tg-safe-top:0px;
+    --tg-safe-bot:0px;
+    --safe-top:max(24px, var(--tg-safe-top), env(safe-area-inset-top,0px));
+    --safe-bot:max(8px, var(--tg-safe-bot), env(safe-area-inset-bottom,0px));
+    --bnav-h:64px; /* bottom nav height (without safe-bot) */
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;}
   html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#000;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;}
@@ -64,7 +68,7 @@
   .bossHP .lbl{position:absolute;left:0;right:0;top:-18px;text-align:center;font-size:11px;font-weight:800;color:#ff8fbf;letter-spacing:2px;}
 
   /* full overlay screens */
-  .screen{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;background:radial-gradient(ellipse at 50% 10%,#2a1668 0%,#0e0628 60%,#040108 100%);padding:calc(var(--safe-top) + 16px) 16px calc(var(--safe-bot) + 16px);overflow-y:auto;overscroll-behavior:contain;}
+  .screen{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;background:radial-gradient(ellipse at 50% 10%,#2a1668 0%,#0e0628 60%,#040108 100%);padding:calc(var(--safe-top) + 16px) 16px calc(var(--bnav-h) + var(--safe-bot) + 24px);overflow-y:auto;overscroll-behavior:contain;}
   .screen.show{display:flex;}
   .screen h1{font-size:36px;font-weight:900;letter-spacing:2px;margin:8px 0 4px;text-align:center;background:linear-gradient(180deg,#ffd864,#ff7a3a);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 24px rgba(255,216,100,0.3);}
   .screen .sub{text-align:center;color:var(--ink-d);font-size:13px;margin-bottom:14px;}
@@ -148,10 +152,55 @@
   .toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--safe-top) + 90px);z-index:200;background:rgba(8,4,24,0.85);border:1px solid var(--gold);color:#fff;padding:10px 16px;border-radius:12px;font-weight:800;font-size:13px;opacity:0;transition:opacity 200ms,transform 200ms;pointer-events:none;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(6px);}
 
-  /* tabs (menu) */
-  .tabs{display:flex;gap:6px;margin-bottom:10px;}
-  .tab{flex:1;padding:10px 8px;background:var(--panel);border:1px solid var(--stroke);border-radius:10px;text-align:center;font-weight:800;font-size:12px;color:var(--ink-d);cursor:pointer;letter-spacing:1px;text-transform:uppercase;}
-  .tab.act{background:linear-gradient(180deg,#5b3aa8,#3b2275);color:#fff;border-color:rgba(255,255,255,0.25);}
+  /* bottom navigation bar */
+  .bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:70;background:linear-gradient(180deg,rgba(10,4,24,0.7) 0%,rgba(10,4,24,0.98) 30%);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--stroke);padding:4px 0 calc(var(--safe-bot) + 6px);display:grid;grid-template-columns:repeat(5,1fr);display:none;}
+  .bottom-nav.show{display:grid;}
+  .bnav-tab{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;padding:6px 2px 2px;cursor:pointer;color:var(--ink-d);font-weight:800;font-size:9px;letter-spacing:0.6px;position:relative;text-transform:uppercase;}
+  .bnav-tab .ic-wrap{width:44px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:background 0.15s;}
+  .bnav-tab.act{color:var(--neon);}
+  .bnav-tab.act .ic-wrap{background:rgba(122,252,255,0.14);}
+  .bnav-tab.act::before{content:"";position:absolute;top:0;left:30%;right:30%;height:2px;background:var(--neon);box-shadow:0 0 8px var(--neon);border-radius:0 0 2px 2px;}
+  .bnav-tab:active{transform:scale(0.94);}
+  .bnav-tab .ic-svg{width:22px;height:22px;}
+
+  /* HOME screen layout */
+  .home-play{width:100%;padding:18px;font-size:22px;letter-spacing:3px;margin:14px 0 12px;display:flex;align-items:center;justify-content:center;gap:10px;}
+  .home-play .ic-svg{width:24px;height:24px;}
+  .home-pick-strip{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:4px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .home-pick-strip::-webkit-scrollbar{display:none;}
+  .pick-card{flex:0 0 96px;background:var(--panel);border:1px solid var(--stroke);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;position:relative;}
+  .pick-card.sel{border-color:var(--gold);box-shadow:0 0 14px rgba(255,216,100,0.4);}
+  .pick-card.lock{opacity:0.55;}
+  .pick-card .ava{width:50px;height:50px;border-radius:50%;margin:0 auto 5px;background:rgba(0,0,0,0.35);border:1px solid var(--stroke);display:flex;align-items:center;justify-content:center;font-size:0;}
+  .pick-card .nm{font-weight:800;font-size:11px;color:#fff;}
+  .pick-card .ds{font-size:9px;color:var(--ink-d);margin-top:2px;line-height:1.25;height:22px;overflow:hidden;}
+  .pick-card.lock::after{content:"";position:absolute;right:5px;top:5px;width:12px;height:12px;background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='11' width='16' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 4px rgba(255,255,255,0.6));}
+  .section-h{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:800;color:var(--ink-d);text-transform:uppercase;letter-spacing:1.5px;margin:8px 2px 6px;}
+  .section-h .all{color:var(--neon);cursor:pointer;}
+
+  /* EARN tab */
+  .earn-banner{background:linear-gradient(135deg,#ffb84d,#ff5fa2);border-radius:14px;padding:14px;color:#fff;display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .earn-banner .ic-wrap{width:48px;height:48px;border-radius:12px;background:rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;color:#fff;}
+  .earn-banner .nm{font-weight:900;font-size:14px;letter-spacing:1px;text-transform:uppercase;}
+  .earn-banner .ds{font-size:11px;opacity:0.9;margin-top:2px;}
+  .login-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+  .login-day{aspect-ratio:1;background:var(--panel);border:1px solid var(--stroke);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:9px;color:var(--ink-d);font-weight:700;}
+  .login-day .d{font-size:9px;color:var(--ink-d);}
+  .login-day .v{font-size:11px;color:#fff;font-weight:900;display:flex;align-items:center;gap:2px;}
+  .login-day .v .ic-svg{width:11px;height:11px;}
+  .login-day.cur{border-color:var(--gold);box-shadow:0 0 10px rgba(255,216,100,0.35);}
+  .login-day.done{opacity:0.5;}
+  .login-day.done::after{content:"✓";position:absolute;font-size:18px;color:var(--green);}
+  .login-day.claim{background:linear-gradient(180deg,#ffb84d,#e26b1f);color:#3a1a02;cursor:pointer;}
+  .login-day.claim .d,.login-day.claim .v{color:#3a1a02;}
+  .task-row{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--stroke);border-radius:12px;padding:10px;margin-bottom:6px;}
+  .task-row .ic{width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .task-row .meta{flex:1;min-width:0;}
+  .task-row .nm{font-weight:800;font-size:12px;color:#fff;}
+  .task-row .ds{font-size:10px;color:var(--ink-d);}
+  .task-row .prog{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin-top:5px;overflow:hidden;}
+  .task-row .prog .f{height:100%;background:linear-gradient(90deg,var(--neon),var(--violet));border-radius:2px;}
+  .task-row .rwd{font-weight:800;font-size:11px;color:var(--gold);display:flex;align-items:center;gap:3px;flex-shrink:0;}
 
   /* settings */
   .set-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);}
@@ -274,6 +323,12 @@
 <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 13l5 5 11-12" stroke-width="2.6"/></symbol>
 <symbol id="i-storm" viewBox="0 0 24 24"><path d="M6 11c-4 0-4-6 0-6 1-2 5-2 6 0 4-1 7 2 6 6 3 0 3 5 0 5H7c-4 0-4-5 0-5zM11 18l-2 5 4-4-2 4"/></symbol>
 <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="currentColor" stroke="currentColor" stroke-linejoin="round"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12M5 9V7a3 3 0 0 1 3-3c2 0 4 5 4 5M19 9V7a3 3 0 0 0-3-3c-2 0-4 5-4 5"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5M14 14c2 0 5 1.5 5 4.5"/></symbol>
+<symbol id="i-task" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 12l3 3 7-7"/></symbol>
+<symbol id="i-house" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v11h14V10"/></symbol>
 </defs>
 </svg>
 
@@ -300,49 +355,39 @@
 
   <!-- Main menu screen -->
   <div class="screen" id="menuScreen">
-    <div class="menu-hero">
-      <div class="avatar"></div>
-      <div class="name">GROZA</div>
-    </div>
-    <h1>GROZA</h1>
-    <div class="sub" data-i18n="tagline">Survive the swarm. Become unstoppable.</div>
-
-    <div class="daily-banner" id="dailyBanner">
-      <div class="ic" style="color:#fff"><svg class="ic-svg ic-lg" style="width:28px;height:28px"><use href="#i-bolt"></use></svg></div>
-      <div class="meta">
-        <div class="nm" data-i18n="dailyTitle">Daily Challenge</div>
-        <div class="ds" id="dailyDesc">+50% spawn rate · win 200 coins</div>
+    <!-- HOME pane (default) -->
+    <div id="tab-home" class="tabpane">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <h1 style="font-size:30px;text-align:left;margin:0;">GROZA</h1>
+        <span style="font-weight:800;color:var(--gold);display:flex;align-items:center;gap:5px;font-size:16px;"><svg class="ic-svg ic-lg"><use href="#i-coin"></use></svg><span class="coinsVal">0</span></span>
       </div>
-      <div class="cta" id="dailyCta" data-i18n="play">PLAY</div>
-    </div>
+      <div class="sub" data-i18n="tagline" style="text-align:left;margin-bottom:10px;">Become the storm. Survive the swarm.</div>
 
-    <button class="btn primary" id="playBtn" style="margin-bottom:10px;font-size:20px;padding:18px;" data-i18n="play">PLAY</button>
-
-    <div class="tabs">
-      <div class="tab act" data-tab="char" data-i18n="hero">HERO</div>
-      <div class="tab" data-tab="stage" data-i18n="stage">STAGE</div>
-      <div class="tab" data-tab="shop" data-i18n="shop">SHOP</div>
-      <div class="tab" data-tab="ach" data-i18n="ach">FEATS</div>
-      <div class="tab" data-tab="set" style="color:var(--ink-d)"><svg class="ic-svg" style="width:16px;height:16px"><use href="#i-gear"></use></svg></div>
-    </div>
-
-    <div id="tab-char" class="tabpane">
-      <div class="card">
-        <h3 data-i18n="pickHero">Pick your hero</h3>
-        <div class="char-grid" id="charGrid"></div>
+      <div class="daily-banner" id="dailyBanner">
+        <div class="ic" style="color:#fff"><svg class="ic-svg ic-lg" style="width:28px;height:28px"><use href="#i-bolt"></use></svg></div>
+        <div class="meta">
+          <div class="nm" data-i18n="dailyTitle">Daily Challenge</div>
+          <div class="ds" id="dailyDesc">+50% spawn rate · win 200 coins</div>
+        </div>
+        <div class="cta" id="dailyCta" data-i18n="play">PLAY</div>
       </div>
+
+      <button class="btn primary home-play" id="playBtn"><svg class="ic-svg"><use href="#i-play"></use></svg><span data-i18n="play">PLAY</span></button>
+
+      <div class="section-h"><span data-i18n="pickHero">Pick your hero</span></div>
+      <div class="home-pick-strip" id="charStrip"></div>
+
+      <div class="section-h"><span data-i18n="pickStage">Pick your stage</span></div>
+      <div class="home-pick-strip" id="stageStrip"></div>
     </div>
-    <div id="tab-stage" class="tabpane" style="display:none;">
-      <div class="card">
-        <h3 data-i18n="pickStage">Pick your stage</h3>
-        <div class="stage-grid" id="stageGrid"></div>
-      </div>
-    </div>
+
+    <!-- SHOP pane -->
     <div id="tab-shop" class="tabpane" style="display:none;">
+      <h1 style="font-size:26px;text-align:left;margin:0 0 10px;" data-i18n="shop">SHOP</h1>
       <div class="card">
         <h3 style="display:flex;align-items:center;justify-content:space-between;">
           <span data-i18n="permUp">Permanent Upgrades</span>
-          <span style="font-weight:800;color:var(--gold);display:flex;align-items:center;gap:5px;"><svg class="ic-svg ic-lg"><use href="#i-coin"></use></svg><span id="coinsVal">0</span></span>
+          <span style="font-weight:800;color:var(--gold);display:flex;align-items:center;gap:5px;"><svg class="ic-svg ic-lg"><use href="#i-coin"></use></svg><span class="coinsVal">0</span></span>
         </h3>
         <div class="shop-grid" id="shopGrid"></div>
       </div>
@@ -351,13 +396,47 @@
         <div style="display:flex;flex-direction:column;gap:6px;" id="iapButtons"></div>
       </div>
     </div>
-    <div id="tab-ach" class="tabpane" style="display:none;">
+
+    <!-- EARN pane -->
+    <div id="tab-earn" class="tabpane" style="display:none;">
+      <h1 style="font-size:26px;text-align:left;margin:0 0 10px;" data-i18n="earnTitle">EARN</h1>
+
+      <div class="earn-banner">
+        <div class="ic-wrap"><svg class="ic-svg ic-lg" style="width:28px;height:28px;color:#fff"><use href="#i-gift"></use></svg></div>
+        <div class="meta">
+          <div class="nm" data-i18n="earnFree">Free coins, daily</div>
+          <div class="ds" data-i18n="earnSub">Login, invite, complete tasks</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="display:flex;align-items:center;gap:8px;"><svg class="ic-svg ic-lg" style="color:var(--gold)"><use href="#i-calendar"></use></svg><span data-i18n="dailyLogin">Daily Login</span> <span style="margin-left:auto;font-size:11px;color:var(--ink-d);font-weight:600;" id="loginStreak">Streak: 0</span></h3>
+        <div class="login-grid" id="loginGrid"></div>
+      </div>
+
+      <div class="card">
+        <h3 style="display:flex;align-items:center;gap:8px;"><svg class="ic-svg ic-lg" style="color:var(--neon)"><use href="#i-users"></use></svg><span data-i18n="inviteTitle">Invite Friends</span></h3>
+        <div style="font-size:12px;color:var(--ink-d);margin-bottom:10px;" data-i18n="inviteDs">Share GROZA. Each friend that opens the game gives you +100 coins (when server tracking is on).</div>
+        <button class="btn primary" id="inviteBtn" style="display:flex;align-items:center;justify-content:center;gap:8px;"><svg class="ic-svg ic-lg"><use href="#i-users"></use></svg><span data-i18n="inviteCta">SHARE INVITE LINK</span></button>
+      </div>
+
+      <div class="card">
+        <h3 style="display:flex;align-items:center;gap:8px;"><svg class="ic-svg ic-lg" style="color:var(--violet)"><use href="#i-task"></use></svg><span data-i18n="tasksTitle">Daily Tasks</span></h3>
+        <div id="taskList"></div>
+      </div>
+    </div>
+
+    <!-- FEATS pane -->
+    <div id="tab-feats" class="tabpane" style="display:none;">
+      <h1 style="font-size:26px;text-align:left;margin:0 0 10px;" data-i18n="ach">FEATS</h1>
       <div class="card">
         <h3 style="display:flex;align-items:center;justify-content:space-between;"><span data-i18n="ach">Feats</span><span id="achCount" style="color:var(--gold);">0/0</span></h3>
         <div class="ach-grid" id="achGrid"></div>
       </div>
     </div>
-    <div id="tab-set" class="tabpane" style="display:none;">
+
+    <!-- SETTINGS pane -->
+    <div id="tab-settings" class="tabpane" style="display:none;">
       <div class="card">
         <h3 data-i18n="set">Settings</h3>
         <div class="set-row">
@@ -384,15 +463,38 @@
       <div class="card">
         <h3 data-i18n="about">About</h3>
         <div style="font-size:12px;color:var(--ink-d);line-height:1.5;">
-          GROZA v0.1 — a bullet-heaven survivor for Telegram.<br>
+          GROZA v0.2 — a bullet-heaven survivor for Telegram.<br>
           ГРОЗА — стань грозой. Выживалка с автострельбой.<br>
-          Move with one finger. Weapons fire on their own.<br>
-          Level up, pick upgrades, evolve, survive.
+          Move with one finger. Weapons fire on their own.
         </div>
       </div>
-      <div class="footer">v0.1.0 · <span class="small-link" data-i18n="privacy">Privacy</span> · <span class="small-link" data-i18n="terms">Terms</span></div>
+      <div class="footer">v0.2.0 · <span class="small-link" data-i18n="privacy">Privacy</span> · <span class="small-link" data-i18n="terms">Terms</span></div>
     </div>
   </div>
+
+  <!-- bottom navigation (visible only on menu) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <div class="bnav-tab act" data-bnav="home">
+      <div class="ic-wrap"><svg class="ic-svg"><use href="#i-house"></use></svg></div>
+      <span data-i18n="navHome">HOME</span>
+    </div>
+    <div class="bnav-tab" data-bnav="shop">
+      <div class="ic-wrap"><svg class="ic-svg"><use href="#i-coin"></use></svg></div>
+      <span data-i18n="shop">SHOP</span>
+    </div>
+    <div class="bnav-tab" data-bnav="earn">
+      <div class="ic-wrap"><svg class="ic-svg"><use href="#i-gift"></use></svg></div>
+      <span data-i18n="navEarn">EARN</span>
+    </div>
+    <div class="bnav-tab" data-bnav="feats">
+      <div class="ic-wrap"><svg class="ic-svg"><use href="#i-trophy"></use></svg></div>
+      <span data-i18n="ach">FEATS</span>
+    </div>
+    <div class="bnav-tab" data-bnav="settings">
+      <div class="ic-wrap"><svg class="ic-svg"><use href="#i-gear"></use></svg></div>
+      <span data-i18n="navSettings">SET</span>
+    </div>
+  </nav>
 
   <!-- pause modal -->
   <div class="modal" id="pauseModal">
@@ -468,14 +570,34 @@ const PASSIVE_COLOR={power:'var(--pink)',speed:'var(--neon)',tempo:'var(--violet
 // ============ Telegram WebApp ============
 const tg=window.Telegram?.WebApp;
 try{ if(tg){ tg.ready(); tg.expand?.(); tg.requestFullscreen?.(); tg.disableVerticalSwipes?.(); tg.setHeaderColor?.('#0a0418'); tg.setBackgroundColor?.('#0a0418'); } }catch(_){}
+
+// Sync Telegram safe-area insets to CSS vars (env() reports 0 inside TG WebView, so JS is required).
+function syncTgSafeArea(){
+  if(!tg) return;
+  try{
+    const csi = tg.contentSafeAreaInset || {};
+    const sai = tg.safeAreaInset || {};
+    const top = Math.max(csi.top||0, sai.top||0, 0);
+    const bot = Math.max(csi.bottom||0, sai.bottom||0, 0);
+    const r = document.documentElement.style;
+    r.setProperty('--tg-safe-top', top+'px');
+    r.setProperty('--tg-safe-bot', bot+'px');
+  }catch(_){}
+}
+syncTgSafeArea();
+['contentSafeAreaChanged','safeAreaChanged','fullscreenChanged','viewportChanged'].forEach(ev=>{
+  try{ tg?.onEvent?.(ev, syncTgSafeArea); }catch(_){}
+});
 function haptic(kind){ if(!state.settings.haptics) return; try{ if(kind==='light') tg?.HapticFeedback?.impactOccurred?.('light'); else if(kind==='med') tg?.HapticFeedback?.impactOccurred?.('medium'); else if(kind==='heavy') tg?.HapticFeedback?.impactOccurred?.('heavy'); else if(kind==='ok') tg?.HapticFeedback?.notificationOccurred?.('success'); else if(kind==='warn') tg?.HapticFeedback?.notificationOccurred?.('warning'); else if(kind==='err') tg?.HapticFeedback?.notificationOccurred?.('error'); }catch(_){} }
 
 // ============ i18n ============
 const LANGS=['en','ru','es','pt','fr','de','nl','it','sv','pl','tr','uk','ar','he','hi','id','vi','zh','ko','ja'];
 const LANG_NAMES={en:'English',ru:'Русский',es:'Español',pt:'Português',fr:'Français',de:'Deutsch',nl:'Nederlands',it:'Italiano',sv:'Svenska',pl:'Polski',tr:'Türkçe',uk:'Українська',ar:'العربية',he:'עברית',hi:'हिन्दी',id:'Indonesia',vi:'Tiếng Việt',zh:'中文',ko:'한국어',ja:'日本語'};
 const STRINGS={
- en:{tagline:'Become the storm. Survive the swarm.',play:'PLAY',hero:'HERO',stage:'STAGE',shop:'SHOP',ach:'FEATS',set:'⚙',pickHero:'Pick your hero',pickStage:'Pick your stage',permUp:'Permanent Upgrades',getCoins:'Get Coins',sound:'Sound',soundDs:'Background music & SFX',haptic:'Haptics',hapticDs:'Vibration feedback',dmgn:'Damage numbers',dmgnDs:'Show damage popups',lang:'Language',reset:'Reset',resetDs:'Wipe all save data',about:'About',privacy:'Privacy',terms:'Terms',paused:'PAUSED',resume:'RESUME',quitRun:'QUIT RUN',levelUp:'LEVEL UP!',pickPower:'CHOOSE YOUR POWER',reroll:'Reroll (free, daily)',time:'Time',kills:'Kills',lvl:'LV',coins:'Coins',revive:'Revive — 20 Stars',retry:'RETRY',menu:'MENU',dailyTitle:'Daily Challenge',defeated:'DEFEATED',victory:'VICTORY!',unlocked:'Unlocked!',coinsEarned:'+{n} coins',newRecord:'New record!',NEW:'NEW',EVO:'EVO',MAX:'MAX'},
- ru:{tagline:'Стань грозой. Выживи в орде.',play:'ИГРАТЬ',hero:'ГЕРОЙ',stage:'АРЕНА',shop:'ШОП',ach:'ДОСТ.',set:'⚙',pickHero:'Выбери героя',pickStage:'Выбери арену',permUp:'Улучшения',getCoins:'Получить монеты',sound:'Звук',soundDs:'Музыка и эффекты',haptic:'Вибрация',hapticDs:'Тактильный отклик',dmgn:'Числа урона',dmgnDs:'Показывать урон',lang:'Язык',reset:'Сброс',resetDs:'Стереть прогресс',about:'О игре',privacy:'Приватность',terms:'Правила',paused:'ПАУЗА',resume:'ПРОДОЛЖИТЬ',quitRun:'ВЫЙТИ',levelUp:'НОВЫЙ УРОВЕНЬ!',pickPower:'ВЫБЕРИ СИЛУ',reroll:'Перебросить (раз в день)',time:'Время',kills:'Убийств',lvl:'УР',coins:'Монеты',revive:'Возрождение — 20 Stars',retry:'ЕЩЁ',menu:'МЕНЮ',dailyTitle:'Ежедневный вызов',defeated:'ПОРАЖЕНИЕ',victory:'ПОБЕДА!',unlocked:'Открыто!',coinsEarned:'+{n} монет',newRecord:'Новый рекорд!',NEW:'НОВО',EVO:'ЭВО',MAX:'МАКС'}
+ en:{tagline:'Become the storm. Survive the swarm.',play:'PLAY',hero:'HERO',stage:'STAGE',shop:'SHOP',ach:'FEATS',set:'⚙',pickHero:'Pick your hero',pickStage:'Pick your stage',permUp:'Permanent Upgrades',getCoins:'Get Coins',sound:'Sound',soundDs:'Background music & SFX',haptic:'Haptics',hapticDs:'Vibration feedback',dmgn:'Damage numbers',dmgnDs:'Show damage popups',lang:'Language',reset:'Reset',resetDs:'Wipe all save data',about:'About',privacy:'Privacy',terms:'Terms',paused:'PAUSED',resume:'RESUME',quitRun:'QUIT RUN',levelUp:'LEVEL UP!',pickPower:'CHOOSE YOUR POWER',reroll:'Reroll (free, daily)',time:'Time',kills:'Kills',lvl:'LV',coins:'Coins',revive:'Revive — 20 Stars',retry:'RETRY',menu:'MENU',dailyTitle:'Daily Challenge',defeated:'DEFEATED',victory:'VICTORY!',unlocked:'Unlocked!',coinsEarned:'+{n} coins',newRecord:'New record!',NEW:'NEW',EVO:'EVO',MAX:'MAX',
+   navHome:'HOME',navEarn:'EARN',navSettings:'SET',earnTitle:'EARN',earnFree:'Free coins, daily',earnSub:'Login, invite, complete tasks',dailyLogin:'Daily Login',inviteTitle:'Invite Friends',inviteDs:'Share GROZA. Each friend that opens the game gives you +100 coins (when server tracking is on).',inviteCta:'SHARE INVITE LINK',tasksTitle:'Daily Tasks',claim:'CLAIM',claimed:'CLAIMED',taskPlay3:'Play 3 runs',taskLv15:'Reach level 15 in a run',taskKill200:'Get 200 kills in a run',shareText:'⚡ GROZA — bullet-heaven survivor. Move with one finger, become the storm. Play with me!'},
+ ru:{tagline:'Стань грозой. Выживи в орде.',play:'ИГРАТЬ',hero:'ГЕРОЙ',stage:'АРЕНА',shop:'ШОП',ach:'ДОСТ.',set:'⚙',pickHero:'Выбери героя',pickStage:'Выбери арену',permUp:'Улучшения',getCoins:'Получить монеты',sound:'Звук',soundDs:'Музыка и эффекты',haptic:'Вибрация',hapticDs:'Тактильный отклик',dmgn:'Числа урона',dmgnDs:'Показывать урон',lang:'Язык',reset:'Сброс',resetDs:'Стереть прогресс',about:'О игре',privacy:'Приватность',terms:'Правила',paused:'ПАУЗА',resume:'ПРОДОЛЖИТЬ',quitRun:'ВЫЙТИ',levelUp:'НОВЫЙ УРОВЕНЬ!',pickPower:'ВЫБЕРИ СИЛУ',reroll:'Перебросить (раз в день)',time:'Время',kills:'Убийств',lvl:'УР',coins:'Монеты',revive:'Возрождение — 20 Stars',retry:'ЕЩЁ',menu:'МЕНЮ',dailyTitle:'Ежедневный вызов',defeated:'ПОРАЖЕНИЕ',victory:'ПОБЕДА!',unlocked:'Открыто!',coinsEarned:'+{n} монет',newRecord:'Новый рекорд!',NEW:'НОВО',EVO:'ЭВО',MAX:'МАКС',
+   navHome:'ДОМ',navEarn:'БОНУС',navSettings:'НАСТР.',earnTitle:'БОНУСЫ',earnFree:'Бесплатные монеты каждый день',earnSub:'Заходи, приглашай, выполняй задачи',dailyLogin:'Вход',inviteTitle:'Пригласи друзей',inviteDs:'Поделись ГРОЗА. Каждый друг, открывший игру, приносит +100 монет (когда сервер запущен).',inviteCta:'ПОДЕЛИТЬСЯ',tasksTitle:'Задачи дня',claim:'ВЗЯТЬ',claimed:'ВЗЯТО',taskPlay3:'Сыграй 3 забега',taskLv15:'Достигни 15 ур. за забег',taskKill200:'Сделай 200 убийств за забег',shareText:'⚡ ГРОЗА — выживалка с автострельбой. Управляй одним пальцем, стань грозой. Играй со мной!'}
 };
 // other langs fallback to en
 LANGS.forEach(l=>{ if(!STRINGS[l]) STRINGS[l]=STRINGS.en; });
@@ -490,6 +612,7 @@ const DEFAULT_SAVE={
   unlocks:{chars:['spark'],stages:['crypt']},
   ach:{},
   daily:{date:'',done:false,rerollDate:''},
+  earn:{lastLoginDate:'',streak:0,claimedToday:false,tasksDate:'',tasks:{play:0,lv:0,kills:0},taskClaimed:{play3:false,lv15:false,kill200:false}},
   bestTime:0,bestKills:0,bestLevel:0,
   settings:{sound:true,haptics:true,dmgNumbers:true,lang:'en'},
   selectedChar:'spark',
@@ -503,7 +626,7 @@ function loadSave(){
     const raw=localStorage.getItem(SAVE_KEY);
     if(!raw) return JSON.parse(JSON.stringify(DEFAULT_SAVE));
     const p=JSON.parse(raw);
-    return Object.assign(JSON.parse(JSON.stringify(DEFAULT_SAVE)),p,{settings:Object.assign({},DEFAULT_SAVE.settings,p.settings||{}),meta:Object.assign({},DEFAULT_SAVE.meta,p.meta||{}),unlocks:Object.assign({},DEFAULT_SAVE.unlocks,p.unlocks||{}),ach:p.ach||{},daily:Object.assign({},DEFAULT_SAVE.daily,p.daily||{})});
+    return Object.assign(JSON.parse(JSON.stringify(DEFAULT_SAVE)),p,{settings:Object.assign({},DEFAULT_SAVE.settings,p.settings||{}),meta:Object.assign({},DEFAULT_SAVE.meta,p.meta||{}),unlocks:Object.assign({},DEFAULT_SAVE.unlocks,p.unlocks||{}),ach:p.ach||{},daily:Object.assign({},DEFAULT_SAVE.daily,p.daily||{}),earn:Object.assign({},DEFAULT_SAVE.earn,p.earn||{},{tasks:Object.assign({},DEFAULT_SAVE.earn.tasks,(p.earn||{}).tasks||{}),taskClaimed:Object.assign({},DEFAULT_SAVE.earn.taskClaimed,(p.earn||{}).taskClaimed||{})})});
   }catch(_){ return JSON.parse(JSON.stringify(DEFAULT_SAVE)); }
 }
 function saveNow(){ try{ localStorage.setItem(SAVE_KEY,JSON.stringify(state)); }catch(_){} }
@@ -905,6 +1028,11 @@ function endRun(won){
   state.totalKills += game.kills;
   if(game.t>state.bestTime) state.bestTime=Math.floor(game.t);
   if(game.kills>state.bestKills) state.bestKills=game.kills;
+  // task progress (daily)
+  ensureEarnDay();
+  state.earn.tasks.play = (state.earn.tasks.play||0) + 1;
+  if(game.level > (state.earn.tasks.lv||0)) state.earn.tasks.lv = game.level;
+  if(game.kills > (state.earn.tasks.kills||0)) state.earn.tasks.kills = game.kills;
   if(game.level>state.bestLevel) state.bestLevel=game.level;
   // achievements
   checkAch();
@@ -1920,62 +2048,74 @@ function hideAll(){
   $('#pauseModal').classList.remove('show');
   $('#draftScreen').classList.remove('show');
   $('#overModal').classList.remove('show');
+  $('#bottomNav').classList.remove('show');
 }
 function showMenu(){
   hideAll();
   $('#menuScreen').classList.add('show');
+  $('#bottomNav').classList.add('show');
+  // default to HOME tab
+  switchTabSilent('home');
   game.running=false;
   renderMenu();
 }
+function switchTabSilent(name){
+  $$('.bnav-tab').forEach(x=>x.classList.toggle('act', x.dataset.bnav===name));
+  $$('.tabpane').forEach(p=>p.style.display='none');
+  const el = $('#tab-'+name); if(el) el.style.display='block';
+}
 
 function renderMenu(){
-  // chars
-  const cg=$('#charGrid'); cg.innerHTML='';
   const lng=state.settings.lang;
-  for(const id in CHARS){
-    const c=CHARS[id];
-    const unlocked = state.unlocks.chars.includes(id);
-    const sel = state.selectedChar===id;
-    const el=document.createElement('div');
-    el.className='char-cell'+(sel?' sel':'')+(unlocked?'':' lock');
-    el.innerHTML=`<div class="ava" style="background:radial-gradient(circle at 35% 30%,#fff2,${c.color}55 60%,transparent 100%);color:${c.color}">${icon(c.icon,{size:'lg'})}</div><div class="nm">${c.name}</div><div class="ds">${unlocked?(c.ds[lng]||c.ds.en):(icon('lock',{color:'var(--ink-d)'})+' '+c.cost+' '+icon('coin',{color:'var(--gold)'}))}</div>`;
-    el.onclick=()=>{
-      if(!unlocked){
-        if(state.coins>=c.cost){
-          state.coins-=c.cost; state.unlocks.chars.push(id); state.selectedChar=id;
-          saveNow(); renderMenu(); sfx('coin'); haptic('ok');
-          toast(t('unlocked')+' '+c.name);
-        } else { haptic('warn'); toast('Need '+(c.cost-state.coins)+' more coins'); }
-        return;
-      }
-      state.selectedChar=id; saveNow(); renderMenu(); sfx('click'); haptic('light');
-    };
-    cg.appendChild(el);
+  // update all coin counters (HOME header + SHOP card)
+  $$('.coinsVal').forEach(el=>el.textContent=state.coins);
+  // chars (horizontal strip in HOME)
+  const cs=$('#charStrip'); if(cs){ cs.innerHTML='';
+    for(const id in CHARS){
+      const c=CHARS[id];
+      const unlocked = state.unlocks.chars.includes(id);
+      const sel = state.selectedChar===id;
+      const el=document.createElement('div');
+      el.className='pick-card'+(sel?' sel':'')+(unlocked?'':' lock');
+      el.innerHTML=`<div class="ava" style="background:radial-gradient(circle at 35% 30%,#fff2,${c.color}55 60%,transparent 100%);color:${c.color}">${icon(c.icon,{size:'lg'})}</div><div class="nm">${c.name}</div><div class="ds">${unlocked?(c.ds[lng]||c.ds.en):(c.cost+' '+icon('coin',{color:'var(--gold)'}))}</div>`;
+      el.onclick=()=>{
+        if(!unlocked){
+          if(state.coins>=c.cost){
+            state.coins-=c.cost; state.unlocks.chars.push(id); state.selectedChar=id;
+            saveNow(); renderMenu(); sfx('coin'); haptic('ok');
+            toast(t('unlocked')+' '+c.name);
+          } else { haptic('warn'); toast('Need '+(c.cost-state.coins)+' more coins'); }
+          return;
+        }
+        state.selectedChar=id; saveNow(); renderMenu(); sfx('click'); haptic('light');
+      };
+      cs.appendChild(el);
+    }
   }
-  // stages
-  const sg=$('#stageGrid'); sg.innerHTML='';
-  for(const id in STAGES){
-    const s=STAGES[id];
-    const unlocked=state.unlocks.stages.includes(id);
-    const sel=state.selectedStage===id;
-    const el=document.createElement('div');
-    el.className='stage-cell'+(sel?' sel':'')+(unlocked?'':' lock');
-    el.innerHTML=`<div class="ava" style="color:var(--gold)">${icon(s.icon,{size:'lg'})}</div><div class="nm">${s.name}</div><div class="ds">${unlocked?(s.ds[lng]||s.ds.en):(icon('lock',{color:'var(--ink-d)'})+' '+s.cost+' '+icon('coin',{color:'var(--gold)'}))}</div>`;
-    el.onclick=()=>{
-      if(!unlocked){
-        if(state.coins>=s.cost){
-          state.coins-=s.cost; state.unlocks.stages.push(id); state.selectedStage=id;
-          saveNow(); renderMenu(); sfx('coin'); haptic('ok');
-          toast(t('unlocked')+' '+s.name);
-        } else { haptic('warn'); toast('Need '+(s.cost-state.coins)+' more coins'); }
-        return;
-      }
-      state.selectedStage=id; saveNow(); renderMenu(); sfx('click'); haptic('light');
-    };
-    sg.appendChild(el);
+  // stages (horizontal strip in HOME)
+  const ss=$('#stageStrip'); if(ss){ ss.innerHTML='';
+    for(const id in STAGES){
+      const s=STAGES[id];
+      const unlocked=state.unlocks.stages.includes(id);
+      const sel=state.selectedStage===id;
+      const el=document.createElement('div');
+      el.className='pick-card'+(sel?' sel':'')+(unlocked?'':' lock');
+      el.innerHTML=`<div class="ava" style="color:var(--gold)">${icon(s.icon,{size:'lg'})}</div><div class="nm">${s.name}</div><div class="ds">${unlocked?(s.ds[lng]||s.ds.en):(s.cost+' '+icon('coin',{color:'var(--gold)'}))}</div>`;
+      el.onclick=()=>{
+        if(!unlocked){
+          if(state.coins>=s.cost){
+            state.coins-=s.cost; state.unlocks.stages.push(id); state.selectedStage=id;
+            saveNow(); renderMenu(); sfx('coin'); haptic('ok');
+            toast(t('unlocked')+' '+s.name);
+          } else { haptic('warn'); toast('Need '+(s.cost-state.coins)+' more coins'); }
+          return;
+        }
+        state.selectedStage=id; saveNow(); renderMenu(); sfx('click'); haptic('light');
+      };
+      ss.appendChild(el);
+    }
   }
-  // shop
-  $('#coinsVal').textContent=state.coins;
+  // shop (coinsVal already updated above)
   const shg=$('#shopGrid'); shg.innerHTML='';
   for(const m of META){
     const lv=state.meta[m.id]||0;
@@ -2019,6 +2159,137 @@ function renderMenu(){
   setupDaily();
   // iap buttons
   renderIap();
+  // earn tab
+  renderEarn();
+}
+
+// ============ EARN tab ============
+const LOGIN_REWARDS=[50,100,150,250,400,600,1000];
+const TASKS=[
+  {id:'play3',   icon:'play',   key:'play',  target:3,   nm:'taskPlay3',   reward:50},
+  {id:'lv15',   icon:'starbig', key:'lv',    target:15,  nm:'taskLv15',    reward:80},
+  {id:'kill200',icon:'skullx',  key:'kills', target:200, nm:'taskKill200', reward:120},
+];
+
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function yesterdayISO(){ const d=new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); }
+
+function ensureEarnDay(){
+  const today=todayISO();
+  // streak reset / advance
+  if(state.earn.lastLoginDate !== today){
+    if(state.earn.lastLoginDate === yesterdayISO()){
+      // continue streak (do NOT advance until they claim today)
+    } else if(state.earn.lastLoginDate){
+      // streak broken
+      state.earn.streak = 0;
+    }
+    state.earn.claimedToday = false;
+  }
+  // task reset
+  if(state.earn.tasksDate !== today){
+    state.earn.tasksDate = today;
+    state.earn.tasks = {play:0,lv:0,kills:0};
+    state.earn.taskClaimed = {play3:false,lv15:false,kill200:false};
+  }
+}
+
+function claimDailyLogin(){
+  const today=todayISO();
+  if(state.earn.claimedToday){ haptic('warn'); return; }
+  const dayIdx = state.earn.streak % LOGIN_REWARDS.length;
+  const reward = LOGIN_REWARDS[dayIdx];
+  state.coins += reward;
+  state.earn.streak = state.earn.streak + 1;
+  state.earn.lastLoginDate = today;
+  state.earn.claimedToday = true;
+  saveNow();
+  sfx('coin'); haptic('ok');
+  toast(t('coinsEarned').replace('{n}', reward), 'gold');
+  renderMenu();
+}
+
+function claimTask(taskId){
+  const task=TASKS.find(t=>t.id===taskId); if(!task) return;
+  if(state.earn.taskClaimed[taskId]){ haptic('warn'); return; }
+  if((state.earn.tasks[task.key]||0) < task.target){ haptic('warn'); return; }
+  state.earn.taskClaimed[taskId] = true;
+  state.coins += task.reward;
+  saveNow();
+  sfx('coin'); haptic('ok');
+  toast(t('coinsEarned').replace('{n}', task.reward), 'gold');
+  renderMenu();
+}
+
+function inviteFriends(){
+  const me = tg?.initDataUnsafe?.user;
+  const ref = me ? '?start=ref_'+me.id : '';
+  const url = 'https://t.me/GrozaGameBot' + ref;
+  const text = t('shareText');
+  const share = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text);
+  try{
+    if(tg && tg.openTelegramLink){ tg.openTelegramLink(share); }
+    else { window.open(share,'_blank'); }
+    haptic('ok');
+  }catch(_){ window.open(share,'_blank'); }
+}
+
+function renderEarn(){
+  ensureEarnDay();
+  const lng=state.settings.lang;
+  // login grid (7 days, cur = state.streak % 7)
+  const lg=$('#loginGrid'); if(lg){ lg.innerHTML='';
+    const curIdx = state.earn.streak % LOGIN_REWARDS.length;
+    LOGIN_REWARDS.forEach((rew,i)=>{
+      const el=document.createElement('div');
+      const isCur = i===curIdx;
+      const isDone = i < curIdx;
+      const canClaim = isCur && !state.earn.claimedToday;
+      el.className = 'login-day' + (isDone?' done':'') + (isCur?(canClaim?' cur claim':' cur'):'');
+      el.style.position='relative';
+      el.innerHTML = '<div class="d">'+t('dailyLogin').split(' ')[0]+' '+(i+1)+'</div>'+
+        '<div class="v">'+rew+icon('coin',{color: canClaim?'#3a1a02':'var(--gold)'})+'</div>';
+      if(canClaim) el.onclick = claimDailyLogin;
+      lg.appendChild(el);
+    });
+  }
+  $('#loginStreak').textContent = 'Streak: ' + state.earn.streak;
+  // tasks
+  const tl=$('#taskList'); if(tl){ tl.innerHTML='';
+    TASKS.forEach(task=>{
+      const cur = Math.min(state.earn.tasks[task.key]||0, task.target);
+      const done = cur>=task.target;
+      const claimed = !!state.earn.taskClaimed[task.id];
+      const el=document.createElement('div');
+      el.className='task-row';
+      const nm = t(task.nm);
+      el.innerHTML = '<div class="ic" style="color:var(--violet)">'+icon(task.icon,{size:'lg'})+'</div>'+
+        '<div class="meta"><div class="nm">'+nm+'</div><div class="ds">'+cur+'/'+task.target+'</div>'+
+        '<div class="prog"><div class="f" style="width:'+(cur/task.target*100)+'%"></div></div></div>'+
+        '<div class="rwd">+'+task.reward+icon('coin',{color:'var(--gold)'})+'</div>';
+      if(done && !claimed){
+        const btn = document.createElement('button');
+        btn.className='btn primary';
+        btn.style.cssText='padding:6px 10px;font-size:11px;margin-left:6px;';
+        btn.textContent = t('claim');
+        btn.onclick = ()=> claimTask(task.id);
+        el.appendChild(btn);
+      } else if(claimed){
+        const tag=document.createElement('div');
+        tag.style.cssText='font-size:10px;color:var(--green);font-weight:800;margin-left:6px;';
+        tag.textContent = t('claimed');
+        el.appendChild(tag);
+      }
+      tl.appendChild(el);
+    });
+  }
+}
+
+// Track task progress from gameplay events
+function bumpTask(key, amt){
+  ensureEarnDay();
+  state.earn.tasks[key] = (state.earn.tasks[key]||0) + (amt||1);
+  saveNow();
 }
 
 function setupDaily(){
@@ -2048,17 +2319,20 @@ $('#dailyBanner').addEventListener('click',()=>{
   startRun({daily:true});
 });
 
-// tabs
-$$('.tab').forEach(t=>{
-  t.addEventListener('click',()=>{
-    $$('.tab').forEach(x=>x.classList.remove('act'));
-    t.classList.add('act');
-    const k=t.dataset.tab;
-    $$('.tabpane').forEach(p=>p.style.display='none');
-    $('#tab-'+k).style.display='block';
-    sfx('click');
-  });
+// Bottom-nav routing
+function switchTab(name){
+  $$('.bnav-tab').forEach(x=>x.classList.toggle('act', x.dataset.bnav===name));
+  $$('.tabpane').forEach(p=>p.style.display='none');
+  const el = $('#tab-'+name); if(el) el.style.display='block';
+  // scroll the screen back to top on tab change
+  const scr=$('#menuScreen'); if(scr) scr.scrollTop=0;
+  sfx('click');
+}
+$$('.bnav-tab').forEach(t=>{
+  t.addEventListener('click',()=>{ switchTab(t.dataset.bnav); haptic('light'); });
 });
+// invite button
+$('#inviteBtn')?.addEventListener('click', inviteFriends);
 
 // menu buttons
 $('#playBtn').addEventListener('click',()=>{ startRun({}); });
