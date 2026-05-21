@@ -96,7 +96,7 @@
   .char-cell .nm,.stage-cell .nm{font-weight:800;font-size:12px;color:#fff;}
   .char-cell .ds,.stage-cell .ds{font-size:10px;color:var(--ink-d);margin-top:2px;line-height:1.25;min-height:22px;}
   .char-cell.lock,.stage-cell.lock{opacity:0.5;}
-  .char-cell.lock::after,.stage-cell.lock::after{content:"🔒";position:absolute;right:6px;top:6px;font-size:14px;}
+  .char-cell.lock::after,.stage-cell.lock::after{content:"";position:absolute;right:8px;top:8px;width:14px;height:14px;background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='11' width='16' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 4px rgba(255,255,255,0.5));opacity:0.85;}
 
   /* shop */
   .shop-grid{display:flex;flex-direction:column;gap:8px;}
@@ -185,9 +185,98 @@
   .daily-banner .ds{font-size:11px;opacity:0.85;}
   .daily-banner .cta{font-weight:900;color:var(--gold);font-size:12px;}
   .daily-banner.done{opacity:0.6;}
+
+  /* ============ neon icon system ============ */
+  .ic-svg{display:inline-block;width:1em;height:1em;vertical-align:-0.15em;color:currentColor;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px currentColor) drop-shadow(0 0 1.5px currentColor);}
+  .ic-svg.ic-lg{width:1.55em;height:1.55em;vertical-align:-0.28em;filter:drop-shadow(0 0 7px currentColor) drop-shadow(0 0 2px currentColor);}
+  .ic-svg.ic-xl{width:2em;height:2em;vertical-align:-0.35em;filter:drop-shadow(0 0 9px currentColor) drop-shadow(0 0 3px currentColor);}
+  .ic-svg.no-glow{filter:none;}
+  /* category color helpers */
+  .ic-weapon{color:var(--neon);}
+  .ic-evo{color:var(--gold);}
+  .ic-power{color:var(--pink);}
+  .ic-speed{color:var(--neon);}
+  .ic-tempo{color:var(--violet);}
+  .ic-magnet{color:var(--violet);}
+  .ic-vitality{color:var(--red);}
+  .ic-fortune{color:var(--green);}
+  .ic-gold{color:var(--gold);}
+  .ic-cyan{color:var(--neon);}
+  .ic-pink{color:var(--pink);}
+  .ic-violet{color:var(--violet);}
+  .ic-red{color:var(--red);}
+  .ic-green{color:var(--green);}
+  .ic-white{color:#fff;}
+  /* cell icon boxes — bigger glow, dark inset background */
+  .ic-cell{display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);border:1px solid var(--stroke);border-radius:10px;}
+  .ic-cell .ic-svg{filter:drop-shadow(0 0 8px currentColor) drop-shadow(0 0 3px currentColor);}
+  /* tweak existing emoji cells to fit svg sizing */
+  .char-cell .ava,.stage-cell .ava{font-size:0;background:rgba(0,0,0,0.35);border:1px solid var(--stroke);}
+  .shop-row .si{font-size:0;}
+  .ach-row .ic{font-size:0;background:rgba(0,0,0,0.35);}
+  .wslot .ic{font-size:0;background:rgba(0,0,0,0.4);}
+  .pick .ic{font-size:0;background:rgba(0,0,0,0.4);}
+  .daily-banner .ic{font-size:0;background:transparent;border:none;}
+  .tab .gear-svg{display:inline-block;}
 </style>
 </head>
 <body>
+<!-- ============ neon icon sprite ============ -->
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-2 8 11-13h-7l1-7z"/></symbol>
+<symbol id="i-aura" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1l2.1-2.1M17 7l2.1-2.1"/></symbol>
+<symbol id="i-orb" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10" ry="3" transform="rotate(22 12 12)" stroke-dasharray="2 2.5"/></symbol>
+<symbol id="i-boomerang" viewBox="0 0 24 24"><path d="M4 11c0-5 5-7 9-4 4 3 3 9-2 10l-4 1 1-4z"/></symbol>
+<symbol id="i-chain" viewBox="0 0 24 24"><rect x="3" y="9" width="9" height="6" rx="3"/><rect x="12" y="9" width="9" height="6" rx="3"/></symbol>
+<symbol id="i-frost" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M5.5 5.5l13 13M5.5 18.5l13-13"/><path d="M9 4l3 2 3-2M9 20l3-2 3 2M4 9l2 3-2 3M20 9l-2 3 2 3"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+<symbol id="i-stormvolley" viewBox="0 0 24 24"><path d="M7 3l-3 9h3l-2 9 7-11h-3l1-7zM16 4l-2 7h3l-2 8 6-10h-3l1-5z"/></symbol>
+<symbol id="i-astral" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><ellipse cx="12" cy="12" rx="11" ry="3.4" transform="rotate(-22 12 12)" stroke-width="1.6"/></symbol>
+<symbol id="i-saw" viewBox="0 0 24 24"><path d="M12 2.5l1.4 2.8L16.5 4l.4 3.1 3.1.4-1.3 2.9 2.3 2.1-2.3 2.1 1.3 2.9-3.1.4-.4 3.1-3.1-1.3L12 22.5l-1.4-2.8L7.5 21l-.4-3.1-3.1-.4 1.3-2.9-2.3-2.1 2.3-2.1-1.3-2.9 3.1-.4L7.5 4l3.1 1.3z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+<symbol id="i-web" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M5 5l14 14M5 19l14-14" stroke-width="1.2"/><path d="M12 6l5 5-5 7-5-7zM12 9l2.5 2.5L12 15l-2.5-3.5z" stroke-width="1.4"/></symbol>
+<symbol id="i-glacier" viewBox="0 0 24 24"><path d="M12 3l6 6-3 12H9L6 9z"/><path d="M9 9h6M10 14h4M11 18h2"/></symbol>
+<symbol id="i-power" viewBox="0 0 24 24"><path d="M6 11V8c0-1.6 2.5-1.6 2.5 0v3M8.5 11V6.5c0-1.6 2.5-1.6 2.5 0V11M11 11V6c0-1.6 2.5-1.6 2.5 0v5M13.5 11V7.5c0-1.6 2.5-1.6 2.5 0V13c0 4-3 7-6.5 7s-6-2-6-6v-3z"/></symbol>
+<symbol id="i-swift" viewBox="0 0 24 24"><path d="M3 19L17 5M11 5h6v6M3 12h6M3 16h4"/></symbol>
+<symbol id="i-tempo" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M7 5l10 0L13 11l5 7H6l5-7zM9 4h6M9 20h6"/></symbol>
+<symbol id="i-magnet" viewBox="0 0 24 24"><path d="M5 4v8a7 7 0 0 0 14 0V4h-4v8a3 3 0 0 1-6 0V4z"/><path d="M5 4h4M15 4h4"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21C7 17 3 14 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5-4 8-9 12z"/></symbol>
+<symbol id="i-clover" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3.5"/><circle cx="16" cy="8" r="3.5"/><circle cx="8" cy="16" r="3.5"/><circle cx="16" cy="16" r="3.5"/></symbol>
+<symbol id="i-crypt" viewBox="0 0 24 24"><path d="M6 21V11a6 6 0 0 1 12 0v10zM4 21h16"/><path d="M10 13h4M12 11v6"/></symbol>
+<symbol id="i-skull" viewBox="0 0 24 24"><path d="M4 11c0-5 4-8 8-8s8 3 8 8v4l-3 2v4h-3v-3h-4v3H7v-4l-3-2z"/><circle cx="9" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.6" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-void" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></symbol>
+<symbol id="i-sword" viewBox="0 0 24 24"><path d="M14 2h8v8L11 21H3v-8zM14 10l-4 4"/></symbol>
+<symbol id="i-boot" viewBox="0 0 24 24"><path d="M5 4h6v8c0 2 2 2 3 2l6 2 1 4H4v-9zM11 4v4"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12c3-6 6-8 10-8s7 2 10 8c-3 6-6 8-10 8s-7-2-10-8z"/><circle cx="12" cy="12" r="3.5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 2.5L13.4 8.5L19.5 8.5L14.6 12L16.5 18L12 14.5L7.5 18L9.4 12L4.5 8.5L10.6 8.5Z" stroke-width="1.4"/></symbol>
+<symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9zM6 3l3 6H2M18 3l-3 6h7M9 9l3 12 3-12M9 9h6"/></symbol>
+<symbol id="i-blood" viewBox="0 0 24 24"><path d="M12 2c-4 6-7 10-7 14a7 7 0 0 0 14 0c0-4-3-8-7-14z"/></symbol>
+<symbol id="i-skullx" viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><circle cx="9.5" cy="9" r="1.4" fill="currentColor" stroke="none"/><circle cx="14.5" cy="9" r="1.4" fill="currentColor" stroke="none"/><path d="M5 17l14 4M19 17L5 21"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 2c0 6 4 6 4 11a4 4 0 0 1-8 0c0-2 2-4 2-6s1-3 2-5z"/><path d="M10 13c0 2 1 3 2 3s2-1 2-3" stroke-width="1.4"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></symbol>
+<symbol id="i-column" viewBox="0 0 24 24"><path d="M4 21h16v-3H4zM4 6h16V3H4zM6 6v12M12 6v12M18 6v12"/></symbol>
+<symbol id="i-crown" viewBox="0 0 24 24"><path d="M3 8l4 6 5-8 5 8 4-6-1 11H4zM4 19h16"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l2.6 7L22 9.4l-5.7 4.9 1.8 7.3L12 17.6 5.9 21.6l1.8-7.3L2 9.4 9.4 9z"/></symbol>
+<symbol id="i-starbig" viewBox="0 0 24 24"><path d="M12 2l2.6 7L22 9.4l-5.7 4.9 1.8 7.3L12 17.6 5.9 21.6l1.8-7.3L2 9.4 9.4 9z"/><circle cx="12" cy="13" r="2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 1v8M12 15v8M1 12h8M15 12h8M5 5l4 4M15 15l4 4M5 19l4-4M15 9l4-4"/></symbol>
+<symbol id="i-swirl" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="18" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 3h10v7a5 5 0 0 1-10 0zM3 5h4v3a2 2 0 0 1-4 0zM17 5h4v3a2 2 0 0 1-4 0zM10 15v3h4v-3M7 21h10M9 18h6v3"/></symbol>
+<symbol id="i-rainbow" viewBox="0 0 24 24"><path d="M3 20a9 9 0 0 1 18 0M5.5 20a6.5 6.5 0 0 1 13 0M8 20a4 4 0 0 1 8 0"/></symbol>
+<symbol id="i-dragon" viewBox="0 0 24 24"><path d="M3 18c5 0 9-2 9-7 0-4-3-6-6-6v3c2 0 4 1 4 3s-2 3-7 4zM14 12l5-5 2 2-5 5M19 7l1-3"/></symbol>
+<symbol id="i-demon" viewBox="0 0 24 24"><path d="M5 4l3 5-4 3c0 5 3 9 8 9s8-4 8-9l-4-3 3-5-5 3-2-3-2 3z"/><circle cx="9.5" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="14.5" cy="14" r="1.4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-4 9-8 11-4-2-8-6-8-11V5z"/><path d="M8 12l3 3 5-6" stroke-width="1.8"/></symbol>
+<symbol id="i-mask" viewBox="0 0 24 24"><path d="M4 6c0 8 2 13 8 13s8-5 8-13c-4 1-7 1-8-1-1 2-4 2-8 1z"/><circle cx="9" cy="11" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r="1.4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.6" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 1l1.5 3 3-1v4l3 1-1 3 3 2-3 2 1 3-3 1v4l-3-1-1.5 3-1.5-3-3 1v-4l-3-1 1-3-3-2 3-2-1-3 3-1V3l3 1z" stroke-width="1.6"/><circle cx="12" cy="12" r="3.5"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-reroll" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9M16 3v6h6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4 13l5 5 11-12" stroke-width="2.6"/></symbol>
+<symbol id="i-storm" viewBox="0 0 24 24"><path d="M6 11c-4 0-4-6 0-6 1-2 5-2 6 0 4-1 7 2 6 6 3 0 3 5 0 5H7c-4 0-4-5 0-5zM11 18l-2 5 4-4-2 4"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></symbol>
+</defs>
+</svg>
+
 <div id="app">
   <canvas id="game"></canvas>
 
@@ -202,7 +291,7 @@
       <div class="bar xp"><div class="fill" id="xpFill"></div></div>
     </div>
     <div class="weapons" id="weaponsHud"></div>
-    <div class="pauseBtn" id="pauseBtn">⏸</div>
+    <div class="pauseBtn" id="pauseBtn" style="color:#fff"><svg class="ic-svg" style="width:18px;height:18px"><use href="#i-pause"></use></svg></div>
     <div class="bossHP" id="bossHpBar"><div class="lbl" id="bossLbl">BOSS</div><div class="fill" id="bossHpFill"></div></div>
     <div class="bossBanner" id="bossBanner">BOSS!</div>
   </div>
@@ -219,7 +308,7 @@
     <div class="sub" data-i18n="tagline">Survive the swarm. Become unstoppable.</div>
 
     <div class="daily-banner" id="dailyBanner">
-      <div class="ic">⚡</div>
+      <div class="ic" style="color:#fff"><svg class="ic-svg ic-lg" style="width:28px;height:28px"><use href="#i-bolt"></use></svg></div>
       <div class="meta">
         <div class="nm" data-i18n="dailyTitle">Daily Challenge</div>
         <div class="ds" id="dailyDesc">+50% spawn rate · win 200 coins</div>
@@ -234,7 +323,7 @@
       <div class="tab" data-tab="stage" data-i18n="stage">STAGE</div>
       <div class="tab" data-tab="shop" data-i18n="shop">SHOP</div>
       <div class="tab" data-tab="ach" data-i18n="ach">FEATS</div>
-      <div class="tab" data-tab="set" data-i18n="set">⚙</div>
+      <div class="tab" data-tab="set" style="color:var(--ink-d)"><svg class="ic-svg" style="width:16px;height:16px"><use href="#i-gear"></use></svg></div>
     </div>
 
     <div id="tab-char" class="tabpane">
@@ -253,17 +342,13 @@
       <div class="card">
         <h3 style="display:flex;align-items:center;justify-content:space-between;">
           <span data-i18n="permUp">Permanent Upgrades</span>
-          <span style="font-weight:800;color:var(--gold);">💰 <span id="coinsVal">0</span></span>
+          <span style="font-weight:800;color:var(--gold);display:flex;align-items:center;gap:5px;"><svg class="ic-svg ic-lg"><use href="#i-coin"></use></svg><span id="coinsVal">0</span></span>
         </h3>
         <div class="shop-grid" id="shopGrid"></div>
       </div>
       <div class="card">
         <h3 data-i18n="getCoins">Get Coins</h3>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          <button class="btn ghost" data-iap="coins100">💰 +100 — 50 ⭐</button>
-          <button class="btn ghost" data-iap="coins500">💰 +500 — 200 ⭐</button>
-          <button class="btn ghost" data-iap="coins1500">💰 +1500 — 500 ⭐</button>
-        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;" id="iapButtons"></div>
       </div>
     </div>
     <div id="tab-ach" class="tabpane" style="display:none;">
@@ -323,7 +408,7 @@
     <div class="ttl" data-i18n="levelUp">LEVEL UP!</div>
     <div class="sub" data-i18n="pickPower">CHOOSE YOUR POWER</div>
     <div class="picks" id="picksList"></div>
-    <div style="text-align:center;margin-top:14px;color:var(--ink-d);font-size:11px;cursor:pointer;" id="rerollBtn">🔄 <span data-i18n="reroll">Reroll (free, daily)</span></div>
+    <div style="text-align:center;margin-top:14px;color:var(--ink-d);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;" id="rerollBtn"><svg class="ic-svg"><use href="#i-reroll"></use></svg><span data-i18n="reroll">Reroll (free, daily)</span></div>
   </div>
 
   <!-- game over -->
@@ -336,7 +421,7 @@
         <div class="stat"><div class="lab" data-i18n="lvl">Level</div><div class="val" id="overLv">1</div></div>
         <div class="stat"><div class="lab" data-i18n="coins">Coins</div><div class="val gold" id="overCoins">+0</div></div>
       </div>
-      <button class="btn primary" id="reviveBtn" style="margin-bottom:6px;display:none;">💎 <span data-i18n="revive">Revive — 20 ⭐</span></button>
+      <button class="btn primary" id="reviveBtn" style="margin-bottom:6px;display:none;align-items:center;justify-content:center;gap:6px;color:#3a1a02"><svg class="ic-svg ic-lg"><use href="#i-gem"></use></svg><span data-i18n="revive">Revive — 20 Stars</span></button>
       <button class="btn" id="retryBtn" style="margin-bottom:6px;" data-i18n="retry">RETRY</button>
       <button class="btn ghost" id="menuBtn" data-i18n="menu">MENU</button>
     </div>
@@ -364,6 +449,22 @@ const pad2=n=>(n<10?'0':'')+n;
 const fmtTime=s=>{s=Math.max(0,Math.floor(s));return pad2(Math.floor(s/60))+':'+pad2(s%60);};
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 
+// neon icon helpers — emits <svg><use href="#i-..."/></svg>
+function icon(id,opts){
+  if(!id) return '';
+  opts=opts||{};
+  const cls = ['ic-svg'];
+  if(opts.size==='lg') cls.push('ic-lg');
+  else if(opts.size==='xl') cls.push('ic-xl');
+  if(opts.cls) cls.push(opts.cls);
+  const style = opts.color ? ' style="color:'+opts.color+'"' : '';
+  return '<svg class="'+cls.join(' ')+'"'+style+'><use href="#i-'+id+'"></use></svg>';
+}
+function bigIcon(id,color){ return icon(id,{size:'lg',color}); }
+function xlIcon(id,color){ return icon(id,{size:'xl',color}); }
+// passive id → color class
+const PASSIVE_COLOR={power:'var(--pink)',speed:'var(--neon)',tempo:'var(--violet)',magnet:'var(--violet)',vitality:'var(--red)',fortune:'var(--green)'};
+
 // ============ Telegram WebApp ============
 const tg=window.Telegram?.WebApp;
 try{ if(tg){ tg.ready(); tg.expand?.(); tg.requestFullscreen?.(); tg.disableVerticalSwipes?.(); tg.setHeaderColor?.('#0a0418'); tg.setBackgroundColor?.('#0a0418'); } }catch(_){}
@@ -373,8 +474,8 @@ function haptic(kind){ if(!state.settings.haptics) return; try{ if(kind==='light
 const LANGS=['en','ru','es','pt','fr','de','nl','it','sv','pl','tr','uk','ar','he','hi','id','vi','zh','ko','ja'];
 const LANG_NAMES={en:'English',ru:'Русский',es:'Español',pt:'Português',fr:'Français',de:'Deutsch',nl:'Nederlands',it:'Italiano',sv:'Svenska',pl:'Polski',tr:'Türkçe',uk:'Українська',ar:'العربية',he:'עברית',hi:'हिन्दी',id:'Indonesia',vi:'Tiếng Việt',zh:'中文',ko:'한국어',ja:'日本語'};
 const STRINGS={
- en:{tagline:'Become the storm. Survive the swarm.',play:'PLAY',hero:'HERO',stage:'STAGE',shop:'SHOP',ach:'FEATS',set:'⚙',pickHero:'Pick your hero',pickStage:'Pick your stage',permUp:'Permanent Upgrades',getCoins:'Get Coins',sound:'Sound',soundDs:'Background music & SFX',haptic:'Haptics',hapticDs:'Vibration feedback',dmgn:'Damage numbers',dmgnDs:'Show damage popups',lang:'Language',reset:'Reset',resetDs:'Wipe all save data',about:'About',privacy:'Privacy',terms:'Terms',paused:'PAUSED',resume:'RESUME',quitRun:'QUIT RUN',levelUp:'LEVEL UP!',pickPower:'CHOOSE YOUR POWER',reroll:'Reroll (free, daily)',time:'Time',kills:'Kills',lvl:'LV',coins:'Coins',revive:'Revive — 20 ⭐',retry:'RETRY',menu:'MENU',dailyTitle:'Daily Challenge',defeated:'DEFEATED',victory:'VICTORY!',unlocked:'Unlocked!',coinsEarned:'+{n} coins',newRecord:'New record!',NEW:'NEW',EVO:'EVO',MAX:'MAX'},
- ru:{tagline:'Стань грозой. Выживи в орде.',play:'ИГРАТЬ',hero:'ГЕРОЙ',stage:'АРЕНА',shop:'ШОП',ach:'ДОСТ.',set:'⚙',pickHero:'Выбери героя',pickStage:'Выбери арену',permUp:'Улучшения',getCoins:'Получить монеты',sound:'Звук',soundDs:'Музыка и эффекты',haptic:'Вибрация',hapticDs:'Тактильный отклик',dmgn:'Числа урона',dmgnDs:'Показывать урон',lang:'Язык',reset:'Сброс',resetDs:'Стереть прогресс',about:'О игре',privacy:'Приватность',terms:'Правила',paused:'ПАУЗА',resume:'ПРОДОЛЖИТЬ',quitRun:'ВЫЙТИ',levelUp:'НОВЫЙ УРОВЕНЬ!',pickPower:'ВЫБЕРИ СИЛУ',reroll:'Перебросить (раз в день)',time:'Время',kills:'Убийств',lvl:'УР',coins:'Монеты',revive:'Возрождение — 20 ⭐',retry:'ЕЩЁ',menu:'МЕНЮ',dailyTitle:'Ежедневный вызов',defeated:'ПОРАЖЕНИЕ',victory:'ПОБЕДА!',unlocked:'Открыто!',coinsEarned:'+{n} монет',newRecord:'Новый рекорд!',NEW:'НОВО',EVO:'ЭВО',MAX:'МАКС'}
+ en:{tagline:'Become the storm. Survive the swarm.',play:'PLAY',hero:'HERO',stage:'STAGE',shop:'SHOP',ach:'FEATS',set:'⚙',pickHero:'Pick your hero',pickStage:'Pick your stage',permUp:'Permanent Upgrades',getCoins:'Get Coins',sound:'Sound',soundDs:'Background music & SFX',haptic:'Haptics',hapticDs:'Vibration feedback',dmgn:'Damage numbers',dmgnDs:'Show damage popups',lang:'Language',reset:'Reset',resetDs:'Wipe all save data',about:'About',privacy:'Privacy',terms:'Terms',paused:'PAUSED',resume:'RESUME',quitRun:'QUIT RUN',levelUp:'LEVEL UP!',pickPower:'CHOOSE YOUR POWER',reroll:'Reroll (free, daily)',time:'Time',kills:'Kills',lvl:'LV',coins:'Coins',revive:'Revive — 20 Stars',retry:'RETRY',menu:'MENU',dailyTitle:'Daily Challenge',defeated:'DEFEATED',victory:'VICTORY!',unlocked:'Unlocked!',coinsEarned:'+{n} coins',newRecord:'New record!',NEW:'NEW',EVO:'EVO',MAX:'MAX'},
+ ru:{tagline:'Стань грозой. Выживи в орде.',play:'ИГРАТЬ',hero:'ГЕРОЙ',stage:'АРЕНА',shop:'ШОП',ach:'ДОСТ.',set:'⚙',pickHero:'Выбери героя',pickStage:'Выбери арену',permUp:'Улучшения',getCoins:'Получить монеты',sound:'Звук',soundDs:'Музыка и эффекты',haptic:'Вибрация',hapticDs:'Тактильный отклик',dmgn:'Числа урона',dmgnDs:'Показывать урон',lang:'Язык',reset:'Сброс',resetDs:'Стереть прогресс',about:'О игре',privacy:'Приватность',terms:'Правила',paused:'ПАУЗА',resume:'ПРОДОЛЖИТЬ',quitRun:'ВЫЙТИ',levelUp:'НОВЫЙ УРОВЕНЬ!',pickPower:'ВЫБЕРИ СИЛУ',reroll:'Перебросить (раз в день)',time:'Время',kills:'Убийств',lvl:'УР',coins:'Монеты',revive:'Возрождение — 20 Stars',retry:'ЕЩЁ',menu:'МЕНЮ',dailyTitle:'Ежедневный вызов',defeated:'ПОРАЖЕНИЕ',victory:'ПОБЕДА!',unlocked:'Открыто!',coinsEarned:'+{n} монет',newRecord:'Новый рекорд!',NEW:'НОВО',EVO:'ЭВО',MAX:'МАКС'}
 };
 // other langs fallback to en
 LANGS.forEach(l=>{ if(!STRINGS[l]) STRINGS[l]=STRINGS.en; });
@@ -418,54 +519,54 @@ if(!localStorage.getItem(SAVE_KEY)){
 
 // ============ data ============
 const CHARS={
-  spark:{ name:'Spark', emoji:'⚡', color:'#7afcff', startWeapon:'aura', hp:100, spd:1.0, dmg:1.0, ds:{en:'Balanced. Aura of light.',ru:'Баланс. Аура света.'} },
-  storm:{ name:'Storm', emoji:'🌩', color:'#ff5fa2', startWeapon:'bolt', hp:80, spd:1.05, dmg:1.15, ds:{en:'Fragile but fierce. Bolt shot.',ru:'Хрупкий, но яростный. Молния.'}, cost:1000 },
-  frost:{ name:'Frost', emoji:'❄', color:'#9b6cff', startWeapon:'frost', hp:130, spd:0.92, dmg:0.95, ds:{en:'Tanky. Frost burst.',ru:'Танк. Морозный взрыв.'}, cost:1500 },
+  spark:{ name:'Spark', icon:'bolt', color:'#7afcff', startWeapon:'aura', hp:100, spd:1.0, dmg:1.0, ds:{en:'Balanced. Aura of light.',ru:'Баланс. Аура света.'} },
+  storm:{ name:'Storm', icon:'storm', color:'#ff5fa2', startWeapon:'bolt', hp:80, spd:1.05, dmg:1.15, ds:{en:'Fragile but fierce. Bolt shot.',ru:'Хрупкий, но яростный. Молния.'}, cost:1000 },
+  frost:{ name:'Frost', icon:'frost', color:'#9b6cff', startWeapon:'frost', hp:130, spd:0.92, dmg:0.95, ds:{en:'Tanky. Frost burst.',ru:'Танк. Морозный взрыв.'}, cost:1500 },
 };
 const STAGES={
-  crypt:{ name:'Crypt', emoji:'🪦', color:'#1a0d3a', spawnMult:1.0, ds:{en:'Easy. A starter dungeon.',ru:'Легко. Стартовое подземелье.'} },
-  bone:{ name:'Bone Fields', emoji:'💀', color:'#2a1a4a', spawnMult:1.25, ds:{en:'More foes. Faster waves.',ru:'Больше врагов. Быстрее волны.'}, cost:500 },
-  void:{ name:'Void Citadel', emoji:'🌌', color:'#001033', spawnMult:1.55, ds:{en:'Brutal. Elite boss.',ru:'Жестоко. Боссы-элита.'}, cost:2000 },
+  crypt:{ name:'Crypt', icon:'crypt', color:'#1a0d3a', spawnMult:1.0, ds:{en:'Easy. A starter dungeon.',ru:'Легко. Стартовое подземелье.'} },
+  bone:{ name:'Bone Fields', icon:'skull', color:'#2a1a4a', spawnMult:1.25, ds:{en:'More foes. Faster waves.',ru:'Больше врагов. Быстрее волны.'}, cost:500 },
+  void:{ name:'Void Citadel', icon:'void', color:'#001033', spawnMult:1.55, ds:{en:'Brutal. Elite boss.',ru:'Жестоко. Боссы-элита.'}, cost:2000 },
 };
 
 // weapons (max level 8; evolution at L8 with required passive)
 const WEAPONS={
-  aura:{ name:{en:'Aura',ru:'Аура'}, emoji:'🌟', evoNeed:'vitality',
+  aura:{ name:{en:'Aura',ru:'Аура'}, icon:'aura', evoNeed:'vitality',
     ds:{en:'Pulsing ring of light damages all nearby foes.',ru:'Кольцо света бьёт врагов вокруг.'},
     base:{cd:0.55, dmg:8, r:70}, growth:{cd:-0.03, dmg:2, r:7},
-    evo:{name:{en:'Sun Halo',ru:'Солнечный Ореол'}, ds:{en:'Halo grows and burns. +100% radius +damage.',ru:'Ореол растёт и жжёт. +100% радиус +урон.'}, cd:0.45, dmg:30, r:160, emoji:'☀️'} },
-  bolt:{ name:{en:'Bolt',ru:'Молния'}, emoji:'⚡', evoNeed:'tempo',
+    evo:{name:{en:'Sun Halo',ru:'Солнечный Ореол'}, ds:{en:'Halo grows and burns. +100% radius +damage.',ru:'Ореол растёт и жжёт. +100% радиус +урон.'}, cd:0.45, dmg:30, r:160, icon:'sun'} },
+  bolt:{ name:{en:'Bolt',ru:'Молния'}, icon:'bolt', evoNeed:'tempo',
     ds:{en:'Fires a bolt at the nearest foe.',ru:'Запускает молнию в ближайшего врага.'},
     base:{cd:0.7, dmg:14, speed:520, pierce:1, count:1}, growth:{cd:-0.06, dmg:5, pierce:0.4, count:0.34},
-    evo:{name:{en:'Storm Volley',ru:'Гром Залп'}, ds:{en:'Fires a fan of 5 bolts that chain.',ru:'Веер из 5 молний, цепляются.'}, cd:0.5, dmg:40, count:5, pierce:3, chain:2, emoji:'🌩'} },
-  orb:{ name:{en:'Orbiters',ru:'Орбы'}, emoji:'🔮', evoNeed:'power',
+    evo:{name:{en:'Storm Volley',ru:'Гром Залп'}, ds:{en:'Fires a fan of 5 bolts that chain.',ru:'Веер из 5 молний, цепляются.'}, cd:0.5, dmg:40, count:5, pierce:3, chain:2, icon:'stormvolley'} },
+  orb:{ name:{en:'Orbiters',ru:'Орбы'}, icon:'orb', evoNeed:'power',
     ds:{en:'Crystals circle you, smashing what they touch.',ru:'Кристаллы вращаются и бьют.'},
     base:{cd:0, dmg:10, count:1, radius:80, speed:3}, growth:{count:0.4, dmg:2, radius:6, speed:0.25},
-    evo:{name:{en:'Astral Halo',ru:'Астрал'}, ds:{en:'5 huge orbs spin at high speed and pierce.',ru:'5 крупных орбов на скорости.'}, count:5, dmg:32, radius:110, speed:5.5, big:true, emoji:'🪐'} },
-  boomerang:{ name:{en:'Boomerang',ru:'Бумеранг'}, emoji:'🪃', evoNeed:'fortune',
+    evo:{name:{en:'Astral Halo',ru:'Астрал'}, ds:{en:'5 huge orbs spin at high speed and pierce.',ru:'5 крупных орбов на скорости.'}, count:5, dmg:32, radius:110, speed:5.5, big:true, icon:'astral'} },
+  boomerang:{ name:{en:'Boomerang',ru:'Бумеранг'}, icon:'boomerang', evoNeed:'fortune',
     ds:{en:'Throws a returning blade.',ru:'Бросает возвращающийся клинок.'},
     base:{cd:1.4, dmg:18, speed:340, range:240, count:1}, growth:{cd:-0.1, dmg:6, count:0.34, range:25},
-    evo:{name:{en:'Sawstorm',ru:'Пилобуря'}, ds:{en:'3 fast saws that ignore range and crit.',ru:'3 быстрые пилы.'}, count:3, dmg:42, cd:0.7, range:1000, crit:true, emoji:'🪚'} },
-  chain:{ name:{en:'Chain Bolt',ru:'Цепь'}, emoji:'🔗', evoNeed:'tempo',
+    evo:{name:{en:'Sawstorm',ru:'Пилобуря'}, ds:{en:'3 fast saws that ignore range and crit.',ru:'3 быстрые пилы.'}, count:3, dmg:42, cd:0.7, range:1000, crit:true, icon:'saw'} },
+  chain:{ name:{en:'Chain Bolt',ru:'Цепь'}, icon:'chain', evoNeed:'tempo',
     ds:{en:'Lightning chains between nearby foes.',ru:'Молния прыгает между врагами.'},
     base:{cd:1.7, dmg:22, jumps:3, range:240}, growth:{cd:-0.12, dmg:7, jumps:0.4, range:18},
-    evo:{name:{en:'Thunder Web',ru:'Гром.Сеть'}, ds:{en:'Hits all foes in massive range, stuns.',ru:'Бьёт всех в радиусе, оглушает.'}, cd:1.0, dmg:60, jumps:99, range:600, stun:true, emoji:'🕸'} },
-  frost:{ name:{en:'Frost Bomb',ru:'Морозец'}, emoji:'❄', evoNeed:'magnet',
+    evo:{name:{en:'Thunder Web',ru:'Гром.Сеть'}, ds:{en:'Hits all foes in massive range, stuns.',ru:'Бьёт всех в радиусе, оглушает.'}, cd:1.0, dmg:60, jumps:99, range:600, stun:true, icon:'web'} },
+  frost:{ name:{en:'Frost Bomb',ru:'Морозец'}, icon:'frost', evoNeed:'magnet',
     ds:{en:'Burst freezes & damages everything around.',ru:'Взрыв, заморозка и урон.'},
     base:{cd:2.5, dmg:30, r:120, slow:0.4, dur:1.5}, growth:{cd:-0.18, dmg:9, r:10, slow:0.04, dur:0.15},
-    evo:{name:{en:'Glacier',ru:'Ледник'}, ds:{en:'Massive shockwave that freezes solid.',ru:'Огромная волна, замораживает.'}, cd:1.5, dmg:75, r:260, slow:0.85, dur:3, emoji:'🧊'} },
+    evo:{name:{en:'Glacier',ru:'Ледник'}, ds:{en:'Massive shockwave that freezes solid.',ru:'Огромная волна, замораживает.'}, cd:1.5, dmg:75, r:260, slow:0.85, dur:3, icon:'glacier'} },
 };
 const WEAPON_ORDER=['aura','bolt','orb','boomerang','chain','frost'];
 const MAX_WLEVEL=8;
 
 // passives
 const PASSIVES={
-  power:{ name:{en:'Power',ru:'Сила'}, emoji:'💪', ds:{en:'+15% damage',ru:'+15% урон'}, growth:0.15, max:5 },
-  speed:{ name:{en:'Swift',ru:'Прыть'}, emoji:'🦌', ds:{en:'+12% move speed',ru:'+12% скорость'}, growth:0.12, max:5 },
-  tempo:{ name:{en:'Tempo',ru:'Темп'}, emoji:'⏱', ds:{en:'-10% cooldown',ru:'-10% откат'}, growth:0.10, max:5 },
-  magnet:{ name:{en:'Magnet',ru:'Магнит'}, emoji:'🧲', ds:{en:'+30% pickup range',ru:'+30% подбор'}, growth:0.30, max:5 },
-  vitality:{ name:{en:'Vitality',ru:'Витал'}, emoji:'❤', ds:{en:'+20 max HP + regen',ru:'+20 макс HP + реген'}, growth:20, max:5 },
-  fortune:{ name:{en:'Fortune',ru:'Удача'}, emoji:'🍀', ds:{en:'+8% crit / +10% XP',ru:'+8% крит / +10% XP'}, growth:0.08, max:5 },
+  power:{ name:{en:'Power',ru:'Сила'}, icon:'power', color:'var(--pink)', ds:{en:'+15% damage',ru:'+15% урон'}, growth:0.15, max:5 },
+  speed:{ name:{en:'Swift',ru:'Прыть'}, icon:'swift', color:'var(--neon)', ds:{en:'+12% move speed',ru:'+12% скорость'}, growth:0.12, max:5 },
+  tempo:{ name:{en:'Tempo',ru:'Темп'}, icon:'tempo', color:'var(--violet)', ds:{en:'-10% cooldown',ru:'-10% откат'}, growth:0.10, max:5 },
+  magnet:{ name:{en:'Magnet',ru:'Магнит'}, icon:'magnet', color:'var(--violet)', ds:{en:'+30% pickup range',ru:'+30% подбор'}, growth:0.30, max:5 },
+  vitality:{ name:{en:'Vitality',ru:'Витал'}, icon:'heart', color:'var(--red)', ds:{en:'+20 max HP + regen',ru:'+20 макс HP + реген'}, growth:20, max:5 },
+  fortune:{ name:{en:'Fortune',ru:'Удача'}, icon:'clover', color:'var(--green)', ds:{en:'+8% crit / +10% XP',ru:'+8% крит / +10% XP'}, growth:0.08, max:5 },
 };
 const PASSIVE_ORDER=['power','speed','tempo','magnet','vitality','fortune'];
 
@@ -483,35 +584,35 @@ const ENEMIES={
 
 // meta shop
 const META=[
-  {id:'hp',     emoji:'❤', nm:{en:'Heart',ru:'Сердце'}, ds:{en:'+10 max HP per level',ru:'+10 макс HP за ур.'}, max:10, costBase:80, costGrowth:1.6},
-  {id:'dmg',    emoji:'⚔', nm:{en:'Edge',ru:'Острота'}, ds:{en:'+5% all damage',ru:'+5% весь урон'}, max:10, costBase:100, costGrowth:1.7},
-  {id:'spd',    emoji:'👟', nm:{en:'Speed',ru:'Скорость'}, ds:{en:'+3% move speed',ru:'+3% скорость'}, max:10, costBase:80, costGrowth:1.6},
-  {id:'magnet', emoji:'🧲', nm:{en:'Pull',ru:'Притяжение'}, ds:{en:'+10% pickup range',ru:'+10% радиус'}, max:10, costBase:60, costGrowth:1.5},
-  {id:'xp',     emoji:'✨', nm:{en:'Insight',ru:'Прозрение'}, ds:{en:'+5% XP gain',ru:'+5% XP'}, max:10, costBase:120, costGrowth:1.7},
-  {id:'startCoin',emoji:'💰', nm:{en:'Reserve',ru:'Резерв'}, ds:{en:'Start with +25 coins',ru:'Начало +25 монет'}, max:10, costBase:50, costGrowth:1.4},
-  {id:'revive', emoji:'💎', nm:{en:'Revive',ru:'Воскрешение'}, ds:{en:'+1 free revive per run',ru:'+1 воскр./забег'}, max:3,  costBase:600, costGrowth:2.2},
+  {id:'hp',       icon:'heart',  color:'var(--red)',    nm:{en:'Heart',ru:'Сердце'},        ds:{en:'+10 max HP per level',ru:'+10 макс HP за ур.'}, max:10, costBase:80,  costGrowth:1.6},
+  {id:'dmg',      icon:'sword',  color:'var(--gold)',   nm:{en:'Edge',ru:'Острота'},        ds:{en:'+5% all damage',ru:'+5% весь урон'},           max:10, costBase:100, costGrowth:1.7},
+  {id:'spd',      icon:'boot',   color:'var(--neon)',   nm:{en:'Speed',ru:'Скорость'},      ds:{en:'+3% move speed',ru:'+3% скорость'},            max:10, costBase:80,  costGrowth:1.6},
+  {id:'magnet',   icon:'magnet', color:'var(--violet)', nm:{en:'Pull',ru:'Притяжение'},     ds:{en:'+10% pickup range',ru:'+10% радиус'},          max:10, costBase:60,  costGrowth:1.5},
+  {id:'xp',       icon:'eye',    color:'var(--neon)',   nm:{en:'Insight',ru:'Прозрение'},   ds:{en:'+5% XP gain',ru:'+5% XP'},                     max:10, costBase:120, costGrowth:1.7},
+  {id:'startCoin',icon:'coin',   color:'var(--gold)',   nm:{en:'Reserve',ru:'Резерв'},      ds:{en:'Start with +25 coins',ru:'Начало +25 монет'},  max:10, costBase:50,  costGrowth:1.4},
+  {id:'revive',   icon:'gem',    color:'var(--neon)',   nm:{en:'Revive',ru:'Воскрешение'},  ds:{en:'+1 free revive per run',ru:'+1 воскр./забег'}, max:3,  costBase:600, costGrowth:2.2},
 ];
 
 // achievements
 const ACHIEVEMENTS=[
-  {id:'first',  emoji:'🩸', nm:{en:'First Blood',ru:'Первая кровь'}, ds:{en:'Kill 1 foe',ru:'Убей 1 врага'}, check:s=>s.runKills>=1, reward:25},
-  {id:'k100',   emoji:'☠',  nm:{en:'Centurion',ru:'Центурион'}, ds:{en:'100 kills in a run',ru:'100 убийств за забег'}, check:s=>s.runKills>=100, reward:50},
-  {id:'k500',   emoji:'🔥', nm:{en:'Pyre',ru:'Костёр'}, ds:{en:'500 kills in a run',ru:'500 убийств за забег'}, check:s=>s.runKills>=500, reward:100},
-  {id:'k1k',    emoji:'⚔', nm:{en:'Reaper',ru:'Жнец'}, ds:{en:'1000 kills in a run',ru:'1000 убийств за забег'}, check:s=>s.runKills>=1000, reward:200},
-  {id:'t3',     emoji:'⏰', nm:{en:'Holdout',ru:'Стойкий'}, ds:{en:'Survive 3 minutes',ru:'Выживи 3 мин.'}, check:s=>s.runTime>=180, reward:50},
-  {id:'t5',     emoji:'🏛', nm:{en:'Veteran',ru:'Ветеран'}, ds:{en:'Survive 5 minutes',ru:'Выживи 5 мин.'}, check:s=>s.runTime>=300, reward:100},
-  {id:'t10',    emoji:'👑', nm:{en:'Legend',ru:'Легенда'}, ds:{en:'Survive 10 minutes (WIN)',ru:'Выживи 10 мин (ПОБЕДА)'}, check:s=>s.runTime>=600 && s.won, reward:500},
-  {id:'lv10',   emoji:'⭐', nm:{en:'Apprentice',ru:'Ученик'}, ds:{en:'Reach level 10',ru:'Достигни 10 ур.'}, check:s=>s.runLevel>=10, reward:40},
-  {id:'lv25',   emoji:'🌟', nm:{en:'Master',ru:'Мастер'}, ds:{en:'Reach level 25',ru:'Достигни 25 ур.'}, check:s=>s.runLevel>=25, reward:120},
-  {id:'lv40',   emoji:'💫', nm:{en:'Ascended',ru:'Вознесённый'}, ds:{en:'Reach level 40',ru:'Достигни 40 ур.'}, check:s=>s.runLevel>=40, reward:250},
-  {id:'maxw',   emoji:'🏆', nm:{en:'Maxed',ru:'Макс.'}, ds:{en:'Max out any weapon',ru:'Прокачай оружие до макс.'}, check:s=>s.maxedWeapon, reward:80},
-  {id:'evo1',   emoji:'🌈', nm:{en:'Ascension',ru:'Эволюция'}, ds:{en:'Evolve a weapon',ru:'Эволюционируй оружие'}, check:s=>s.evolved, reward:150},
-  {id:'boss1',  emoji:'🐲', nm:{en:'Slayer',ru:'Победитель'}, ds:{en:'Kill the first boss',ru:'Убей первого босса'}, check:s=>s.killedBoss1, reward:200},
-  {id:'boss2',  emoji:'👹', nm:{en:'Titan',ru:'Титан'}, ds:{en:'Kill the final boss',ru:'Убей финального босса'}, check:s=>s.killedBoss2, reward:500},
-  {id:'noHit',  emoji:'🛡', nm:{en:'Untouchable',ru:'Неуязвимый'}, ds:{en:'Survive 60s with full HP',ru:'60с с полным HP'}, check:s=>s.noHitTime>=60, reward:120},
-  {id:'rich',   emoji:'💎', nm:{en:'Plunder',ru:'Добыча'}, ds:{en:'500 coins in one run',ru:'500 монет за забег'}, check:s=>s.runCoins>=500, reward:100},
-  {id:'chars',  emoji:'🎭', nm:{en:'Trio',ru:'Трио'}, ds:{en:'Unlock all heroes',ru:'Открой всех героев'}, check:s=>state.unlocks.chars.length>=3, reward:300},
-  {id:'stages', emoji:'🗺', nm:{en:'Wanderer',ru:'Странник'}, ds:{en:'Unlock all stages',ru:'Открой все арены'}, check:s=>state.unlocks.stages.length>=3, reward:300},
+  {id:'first',  icon:'blood',   color:'var(--red)',    nm:{en:'First Blood',ru:'Первая кровь'}, ds:{en:'Kill 1 foe',ru:'Убей 1 врага'},                 check:s=>s.runKills>=1,    reward:25},
+  {id:'k100',   icon:'skullx',  color:'var(--ink)',    nm:{en:'Centurion',ru:'Центурион'},      ds:{en:'100 kills in a run',ru:'100 убийств за забег'},  check:s=>s.runKills>=100,  reward:50},
+  {id:'k500',   icon:'flame',   color:'var(--orange)', nm:{en:'Pyre',ru:'Костёр'},              ds:{en:'500 kills in a run',ru:'500 убийств за забег'},  check:s=>s.runKills>=500,  reward:100},
+  {id:'k1k',    icon:'sword',   color:'var(--gold)',   nm:{en:'Reaper',ru:'Жнец'},              ds:{en:'1000 kills in a run',ru:'1000 убийств за забег'},check:s=>s.runKills>=1000, reward:200},
+  {id:'t3',     icon:'clock',   color:'var(--neon)',   nm:{en:'Holdout',ru:'Стойкий'},          ds:{en:'Survive 3 minutes',ru:'Выживи 3 мин.'},          check:s=>s.runTime>=180,   reward:50},
+  {id:'t5',     icon:'column',  color:'var(--gold)',   nm:{en:'Veteran',ru:'Ветеран'},          ds:{en:'Survive 5 minutes',ru:'Выживи 5 мин.'},          check:s=>s.runTime>=300,   reward:100},
+  {id:'t10',    icon:'crown',   color:'var(--gold)',   nm:{en:'Legend',ru:'Легенда'},           ds:{en:'Survive 10 minutes (WIN)',ru:'Выживи 10 мин (ПОБЕДА)'}, check:s=>s.runTime>=600 && s.won, reward:500},
+  {id:'lv10',   icon:'star',    color:'var(--gold)',   nm:{en:'Apprentice',ru:'Ученик'},        ds:{en:'Reach level 10',ru:'Достигни 10 ур.'},           check:s=>s.runLevel>=10,   reward:40},
+  {id:'lv25',   icon:'starbig', color:'var(--gold)',   nm:{en:'Master',ru:'Мастер'},            ds:{en:'Reach level 25',ru:'Достигни 25 ур.'},           check:s=>s.runLevel>=25,   reward:120},
+  {id:'lv40',   icon:'swirl',   color:'var(--violet)', nm:{en:'Ascended',ru:'Вознесённый'},     ds:{en:'Reach level 40',ru:'Достигни 40 ур.'},           check:s=>s.runLevel>=40,   reward:250},
+  {id:'maxw',   icon:'trophy',  color:'var(--gold)',   nm:{en:'Maxed',ru:'Макс.'},              ds:{en:'Max out any weapon',ru:'Прокачай оружие до макс.'}, check:s=>s.maxedWeapon,   reward:80},
+  {id:'evo1',   icon:'rainbow', color:'var(--pink)',   nm:{en:'Ascension',ru:'Эволюция'},       ds:{en:'Evolve a weapon',ru:'Эволюционируй оружие'},     check:s=>s.evolved,        reward:150},
+  {id:'boss1',  icon:'dragon',  color:'var(--pink)',   nm:{en:'Slayer',ru:'Победитель'},        ds:{en:'Kill the first boss',ru:'Убей первого босса'},   check:s=>s.killedBoss1,    reward:200},
+  {id:'boss2',  icon:'demon',   color:'var(--red)',    nm:{en:'Titan',ru:'Титан'},              ds:{en:'Kill the final boss',ru:'Убей финального босса'},check:s=>s.killedBoss2,    reward:500},
+  {id:'noHit',  icon:'shield',  color:'var(--neon)',   nm:{en:'Untouchable',ru:'Неуязвимый'},   ds:{en:'Survive 60s with full HP',ru:'60с с полным HP'},  check:s=>s.noHitTime>=60,  reward:120},
+  {id:'rich',   icon:'gem',     color:'var(--neon)',   nm:{en:'Plunder',ru:'Добыча'},           ds:{en:'500 coins in one run',ru:'500 монет за забег'},  check:s=>s.runCoins>=500,  reward:100},
+  {id:'chars',  icon:'mask',    color:'var(--pink)',   nm:{en:'Trio',ru:'Трио'},                ds:{en:'Unlock all heroes',ru:'Открой всех героев'},     check:s=>state.unlocks.chars.length>=3,  reward:300},
+  {id:'stages', icon:'map',     color:'var(--gold)',   nm:{en:'Wanderer',ru:'Странник'},        ds:{en:'Unlock all stages',ru:'Открой все арены'},       check:s=>state.unlocks.stages.length>=3, reward:300},
 ];
 
 // ============ canvas ============
@@ -1309,27 +1410,30 @@ function renderDraft(){
     const el=document.createElement('div'); el.className='pick';
     if(pk.evo) el.classList.add('evo');
     if(pk.isNew) el.classList.add('new');
-    let icon='✨',nm='',ds='',delta='';
+    let iconHtml='',nm='',ds='',delta='';
     if(pk.kind==='weapon'){
       const d=WEAPONS[pk.id];
       if(pk.evo){
-        icon=d.evo.emoji; nm=(d.evo.name[lng]||d.evo.name.en);
+        iconHtml=icon(d.evo.icon,{size:'xl',color:'var(--gold)'});
+        nm=(d.evo.name[lng]||d.evo.name.en);
         ds=d.evo.ds[lng]||d.evo.ds.en;
         delta=t('EVO');
       } else {
-        icon=d.emoji; nm=(d.name[lng]||d.name.en)+' '+(pk.isNew?'':' L'+pk.nextLevel);
+        iconHtml=icon(d.icon,{size:'xl',color:'var(--neon)'});
+        nm=(d.name[lng]||d.name.en)+' '+(pk.isNew?'':' L'+pk.nextLevel);
         ds=d.ds[lng]||d.ds.en;
         if(pk.isNew) delta=t('NEW');
       }
     } else {
       const d=PASSIVES[pk.id];
-      icon=d.emoji; nm=(d.name[lng]||d.name.en)+' L'+pk.nextLevel;
+      iconHtml=icon(d.icon,{size:'xl',color:d.color});
+      nm=(d.name[lng]||d.name.en)+' L'+pk.nextLevel;
       ds=d.ds[lng]||d.ds.en;
       if(pk.isNew) delta=t('NEW');
       if(pk.nextLevel>=d.max) delta=t('MAX');
     }
     el.innerHTML=`
-      <div class="ic">${icon}</div>
+      <div class="ic">${iconHtml}</div>
       <div class="meta">
         <div class="nm">${nm} ${delta?('<span class="tag '+(pk.evo?'evo':'')+'">'+delta+'</span>'):''}</div>
         <div class="ds">${ds}</div>
@@ -1654,9 +1758,11 @@ function refreshWeaponHud(){
   for(const w of game.weapons){
     const d=el.appendChild(document.createElement('div'));
     d.className='wslot';
-    const e=w.evolved?w.def.evo.emoji:w.def.emoji;
+    const id=w.evolved?w.def.evo.icon:w.def.icon;
+    const color=w.evolved?'var(--gold)':'var(--neon)';
     const nm=w.evolved?(w.def.evo.name[lng]||w.def.evo.name.en):(w.def.name[lng]||w.def.name.en);
-    d.innerHTML=`<div class="ic">${e}</div><span>${nm}</span> <span class="lv">L${w.level}${w.evolved?'★':''}</span>`;
+    const starHtml = w.evolved?icon('star',{color:'var(--gold)'}):'';
+    d.innerHTML=`<div class="ic">${icon(id,{color})}</div><span>${nm}</span> <span class="lv">L${w.level}${starHtml?(' '+starHtml):''}</span>`;
   }
 }
 
@@ -1801,7 +1907,7 @@ function checkAch(){
     if(a.check(stats)){
       state.ach[a.id]=Date.now();
       earned += a.reward;
-      toast('★ '+(a.nm[state.settings.lang]||a.nm.en)+' +'+a.reward+'💰');
+      toast('FEAT · '+(a.nm[state.settings.lang]||a.nm.en)+' +'+a.reward, 'gold');
       haptic('ok');
     }
   }
@@ -1832,14 +1938,14 @@ function renderMenu(){
     const sel = state.selectedChar===id;
     const el=document.createElement('div');
     el.className='char-cell'+(sel?' sel':'')+(unlocked?'':' lock');
-    el.innerHTML=`<div class="ava" style="background:radial-gradient(circle at 35% 30%,#fff,${c.color} 50%,#3a3a99 100%);">${c.emoji}</div><div class="nm">${c.name}</div><div class="ds">${unlocked?(c.ds[lng]||c.ds.en):('🔒 '+c.cost+' 💰')}</div>`;
+    el.innerHTML=`<div class="ava" style="background:radial-gradient(circle at 35% 30%,#fff2,${c.color}55 60%,transparent 100%);color:${c.color}">${icon(c.icon,{size:'lg'})}</div><div class="nm">${c.name}</div><div class="ds">${unlocked?(c.ds[lng]||c.ds.en):(icon('lock',{color:'var(--ink-d)'})+' '+c.cost+' '+icon('coin',{color:'var(--gold)'}))}</div>`;
     el.onclick=()=>{
       if(!unlocked){
         if(state.coins>=c.cost){
           state.coins-=c.cost; state.unlocks.chars.push(id); state.selectedChar=id;
           saveNow(); renderMenu(); sfx('coin'); haptic('ok');
           toast(t('unlocked')+' '+c.name);
-        } else { haptic('warn'); toast('Need '+(c.cost-state.coins)+' more 💰'); }
+        } else { haptic('warn'); toast('Need '+(c.cost-state.coins)+' more coins'); }
         return;
       }
       state.selectedChar=id; saveNow(); renderMenu(); sfx('click'); haptic('light');
@@ -1854,14 +1960,14 @@ function renderMenu(){
     const sel=state.selectedStage===id;
     const el=document.createElement('div');
     el.className='stage-cell'+(sel?' sel':'')+(unlocked?'':' lock');
-    el.innerHTML=`<div class="ava">${s.emoji}</div><div class="nm">${s.name}</div><div class="ds">${unlocked?(s.ds[lng]||s.ds.en):('🔒 '+s.cost+' 💰')}</div>`;
+    el.innerHTML=`<div class="ava" style="color:var(--gold)">${icon(s.icon,{size:'lg'})}</div><div class="nm">${s.name}</div><div class="ds">${unlocked?(s.ds[lng]||s.ds.en):(icon('lock',{color:'var(--ink-d)'})+' '+s.cost+' '+icon('coin',{color:'var(--gold)'}))}</div>`;
     el.onclick=()=>{
       if(!unlocked){
         if(state.coins>=s.cost){
           state.coins-=s.cost; state.unlocks.stages.push(id); state.selectedStage=id;
           saveNow(); renderMenu(); sfx('coin'); haptic('ok');
           toast(t('unlocked')+' '+s.name);
-        } else { haptic('warn'); toast('Need '+(s.cost-state.coins)+' more 💰'); }
+        } else { haptic('warn'); toast('Need '+(s.cost-state.coins)+' more coins'); }
         return;
       }
       state.selectedStage=id; saveNow(); renderMenu(); sfx('click'); haptic('light');
@@ -1877,10 +1983,10 @@ function renderMenu(){
     const max=lv>=m.max;
     const el=document.createElement('div');
     el.className='shop-row';
-    el.innerHTML=`<div class="si">${m.emoji}</div>
+    el.innerHTML=`<div class="si ic-cell" style="width:42px;height:42px;border-radius:10px;color:${m.color}">${icon(m.icon,{size:'lg'})}</div>
       <div class="meta"><div class="nm">${m.nm[lng]||m.nm.en} <span class="lv">L${lv}/${m.max}</span></div>
       <div class="ds">${m.ds[lng]||m.ds.en}</div></div>
-      <button class="pricebtn" ${max||state.coins<cost?'disabled':''}>${max?t('MAX'):('💰 '+cost)}</button>`;
+      <button class="pricebtn" ${max||state.coins<cost?'disabled':''}>${max?t('MAX'):(icon('coin',{color:'#3a1a02'})+' '+cost)}</button>`;
     const btn=el.querySelector('.pricebtn');
     btn.onclick=()=>{
       if(max||state.coins<cost){ haptic('warn'); return; }
@@ -1895,7 +2001,7 @@ function renderMenu(){
     const got=!!state.ach[a.id];
     if(got) done++;
     const el=document.createElement('div'); el.className='ach-row'+(got?' done':'');
-    el.innerHTML=`<div class="ic">${a.emoji}</div><div class="meta"><div class="nm">${a.nm[lng]||a.nm.en}</div><div class="ds">${a.ds[lng]||a.ds.en} · +${a.reward}💰</div></div><div class="chk">${got?'✓':''}</div>`;
+    el.innerHTML=`<div class="ic ic-cell" style="color:${a.color}">${icon(a.icon,{size:'lg'})}</div><div class="meta"><div class="nm">${a.nm[lng]||a.nm.en}</div><div class="ds">${a.ds[lng]||a.ds.en} · +${a.reward} ${icon('coin',{color:'var(--gold)'})}</div></div><div class="chk">${got?icon('check',{color:'var(--gold)',size:'lg'}):''}</div>`;
     ag.appendChild(el);
   }
   $('#achCount').textContent=done+'/'+ACHIEVEMENTS.length;
@@ -1911,6 +2017,8 @@ function renderMenu(){
   sel.value=state.settings.lang;
   // daily
   setupDaily();
+  // iap buttons
+  renderIap();
 }
 
 function setupDaily(){
@@ -1978,19 +2086,34 @@ $('#resetBtn').addEventListener('click',()=>{
   }
 });
 
-// IAP buttons (stub)
+// IAP catalog & button rendering
+const IAP=[
+  {sku:'coins100', coins:100, stars:50},
+  {sku:'coins500', coins:500, stars:200},
+  {sku:'coins1500',coins:1500,stars:500},
+];
+function renderIap(){
+  const c=$('#iapButtons'); if(!c) return;
+  c.innerHTML='';
+  for(const p of IAP){
+    const b=document.createElement('button');
+    b.className='btn ghost';
+    b.style.display='flex'; b.style.alignItems='center'; b.style.justifyContent='center'; b.style.gap='8px';
+    b.innerHTML = icon('coin',{color:'var(--gold)',size:'lg'})+'<span>+'+p.coins+'</span><span style="opacity:0.55;margin:0 4px">·</span><span>'+p.stars+'</span>'+icon('star',{color:'var(--gold)',size:'lg'});
+    b.onclick=()=>{
+      if(!tg){
+        state.coins+=p.coins; saveNow(); renderMenu(); sfx('coin');
+        toast('+'+p.coins+' coins (dev)');
+        return;
+      }
+      toast('Stars IAP not wired in v0.1');
+    };
+    c.appendChild(b);
+  }
+}
+// keep legacy attribute-driven attachment as no-op in case any old elements stick around
 $$('[data-iap]').forEach(b=>{
   b.addEventListener('click',()=>{
-    const sku=b.dataset.iap;
-    if(!tg){ // dev fallback
-      const reward={coins100:100,coins500:500,coins1500:1500}[sku]||0;
-      state.coins+=reward; saveNow(); renderMenu(); sfx('coin');
-      toast('+'+reward+'💰 (dev)');
-      return;
-    }
-    // production: POST to /api/create-invoice → openInvoice
-    toast('Stars IAP not wired in v0.1');
-  });
 });
 
 // telegram back button
@@ -2030,8 +2153,9 @@ function syncKeysToJoy(){
 
 // toast
 let toastT=0;
-function toast(msg){
+function toast(msg, tone){
   const el=$('#toast'); el.textContent=msg;
+  el.style.borderColor = tone==='gold'?'var(--gold)':(tone==='red'?'var(--red)':(tone==='neon'?'var(--neon)':'var(--gold)'));
   el.classList.add('show');
   clearTimeout(toastT);
   toastT=setTimeout(()=>el.classList.remove('show'),2400);

@@ -11,3 +11,7 @@ services:
         value: "20"
       - key: PORT
         value: "10000"
+      - key: PUBLIC_URL
+        value: "https://groza-5xd1.onrender.com"
+      - key: BOT_TOKEN
+        sync: false
