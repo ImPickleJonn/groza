@@ -76,12 +76,17 @@
   .card{background:var(--panel);border:1px solid var(--stroke);border-radius:14px;padding:12px;margin-bottom:10px;}
   .card h3{margin:0 0 8px;font-size:14px;color:var(--ink);font-weight:800;text-transform:uppercase;letter-spacing:1px;}
 
-  .btn{display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(180deg,#7c4fe0,#4a2aa0);color:#fff;border:1px solid rgba(255,255,255,0.22);border-radius:12px;padding:14px 18px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.18);touch-action:manipulation;}
-  .btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.18);}
-  .btn.primary{background:linear-gradient(180deg,#ffb84d,#e26b1f);color:#3a1a02;}
-  .btn.danger{background:linear-gradient(180deg,#ff5470,#a02040);}
-  .btn.ghost{background:transparent;border:1px solid var(--stroke);color:var(--ink);box-shadow:none;}
-  .btn:disabled{opacity:0.45;filter:grayscale(0.4);cursor:not-allowed;}
+  /* neon button system */
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(122,252,255,0.08);color:var(--neon);border:1.5px solid rgba(122,252,255,0.45);border-radius:12px;padding:14px 18px;font-weight:800;font-size:15px;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;text-shadow:0 0 8px currentColor;box-shadow:0 0 14px rgba(122,252,255,0.22),inset 0 0 14px rgba(122,252,255,0.05);touch-action:manipulation;transition:transform 0.06s,box-shadow 0.15s,background 0.15s,border-color 0.15s;}
+  .btn:active{transform:scale(0.97);background:rgba(122,252,255,0.18);border-color:var(--neon);box-shadow:0 0 22px rgba(122,252,255,0.55),inset 0 0 16px rgba(122,252,255,0.12);}
+  .btn.primary{background:rgba(255,216,100,0.1);color:var(--gold);border-color:rgba(255,216,100,0.55);box-shadow:0 0 16px rgba(255,216,100,0.3),inset 0 0 14px rgba(255,216,100,0.08);}
+  .btn.primary:active{background:rgba(255,216,100,0.22);border-color:var(--gold);box-shadow:0 0 26px rgba(255,216,100,0.6),inset 0 0 18px rgba(255,216,100,0.15);}
+  .btn.danger{background:rgba(255,84,112,0.08);color:var(--red);border-color:rgba(255,84,112,0.5);box-shadow:0 0 12px rgba(255,84,112,0.28),inset 0 0 12px rgba(255,84,112,0.05);}
+  .btn.danger:active{background:rgba(255,84,112,0.2);border-color:var(--red);box-shadow:0 0 20px rgba(255,84,112,0.55);}
+  .btn.ghost{background:rgba(255,255,255,0.03);border-color:var(--stroke);color:var(--ink);text-shadow:none;box-shadow:none;}
+  .btn.ghost:active{background:rgba(122,252,255,0.1);border-color:rgba(122,252,255,0.5);color:var(--neon);text-shadow:0 0 8px var(--neon);box-shadow:0 0 14px rgba(122,252,255,0.3);}
+  .btn:disabled{opacity:0.35;filter:grayscale(0.6);cursor:not-allowed;}
+  .btn:disabled:active{transform:none;}
 
   .row{display:flex;gap:8px;align-items:stretch;}
   .row > *{flex:1;}
@@ -110,8 +115,10 @@
   .shop-row .nm{font-weight:800;font-size:13px;color:#fff;}
   .shop-row .ds{font-size:11px;color:var(--ink-d);}
   .shop-row .lv{font-size:11px;color:var(--gold);font-weight:800;margin-left:6px;}
-  .shop-row .pricebtn{background:linear-gradient(180deg,#ffb84d,#e26b1f);color:#3a1a02;border:none;border-radius:8px;padding:6px 10px;font-weight:800;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px;flex-shrink:0;box-shadow:0 2px 0 rgba(0,0,0,0.3);}
-  .shop-row .pricebtn:disabled{opacity:0.4;}
+  .shop-row .pricebtn{background:rgba(255,216,100,0.1);color:var(--gold);border:1.5px solid rgba(255,216,100,0.5);border-radius:9px;padding:6px 10px;font-weight:800;font-size:12px;letter-spacing:0.6px;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;text-shadow:0 0 6px currentColor;box-shadow:0 0 10px rgba(255,216,100,0.25),inset 0 0 8px rgba(255,216,100,0.05);transition:all 0.12s;}
+  .shop-row .pricebtn:active{background:rgba(255,216,100,0.22);border-color:var(--gold);box-shadow:0 0 18px rgba(255,216,100,0.5);transform:scale(0.96);}
+  .shop-row .pricebtn:disabled{opacity:0.35;filter:grayscale(0.6);}
+  .shop-row .pricebtn:disabled:active{transform:none;}
 
   /* level-up draft */
   .draft{position:fixed;inset:0;z-index:80;display:none;background:rgba(5,2,14,0.85);backdrop-filter:blur(6px);padding:calc(var(--safe-top) + 20px) 14px calc(var(--safe-bot) + 14px);flex-direction:column;align-items:stretch;justify-content:center;}
@@ -191,8 +198,9 @@
   .login-day.cur{border-color:var(--gold);box-shadow:0 0 10px rgba(255,216,100,0.35);}
   .login-day.done{opacity:0.5;}
   .login-day.done::after{content:"✓";position:absolute;font-size:18px;color:var(--green);}
-  .login-day.claim{background:linear-gradient(180deg,#ffb84d,#e26b1f);color:#3a1a02;cursor:pointer;}
-  .login-day.claim .d,.login-day.claim .v{color:#3a1a02;}
+  .login-day.claim{background:rgba(255,216,100,0.12);border-color:var(--gold);box-shadow:0 0 18px rgba(255,216,100,0.45),inset 0 0 14px rgba(255,216,100,0.08);cursor:pointer;animation:loginPulse 1.8s ease-in-out infinite;}
+  .login-day.claim .d,.login-day.claim .v{color:var(--gold);text-shadow:0 0 6px var(--gold);}
+  @keyframes loginPulse{0%,100%{box-shadow:0 0 18px rgba(255,216,100,0.45),inset 0 0 14px rgba(255,216,100,0.08);}50%{box-shadow:0 0 28px rgba(255,216,100,0.7),inset 0 0 18px rgba(255,216,100,0.16);}}
   .task-row{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--stroke);border-radius:12px;padding:10px;margin-bottom:6px;}
   .task-row .ic{width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .task-row .meta{flex:1;min-width:0;}
@@ -523,7 +531,7 @@
         <div class="stat"><div class="lab" data-i18n="lvl">Level</div><div class="val" id="overLv">1</div></div>
         <div class="stat"><div class="lab" data-i18n="coins">Coins</div><div class="val gold" id="overCoins">+0</div></div>
       </div>
-      <button class="btn primary" id="reviveBtn" style="margin-bottom:6px;display:none;align-items:center;justify-content:center;gap:6px;color:#3a1a02"><svg class="ic-svg ic-lg"><use href="#i-gem"></use></svg><span data-i18n="revive">Revive — 20 Stars</span></button>
+      <button class="btn primary" id="reviveBtn" style="margin-bottom:6px;display:none;align-items:center;justify-content:center;gap:8px;"><svg class="ic-svg ic-lg"><use href="#i-gem"></use></svg><span data-i18n="revive">Revive — 20 Stars</span></button>
       <button class="btn" id="retryBtn" style="margin-bottom:6px;" data-i18n="retry">RETRY</button>
       <button class="btn ghost" id="menuBtn" data-i18n="menu">MENU</button>
     </div>
@@ -2126,7 +2134,7 @@ function renderMenu(){
     el.innerHTML=`<div class="si ic-cell" style="width:42px;height:42px;border-radius:10px;color:${m.color}">${icon(m.icon,{size:'lg'})}</div>
       <div class="meta"><div class="nm">${m.nm[lng]||m.nm.en} <span class="lv">L${lv}/${m.max}</span></div>
       <div class="ds">${m.ds[lng]||m.ds.en}</div></div>
-      <button class="pricebtn" ${max||state.coins<cost?'disabled':''}>${max?t('MAX'):(icon('coin',{color:'#3a1a02'})+' '+cost)}</button>`;
+      <button class="pricebtn" ${max||state.coins<cost?'disabled':''}>${max?t('MAX'):(icon('coin')+' '+cost)}</button>`;
     const btn=el.querySelector('.pricebtn');
     btn.onclick=()=>{
       if(max||state.coins<cost){ haptic('warn'); return; }
@@ -2248,7 +2256,7 @@ function renderEarn(){
       el.className = 'login-day' + (isDone?' done':'') + (isCur?(canClaim?' cur claim':' cur'):'');
       el.style.position='relative';
       el.innerHTML = '<div class="d">'+t('dailyLogin').split(' ')[0]+' '+(i+1)+'</div>'+
-        '<div class="v">'+rew+icon('coin',{color: canClaim?'#3a1a02':'var(--gold)'})+'</div>';
+        '<div class="v">'+rew+icon('coin',{color:'var(--gold)'})+'</div>';
       if(canClaim) el.onclick = claimDailyLogin;
       lg.appendChild(el);
     });
@@ -2371,9 +2379,9 @@ function renderIap(){
   c.innerHTML='';
   for(const p of IAP){
     const b=document.createElement('button');
-    b.className='btn ghost';
-    b.style.display='flex'; b.style.alignItems='center'; b.style.justifyContent='center'; b.style.gap='8px';
-    b.innerHTML = icon('coin',{color:'var(--gold)',size:'lg'})+'<span>+'+p.coins+'</span><span style="opacity:0.55;margin:0 4px">·</span><span>'+p.stars+'</span>'+icon('star',{color:'var(--gold)',size:'lg'});
+    b.className='btn primary';
+    b.style.display='flex'; b.style.alignItems='center'; b.style.justifyContent='center'; b.style.gap='8px'; b.style.padding='12px 16px'; b.style.fontSize='14px';
+    b.innerHTML = icon('coin',{size:'lg'})+'<span>+'+p.coins+'</span><span style="opacity:0.55;margin:0 4px">·</span><span>'+p.stars+'</span>'+icon('star',{size:'lg'});
     b.onclick=()=>{
       if(!tg){
         state.coins+=p.coins; saveNow(); renderMenu(); sfx('coin');
