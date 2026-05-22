@@ -210,6 +210,62 @@
   .task-row .prog .f{height:100%;background:linear-gradient(90deg,var(--neon),var(--violet));border-radius:2px;}
   .task-row .rwd{font-weight:800;font-size:11px;color:var(--gold);display:flex;align-items:center;gap:3px;flex-shrink:0;}
 
+  /* PATROL card */
+  .patrol-card{background:linear-gradient(135deg,rgba(122,252,255,0.12),rgba(155,108,255,0.18));border:1.5px solid rgba(122,252,255,0.35);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:0 0 18px rgba(122,252,255,0.18),inset 0 0 14px rgba(122,252,255,0.05);}
+  .patrol-card .ic-wrap{width:48px;height:48px;border-radius:12px;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;color:var(--neon);flex-shrink:0;}
+  .patrol-card .meta{flex:1;min-width:0;}
+  .patrol-card .nm{font-weight:900;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;text-shadow:0 0 8px rgba(122,252,255,0.5);}
+  .patrol-card .ds{font-size:11px;color:var(--ink-d);margin-top:2px;}
+  .patrol-card .amt{font-size:18px;font-weight:900;color:var(--gold);text-shadow:0 0 8px var(--gold);display:flex;align-items:center;gap:4px;margin-top:3px;}
+  .patrol-card .actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:stretch;}
+  .patrol-card .actions .btn{padding:8px 10px;font-size:11px;letter-spacing:0.6px;border-radius:9px;}
+  .patrol-card.maxed{animation:patrolPulse 1.6s ease-in-out infinite;}
+  @keyframes patrolPulse{0%,100%{box-shadow:0 0 18px rgba(255,216,100,0.4);}50%{box-shadow:0 0 30px rgba(255,216,100,0.75);}}
+
+  /* BATTLE PASS */
+  .pass-header{background:linear-gradient(135deg,#5b3aa8,#3b2275);border:1.5px solid rgba(155,108,255,0.5);border-radius:14px;padding:12px;margin-bottom:10px;color:#fff;box-shadow:0 0 18px rgba(155,108,255,0.3);}
+  .pass-header .ttl{display:flex;align-items:center;gap:8px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;font-size:14px;text-shadow:0 0 8px var(--violet);}
+  .pass-header .ttl .free-tag{background:rgba(255,255,255,0.18);font-size:10px;padding:2px 6px;border-radius:5px;margin-left:auto;}
+  .pass-header .ttl .prem-tag{background:linear-gradient(90deg,#ffd864,#ffa64d);color:#3a1a02;font-size:10px;padding:2px 6px;border-radius:5px;margin-left:auto;}
+  .pass-header .prog{margin-top:8px;}
+  .pass-header .prog-bar{height:8px;background:rgba(0,0,0,0.4);border:1px solid var(--stroke);border-radius:5px;overflow:hidden;}
+  .pass-header .prog-bar .f{height:100%;background:linear-gradient(90deg,var(--violet),var(--neon));box-shadow:0 0 8px var(--violet) inset;border-radius:4px;}
+  .pass-header .prog-lab{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-d);margin-top:4px;}
+  .pass-tier-row{display:grid;grid-template-columns:34px 1fr 1fr;gap:6px;background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:6px;margin-bottom:5px;align-items:center;}
+  .pass-tier-row.cur{border-color:var(--gold);box-shadow:0 0 10px rgba(255,216,100,0.3);}
+  .pass-tier-row .t{font-weight:900;font-size:13px;color:var(--ink-d);text-align:center;letter-spacing:0.5px;}
+  .pass-tier-row.cur .t{color:var(--gold);text-shadow:0 0 6px var(--gold);}
+  .pass-tier-row .rwd-cell{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.25);border:1px solid var(--stroke);border-radius:8px;padding:5px 6px;cursor:pointer;font-size:11px;font-weight:700;color:var(--ink);min-height:30px;}
+  .pass-tier-row .rwd-cell.prem{border-color:rgba(255,216,100,0.35);}
+  .pass-tier-row .rwd-cell.claimable{background:rgba(122,252,255,0.12);border-color:var(--neon);color:var(--neon);text-shadow:0 0 5px var(--neon);box-shadow:0 0 10px rgba(122,252,255,0.3);animation:claimPulse 1.4s ease-in-out infinite;}
+  .pass-tier-row .rwd-cell.prem.claimable{background:rgba(255,216,100,0.16);border-color:var(--gold);color:var(--gold);text-shadow:0 0 5px var(--gold);box-shadow:0 0 12px rgba(255,216,100,0.35);}
+  .pass-tier-row .rwd-cell.done{opacity:0.4;}
+  .pass-tier-row .rwd-cell.locked{opacity:0.55;}
+  @keyframes claimPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.25);}}
+
+  /* STARTER PACK modal */
+  .starter-modal{position:fixed;inset:0;z-index:120;display:none;background:rgba(5,2,14,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:calc(var(--safe-top) + 16px) 16px calc(var(--safe-bot) + 16px);}
+  .starter-modal.show{display:flex;}
+  .starter-card{background:linear-gradient(180deg,rgba(40,20,80,0.95),rgba(20,10,50,0.95));border:2px solid var(--gold);border-radius:18px;padding:18px;max-width:380px;width:100%;text-align:center;box-shadow:0 0 32px rgba(255,216,100,0.5),inset 0 0 20px rgba(255,216,100,0.08);position:relative;}
+  .starter-card::before{content:"";position:absolute;inset:-2px;border-radius:18px;background:linear-gradient(45deg,var(--gold),var(--neon),var(--pink),var(--gold));z-index:-1;animation:starterShimmer 3s linear infinite;opacity:0.5;filter:blur(8px);}
+  @keyframes starterShimmer{0%{filter:blur(8px) hue-rotate(0deg);}100%{filter:blur(8px) hue-rotate(360deg);}}
+  .starter-card .badge{display:inline-block;background:linear-gradient(90deg,#ff5fa2,#ff7a3a);color:#fff;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .starter-card h2{font-size:28px;font-weight:900;letter-spacing:2px;background:linear-gradient(180deg,#ffd864,#ff7a3a);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0 0 8px;}
+  .starter-card .sub{font-size:12px;color:var(--ink-d);margin-bottom:14px;}
+  .starter-card .rewards{display:flex;flex-direction:column;gap:6px;background:rgba(0,0,0,0.4);border:1px solid var(--stroke);border-radius:12px;padding:10px;margin-bottom:14px;}
+  .starter-card .rwd{display:flex;align-items:center;gap:10px;font-weight:800;color:#fff;font-size:14px;}
+  .starter-card .rwd .ic-svg{width:24px;height:24px;}
+  .starter-card .price{font-size:11px;color:var(--ink-d);margin-bottom:6px;}
+  .starter-card .price .strike{text-decoration:line-through;}
+  .starter-card .price .now{color:var(--gold);font-weight:900;margin-left:5px;text-shadow:0 0 6px var(--gold);}
+  .starter-card .dismiss{font-size:11px;color:var(--ink-d);cursor:pointer;margin-top:10px;text-decoration:underline;}
+
+  /* Confetti & coin pop animations */
+  .confetti{position:fixed;width:10px;height:14px;border-radius:2px;z-index:200;pointer-events:none;animation:confettiFly var(--dur,1.2s) cubic-bezier(.21,.61,.36,1) forwards;}
+  @keyframes confettiFly{0%{transform:translate(-50%,-50%) rotate(0);opacity:1;}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--rot,360deg));opacity:0;}}
+  .coinpop{position:fixed;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8d4,#ffd864 50%,#c79a2d 100%);box-shadow:0 0 10px var(--gold);z-index:200;pointer-events:none;animation:coinFly var(--dur,0.9s) cubic-bezier(.2,.7,.4,1) forwards;}
+  @keyframes coinFly{0%{transform:translate(-50%,-50%) scale(0.5);opacity:0;}10%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(0.5);opacity:0;}}
+
   /* settings */
   .set-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);}
   .set-row:last-child{border-bottom:none;}
@@ -380,6 +436,20 @@
         <div class="cta" id="dailyCta" data-i18n="play">PLAY</div>
       </div>
 
+      <!-- Patrol (AFK) card -->
+      <div class="patrol-card" id="patrolCard">
+        <div class="ic-wrap"><svg class="ic-svg ic-lg" style="width:28px;height:28px"><use href="#i-target"></use></svg></div>
+        <div class="meta">
+          <div class="nm" data-i18n="patrolTitle">Patrol</div>
+          <div class="ds" id="patrolStatus">Earning…</div>
+          <div class="amt" id="patrolAmt"></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="claimPatrolBtn"><span data-i18n="claim">CLAIM</span></button>
+          <button class="btn" id="quickPatrolBtn" style="font-size:10px;padding:6px 8px;"><span data-i18n="quickPatrol">+5h · 30⭐</span></button>
+        </div>
+      </div>
+
       <button class="btn primary home-play" id="playBtn"><svg class="ic-svg"><use href="#i-play"></use></svg><span data-i18n="play">PLAY</span></button>
 
       <div class="section-h"><span data-i18n="pickHero">Pick your hero</span></div>
@@ -403,6 +473,13 @@
         <h3 data-i18n="getCoins">Get Coins</h3>
         <div style="display:flex;flex-direction:column;gap:6px;" id="iapButtons"></div>
       </div>
+
+      <div class="card">
+        <h3 style="display:flex;align-items:center;gap:8px;"><svg class="ic-svg ic-lg" style="color:var(--violet)"><use href="#i-calendar"></use></svg><span data-i18n="monthlyTitle">Monthly Cards</span></h3>
+        <div style="font-size:11px;color:var(--ink-d);margin-bottom:8px;" data-i18n="monthlyDs">Daily login coins + boosted patrol earnings for 30 days.</div>
+        <div id="monthlyBtns" style="display:flex;flex-direction:column;gap:6px;"></div>
+        <div id="monthlyActiveLab" style="font-size:11px;color:var(--green);margin-top:8px;display:none;"></div>
+      </div>
     </div>
 
     <!-- EARN pane -->
@@ -415,6 +492,26 @@
           <div class="nm" data-i18n="earnFree">Free coins, daily</div>
           <div class="ds" data-i18n="earnSub">Login, invite, complete tasks</div>
         </div>
+      </div>
+
+      <!-- Battle Pass / Survivor Pass -->
+      <div class="card" id="passCard">
+        <div class="pass-header">
+          <div class="ttl">
+            <svg class="ic-svg ic-lg" style="color:var(--gold)"><use href="#i-trophy"></use></svg>
+            <span data-i18n="passTitle">SURVIVOR PASS</span>
+            <span class="free-tag" id="passTag" data-i18n="freeTag">FREE</span>
+          </div>
+          <div class="prog">
+            <div class="prog-bar"><div class="f" id="passBarFill" style="width:0%"></div></div>
+            <div class="prog-lab"><span id="passTierLab">Tier 0</span><span id="passXpLab">0 / 50 XP</span></div>
+          </div>
+          <button class="btn primary" id="unlockPremBtn" style="margin-top:10px;padding:10px;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <svg class="ic-svg"><use href="#i-trophy"></use></svg>
+            <span data-i18n="unlockPrem">UNLOCK PREMIUM · 500⭐</span>
+          </button>
+        </div>
+        <div id="passTierList"></div>
       </div>
 
       <div class="card">
@@ -477,6 +574,23 @@
         </div>
       </div>
       <div class="footer">v0.2.0 · <span class="small-link" data-i18n="privacy">Privacy</span> · <span class="small-link" data-i18n="terms">Terms</span></div>
+    </div>
+  </div>
+
+  <!-- Starter Pack one-time offer -->
+  <div class="starter-modal" id="starterModal">
+    <div class="starter-card">
+      <div class="badge" data-i18n="starterBadge">ONE-TIME OFFER</div>
+      <h2 data-i18n="starterTitle">STARTER PACK</h2>
+      <div class="sub" data-i18n="starterSub">Head start to becoming the storm</div>
+      <div class="rewards">
+        <div class="rwd"><svg class="ic-svg" style="color:var(--gold)"><use href="#i-coin"></use></svg><span>+1000 <span data-i18n="coins">coins</span></span></div>
+        <div class="rwd"><svg class="ic-svg" style="color:var(--violet)"><use href="#i-trophy"></use></svg><span>+250 <span data-i18n="passXp">pass XP</span></span></div>
+        <div class="rwd"><svg class="ic-svg" style="color:var(--neon)"><use href="#i-gift"></use></svg><span data-i18n="starterBonus">Instant tier 2 unlock</span></div>
+      </div>
+      <div class="price"><span class="strike">200⭐</span><span class="now">50⭐</span> · <span data-i18n="starterSavings">75% OFF</span></div>
+      <button class="btn primary" id="starterClaimBtn" style="width:100%;font-size:16px;padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;"><svg class="ic-svg ic-lg"><use href="#i-star"></use></svg><span data-i18n="claim">CLAIM</span></button>
+      <div class="dismiss" id="starterDismiss" data-i18n="maybeLater">Maybe later</div>
     </div>
   </div>
 
@@ -603,9 +717,11 @@ const LANGS=['en','ru','es','pt','fr','de','nl','it','sv','pl','tr','uk','ar','h
 const LANG_NAMES={en:'English',ru:'Русский',es:'Español',pt:'Português',fr:'Français',de:'Deutsch',nl:'Nederlands',it:'Italiano',sv:'Svenska',pl:'Polski',tr:'Türkçe',uk:'Українська',ar:'العربية',he:'עברית',hi:'हिन्दी',id:'Indonesia',vi:'Tiếng Việt',zh:'中文',ko:'한국어',ja:'日本語'};
 const STRINGS={
  en:{tagline:'Become the storm. Survive the swarm.',play:'PLAY',hero:'HERO',stage:'STAGE',shop:'SHOP',ach:'FEATS',set:'⚙',pickHero:'Pick your hero',pickStage:'Pick your stage',permUp:'Permanent Upgrades',getCoins:'Get Coins',sound:'Sound',soundDs:'Background music & SFX',haptic:'Haptics',hapticDs:'Vibration feedback',dmgn:'Damage numbers',dmgnDs:'Show damage popups',lang:'Language',reset:'Reset',resetDs:'Wipe all save data',about:'About',privacy:'Privacy',terms:'Terms',paused:'PAUSED',resume:'RESUME',quitRun:'QUIT RUN',levelUp:'LEVEL UP!',pickPower:'CHOOSE YOUR POWER',reroll:'Reroll (free, daily)',time:'Time',kills:'Kills',lvl:'LV',coins:'Coins',revive:'Revive — 20 Stars',retry:'RETRY',menu:'MENU',dailyTitle:'Daily Challenge',defeated:'DEFEATED',victory:'VICTORY!',unlocked:'Unlocked!',coinsEarned:'+{n} coins',newRecord:'New record!',NEW:'NEW',EVO:'EVO',MAX:'MAX',
-   navHome:'HOME',navEarn:'EARN',navSettings:'SET',earnTitle:'EARN',earnFree:'Free coins, daily',earnSub:'Login, invite, complete tasks',dailyLogin:'Daily Login',inviteTitle:'Invite Friends',inviteDs:'Share GROZA. Each friend that opens the game gives you +100 coins (when server tracking is on).',inviteCta:'SHARE INVITE LINK',tasksTitle:'Daily Tasks',claim:'CLAIM',claimed:'CLAIMED',taskPlay3:'Play 3 runs',taskLv15:'Reach level 15 in a run',taskKill200:'Get 200 kills in a run',shareText:'⚡ GROZA — bullet-heaven survivor. Move with one finger, become the storm. Play with me!'},
+   navHome:'HOME',navEarn:'EARN',navSettings:'SET',earnTitle:'EARN',earnFree:'Free coins, daily',earnSub:'Login, invite, complete tasks',dailyLogin:'Daily Login',inviteTitle:'Invite Friends',inviteDs:'Share GROZA. Each friend that opens the game gives you +100 coins (when server tracking is on).',inviteCta:'SHARE INVITE LINK',tasksTitle:'Daily Tasks',claim:'CLAIM',claimed:'CLAIMED',taskPlay3:'Play 3 runs',taskLv15:'Reach level 15 in a run',taskKill200:'Get 200 kills in a run',shareText:'⚡ GROZA — bullet-heaven survivor. Move with one finger, become the storm. Play with me!',
+   patrolTitle:'PATROL',quickPatrol:'+5h · 30⭐',patrolMax:'MAXED — claim now!',patrolEarning:'Earning {h}h / 24h · +{r}/h',passTitle:'SURVIVOR PASS',freeTag:'FREE',premTag:'PREMIUM',unlockPrem:'UNLOCK PREMIUM · 500⭐',monthlyTitle:'Monthly Cards',monthlyDs:'Daily login coins + boosted patrol earnings for 30 days.',monthlyCard:'Monthly Card',superMonthly:'Super Monthly',monthlyActive:'Active · expires {d}',starterBadge:'ONE-TIME OFFER',starterTitle:'STARTER PACK',starterSub:'Head start to becoming the storm',starterBonus:'Instant tier 2 unlock',starterSavings:'75% OFF',passXp:'pass XP',maybeLater:'Maybe later',tier:'Tier'},
  ru:{tagline:'Стань грозой. Выживи в орде.',play:'ИГРАТЬ',hero:'ГЕРОЙ',stage:'АРЕНА',shop:'ШОП',ach:'ДОСТ.',set:'⚙',pickHero:'Выбери героя',pickStage:'Выбери арену',permUp:'Улучшения',getCoins:'Получить монеты',sound:'Звук',soundDs:'Музыка и эффекты',haptic:'Вибрация',hapticDs:'Тактильный отклик',dmgn:'Числа урона',dmgnDs:'Показывать урон',lang:'Язык',reset:'Сброс',resetDs:'Стереть прогресс',about:'О игре',privacy:'Приватность',terms:'Правила',paused:'ПАУЗА',resume:'ПРОДОЛЖИТЬ',quitRun:'ВЫЙТИ',levelUp:'НОВЫЙ УРОВЕНЬ!',pickPower:'ВЫБЕРИ СИЛУ',reroll:'Перебросить (раз в день)',time:'Время',kills:'Убийств',lvl:'УР',coins:'Монеты',revive:'Возрождение — 20 Stars',retry:'ЕЩЁ',menu:'МЕНЮ',dailyTitle:'Ежедневный вызов',defeated:'ПОРАЖЕНИЕ',victory:'ПОБЕДА!',unlocked:'Открыто!',coinsEarned:'+{n} монет',newRecord:'Новый рекорд!',NEW:'НОВО',EVO:'ЭВО',MAX:'МАКС',
-   navHome:'ДОМ',navEarn:'БОНУС',navSettings:'НАСТР.',earnTitle:'БОНУСЫ',earnFree:'Бесплатные монеты каждый день',earnSub:'Заходи, приглашай, выполняй задачи',dailyLogin:'Вход',inviteTitle:'Пригласи друзей',inviteDs:'Поделись ГРОЗА. Каждый друг, открывший игру, приносит +100 монет (когда сервер запущен).',inviteCta:'ПОДЕЛИТЬСЯ',tasksTitle:'Задачи дня',claim:'ВЗЯТЬ',claimed:'ВЗЯТО',taskPlay3:'Сыграй 3 забега',taskLv15:'Достигни 15 ур. за забег',taskKill200:'Сделай 200 убийств за забег',shareText:'⚡ ГРОЗА — выживалка с автострельбой. Управляй одним пальцем, стань грозой. Играй со мной!'}
+   navHome:'ДОМ',navEarn:'БОНУС',navSettings:'НАСТР.',earnTitle:'БОНУСЫ',earnFree:'Бесплатные монеты каждый день',earnSub:'Заходи, приглашай, выполняй задачи',dailyLogin:'Вход',inviteTitle:'Пригласи друзей',inviteDs:'Поделись ГРОЗА. Каждый друг, открывший игру, приносит +100 монет (когда сервер запущен).',inviteCta:'ПОДЕЛИТЬСЯ',tasksTitle:'Задачи дня',claim:'ВЗЯТЬ',claimed:'ВЗЯТО',taskPlay3:'Сыграй 3 забега',taskLv15:'Достигни 15 ур. за забег',taskKill200:'Сделай 200 убийств за забег',shareText:'⚡ ГРОЗА — выживалка с автострельбой. Управляй одним пальцем, стань грозой. Играй со мной!',
+   patrolTitle:'ПАТРУЛЬ',quickPatrol:'+5ч · 30⭐',patrolMax:'МАКС — забери!',patrolEarning:'Идёт {h}ч / 24ч · +{r}/ч',passTitle:'ПРОПУСК',freeTag:'БЕСПЛ.',premTag:'ПРЕМИУМ',unlockPrem:'ОТКРЫТЬ ПРЕМИУМ · 500⭐',monthlyTitle:'Месячная карта',monthlyDs:'Ежедневные монеты + ускоренный патруль 30 дней.',monthlyCard:'Карта',superMonthly:'Супер Карта',monthlyActive:'Активна · до {d}',starterBadge:'ОДНОРАЗОВО',starterTitle:'СТАРТЕР НАБОР',starterSub:'Стартовый буст к мощи',starterBonus:'Мгновенный тир 2',starterSavings:'-75%',passXp:'опыт пропуска',maybeLater:'Позже',tier:'Тир'}
 };
 // other langs fallback to en
 LANGS.forEach(l=>{ if(!STRINGS[l]) STRINGS[l]=STRINGS.en; });
@@ -620,7 +736,9 @@ const DEFAULT_SAVE={
   unlocks:{chars:['spark'],stages:['crypt']},
   ach:{},
   daily:{date:'',done:false,rerollDate:''},
-  earn:{lastLoginDate:'',streak:0,claimedToday:false,tasksDate:'',tasks:{play:0,lv:0,kills:0},taskClaimed:{play3:false,lv15:false,kill200:false}},
+  earn:{lastLoginDate:'',streak:0,claimedToday:false,tasksDate:'',tasks:{play:0,lv:0,kills:0},taskClaimed:{play3:false,lv15:false,kill200:false},patrol:{lastClaimedAt:0,quickCount:0,quickDate:''}},
+  pass:{xp:0,tier:0,premium:false,claimedFree:{},claimedPrem:{},season:1,seasonExpire:0},
+  iap:{starterClaimed:false,starterShownAt:0,firstPurchase:false,monthlyExpireAt:0,monthlyTier:0,piggyCoins:0},
   bestTime:0,bestKills:0,bestLevel:0,
   settings:{sound:true,haptics:true,dmgNumbers:true,lang:'en'},
   selectedChar:'spark',
@@ -634,7 +752,23 @@ function loadSave(){
     const raw=localStorage.getItem(SAVE_KEY);
     if(!raw) return JSON.parse(JSON.stringify(DEFAULT_SAVE));
     const p=JSON.parse(raw);
-    return Object.assign(JSON.parse(JSON.stringify(DEFAULT_SAVE)),p,{settings:Object.assign({},DEFAULT_SAVE.settings,p.settings||{}),meta:Object.assign({},DEFAULT_SAVE.meta,p.meta||{}),unlocks:Object.assign({},DEFAULT_SAVE.unlocks,p.unlocks||{}),ach:p.ach||{},daily:Object.assign({},DEFAULT_SAVE.daily,p.daily||{}),earn:Object.assign({},DEFAULT_SAVE.earn,p.earn||{},{tasks:Object.assign({},DEFAULT_SAVE.earn.tasks,(p.earn||{}).tasks||{}),taskClaimed:Object.assign({},DEFAULT_SAVE.earn.taskClaimed,(p.earn||{}).taskClaimed||{})})});
+    return Object.assign(JSON.parse(JSON.stringify(DEFAULT_SAVE)),p,{
+      settings:Object.assign({},DEFAULT_SAVE.settings,p.settings||{}),
+      meta:Object.assign({},DEFAULT_SAVE.meta,p.meta||{}),
+      unlocks:Object.assign({},DEFAULT_SAVE.unlocks,p.unlocks||{}),
+      ach:p.ach||{},
+      daily:Object.assign({},DEFAULT_SAVE.daily,p.daily||{}),
+      earn:Object.assign({},DEFAULT_SAVE.earn,p.earn||{},{
+        tasks:Object.assign({},DEFAULT_SAVE.earn.tasks,(p.earn||{}).tasks||{}),
+        taskClaimed:Object.assign({},DEFAULT_SAVE.earn.taskClaimed,(p.earn||{}).taskClaimed||{}),
+        patrol:Object.assign({},DEFAULT_SAVE.earn.patrol,(p.earn||{}).patrol||{}),
+      }),
+      pass:Object.assign({},DEFAULT_SAVE.pass,p.pass||{},{
+        claimedFree:Object.assign({},(p.pass||{}).claimedFree||{}),
+        claimedPrem:Object.assign({},(p.pass||{}).claimedPrem||{}),
+      }),
+      iap:Object.assign({},DEFAULT_SAVE.iap,p.iap||{}),
+    });
   }catch(_){ return JSON.parse(JSON.stringify(DEFAULT_SAVE)); }
 }
 function saveNow(){ try{ localStorage.setItem(SAVE_KEY,JSON.stringify(state)); }catch(_){} }
@@ -688,7 +822,8 @@ const WEAPONS={
     evo:{name:{en:'Glacier',ru:'Ледник'}, ds:{en:'Massive shockwave that freezes solid.',ru:'Огромная волна, замораживает.'}, cd:1.5, dmg:75, r:260, slow:0.85, dur:3, icon:'glacier'} },
 };
 const WEAPON_ORDER=['aura','bolt','orb','boomerang','chain','frost'];
-const MAX_WLEVEL=8;
+const MAX_WLEVEL=5;     // weapons cap at L5 (Survivor.io feel); evolution unlocks here
+const EVO_PASSIVE_REQ=3; // paired passive needs L3 to allow evolution
 
 // passives
 const PASSIVES={
@@ -837,7 +972,14 @@ const game={
   challengeMod:null,
 };
 
-function nextXpFor(lv){ return Math.floor(5 + lv*4 + Math.pow(lv,1.55)); }
+// Survivor.io-style XP curve — explodes power in first 30s, ramps up after.
+function nextXpFor(lv){
+  if(lv<=3)  return 3;                                      // L1-3: 3 kills each
+  if(lv<=8)  return 4+lv;                                   // L4-8: 8..12
+  if(lv<=15) return 8+lv*2;                                 // L9-15: 26..38
+  if(lv<=25) return 20+lv*3 + Math.floor(Math.pow(lv-15,1.3));
+  return 60 + lv*5 + Math.floor(Math.pow(lv-25,1.5));
+}
 
 // ============ player ============
 function makePlayer(){
@@ -878,11 +1020,12 @@ function levelWeapon(w){
   // evolution check
   if(w.level>=MAX_WLEVEL && !w.evolved){
     const need=w.def.evoNeed;
-    if(game.passives[need] && game.passives[need]>=5){
+    if(game.passives[need] && game.passives[need]>=EVO_PASSIVE_REQ){
       w.evolved=true;
       game.evolved=true;
       sfx('evo'); haptic('heavy');
-      toast(t('EVO')+' '+(w.def.evo.name[state.settings.lang]||w.def.evo.name.en));
+      celebrate(); // burst FX
+      toast(t('EVO')+' '+(w.def.evo.name[state.settings.lang]||w.def.evo.name.en),'gold');
     }
   }
   if(w.id==='orb') spawnOrbs(w);
@@ -915,11 +1058,15 @@ function spawnEnemy(type, x, y){
     hp:baseHp, maxHp:baseHp, spd:proto.spd, dmg:proto.dmg, xp:proto.xp, coinChance:proto.coinChance, score:proto.score,
     vx:0, vy:0, flash:0, slow:0, slowT:0, fireT:1.5+Math.random()*2,
   };
-  // difficulty scaling by time
+  // Difficulty scaling: gentle first minute (let player ramp), then steep.
   const tmin=game.t/60;
-  const scale=1+tmin*0.16;
+  let scale;
+  if(tmin<1)      scale = 1 + tmin*0.10;
+  else if(tmin<3) scale = 1.10 + (tmin-1)*0.30;
+  else if(tmin<6) scale = 1.70 + (tmin-3)*0.60;
+  else            scale = 3.50 + (tmin-6)*0.80;
   e.hp=Math.floor(baseHp*scale); e.maxHp=e.hp;
-  e.dmg=Math.floor(proto.dmg*(1+tmin*0.10));
+  e.dmg=Math.floor(proto.dmg*(1+tmin*0.12));
   if(state.daily && state.daily.modKey==='swarm') { e.hp=Math.max(1,Math.floor(e.hp*0.7)); }
   game.enemies.push(e);
   return e;
@@ -932,19 +1079,24 @@ function spawnEnemyAroundPlayer(type,dist){
   return spawnEnemy(type,x,y);
 }
 
-function spawnBoss1(){
-  const e=spawnEnemyAroundPlayer('boss',420);
-  game.boss=e;
-  showBossBanner('BOSS 1');
+// Boss timeline: 4 boss encounters in a 10-min run
+const BOSS_SCHEDULE = [
+  { t:120, type:'boss',  hpMul:0.7, label:'WARDEN',   shake:12 },
+  { t:270, type:'boss',  hpMul:1.0, label:'BUTCHER',  shake:14 },
+  { t:420, type:'boss',  hpMul:1.6, label:'BERSERKER',shake:16 },
+  { t:600, type:'boss2', hpMul:1.0, label:'TITAN',    shake:22, win:true },
+];
+function spawnSchedBoss(idx){
+  const cfg=BOSS_SCHEDULE[idx]; if(!cfg) return;
+  const e=spawnEnemyAroundPlayer(cfg.type, 440);
+  if(!e) return;
+  e.hp = Math.floor(e.hp * cfg.hpMul);
+  e.maxHp = e.hp;
+  e.isFinal = !!cfg.win;
+  game.boss = e;
+  showBossBanner(cfg.label);
   sfx('boss'); haptic('heavy');
-  game.shake=14;
-}
-function spawnBoss2(){
-  const e=spawnEnemyAroundPlayer('boss2',460);
-  game.boss=e;
-  showBossBanner('TITAN');
-  sfx('boss'); haptic('heavy');
-  game.shake=20;
+  game.shake = cfg.shake;
 }
 
 function showBossBanner(text){
@@ -960,25 +1112,25 @@ function spawnDriver(dt){
   if(game.boss && !game.boss.dead) return; // pause spawns during boss
   const stage=STAGES[state.selectedStage]||STAGES.crypt;
   const tmin=game.t/60;
-  let rate = 0.7 + tmin*0.55; // enemies per second
+  // Survivor.io-style: dense early so player kills fast & levels up. Aggressive ramp.
+  let rate = 2.0 + tmin*1.4;
   rate *= stage.spawnMult || 1;
-  if(state.daily && state.daily.modKey==='swarm') rate*=1.6;
+  if(state.daily && state.daily.modKey==='swarm') rate*=1.5;
 
   game.spawnTimer -= dt;
-  // every dt accumulate spawn budget
   const budget = rate*dt;
   game.spawnBudget = (game.spawnBudget||0) + budget;
   while(game.spawnBudget>=1){
     game.spawnBudget--;
     spawnWaveOne(tmin);
   }
-  // group bursts every 12s after 2min
-  if(game.t>120 && Math.random()<dt*0.12){
-    const n=irand(5,10);
+  // group bursts every ~8s after 90s
+  if(game.t>90 && Math.random()<dt*0.18){
+    const n=irand(6,12);
     for(let i=0;i<n;i++) spawnWaveOne(tmin);
   }
-  // elites every 90s starting 3min
-  if(game.t>180 && Math.random()<dt*0.012){
+  // elites every ~60s starting 2:30
+  if(game.t>150 && Math.random()<dt*0.018){
     spawnEnemyAroundPlayer('elite',360);
   }
 }
@@ -997,6 +1149,9 @@ function spawnWaveOne(tmin){
 // ============ game start ============
 function startRun(opts){
   opts=opts||{};
+  stopPatrolTicker();
+  // Reset boss timeline index
+  game.bossIdx = 0;
   game.running=true; game.paused=false; game.over=false; game.won=false;
   game.t=0; game.lastT=performance.now()/1000;
   game.enemies.length=0; game.projectiles.length=0; game.gems.length=0; game.coins.length=0; game.particles.length=0; game.dmgNumbers.length=0; game.hazards.length=0;
@@ -1041,6 +1196,17 @@ function endRun(won){
   state.earn.tasks.play = (state.earn.tasks.play||0) + 1;
   if(game.level > (state.earn.tasks.lv||0)) state.earn.tasks.lv = game.level;
   if(game.kills > (state.earn.tasks.kills||0)) state.earn.tasks.kills = game.kills;
+  // Battle Pass XP — kills, bosses, level, win
+  const passXpEarned = Math.min(60, Math.floor(game.kills*0.6))
+                      + (game.killedBoss1?50:0)
+                      + (game.killedBoss2?150:0)
+                      + (won?300:0)
+                      + game.level*4;
+  const tierBefore = passCurrentTier();
+  awardPassXp(passXpEarned);
+  const tierAfter = passCurrentTier();
+  if(tierAfter > tierBefore){ celebrate(); }
+  game.passXpEarned = passXpEarned;
   if(game.level>state.bestLevel) state.bestLevel=game.level;
   // achievements
   checkAch();
@@ -1420,12 +1586,13 @@ function onKill(e){
   game.kills++; game.score+=e.score||1;
   if(e.isBoss){
     if(e.type==='boss'){ game.killedBoss1=true; }
-    if(e.type==='boss2'){ game.killedBoss2=true; game.won=true; }
+    if(e.isFinal||e.type==='boss2'){ game.killedBoss2=true; game.won=true; }
     game.boss=null; hideBossHud();
     // boss drops a big chest
     for(let i=0;i<8;i++) spawnCoin(e.x+rand(-30,30), e.y+rand(-30,30));
     for(let i=0;i<30;i++) spawnGem(e.x+rand(-50,50), e.y+rand(-50,50), 3);
-    if(e.type==='boss2'){
+    if(e.isFinal||e.type==='boss2'){
+      celebrate();
       setTimeout(()=>endRun(true),900);
     }
     haptic('heavy');
@@ -1489,7 +1656,9 @@ function updateGems(dt){
 }
 
 function gainXp(amount){
-  game.xp += amount * game.player.xpMul;
+  // Early-game ramp boost: 2× XP first 30s, 1.5× XP first 60s (Survivor.io fast power feel)
+  const ramp = game.t<30 ? 2.0 : (game.t<60 ? 1.5 : 1.0);
+  game.xp += amount * game.player.xpMul * ramp;
   while(game.xp>=game.xpNext){
     game.xp -= game.xpNext;
     game.level++;
@@ -1508,7 +1677,7 @@ function triggerLevelUp(){
     if(w){
       if(w.level<MAX_WLEVEL){
         picks.push({kind:'weapon',id,nextLevel:w.level+1,evo:false});
-      } else if(!w.evolved && (game.passives[w.def.evoNeed]||0)>=5){
+      } else if(!w.evolved && (game.passives[w.def.evoNeed]||0)>=EVO_PASSIVE_REQ){
         picks.push({kind:'weapon',id,nextLevel:w.level,evo:true});
       }
     } else if(game.weapons.length<6){
@@ -1535,6 +1704,7 @@ function triggerLevelUp(){
   game.awaitingDraft=true;
   game.draft=final;
   sfx('level'); haptic('ok');
+  celebrate(); // confetti burst on every level up
   renderDraft();
   $('#draftScreen').classList.add('show');
 }
@@ -1997,9 +2167,12 @@ function step(dt){
   game.runKills = game.kills;
   game.runCoinsRun = game.runCoins;
 
-  // boss spawns
-  if(!game.killedBoss1 && game.t>=300 && !game.boss){ spawnBoss1(); }
-  if(game.killedBoss1 && !game.killedBoss2 && game.t>=600 && !game.boss){ spawnBoss2(); }
+  // Boss timeline (Survivor.io feel): mini-boss waves every ~2-3min, Titan at 10:00.
+  if(game.bossIdx===undefined) game.bossIdx=0;
+  if(!game.boss && game.bossIdx < BOSS_SCHEDULE.length && game.t >= BOSS_SCHEDULE[game.bossIdx].t){
+    spawnSchedBoss(game.bossIdx);
+    game.bossIdx++;
+  }
   // spawn driver
   spawnDriver(dt);
 
@@ -2066,7 +2239,25 @@ function showMenu(){
   switchTabSilent('home');
   game.running=false;
   renderMenu();
+  maybeShowStarter();
+  startPatrolTicker();
 }
+
+// Live patrol amount refresh while menu visible
+let patrolTickerId = 0;
+function startPatrolTicker(){
+  stopPatrolTicker();
+  patrolTickerId = setInterval(()=>{
+    if($('#menuScreen').classList.contains('show')){
+      const pending = patrolPending();
+      const amtEl = $('#patrolAmt');
+      if(amtEl) amtEl.innerHTML = icon('coin',{color:'var(--gold)'}) + ' ' + pending;
+      $('#patrolCard')?.classList.toggle('maxed', patrolCappedQ() && pending>0);
+      const btn = $('#claimPatrolBtn'); if(btn) btn.disabled = pending<1;
+    }
+  }, 5000);
+}
+function stopPatrolTicker(){ if(patrolTickerId){ clearInterval(patrolTickerId); patrolTickerId=0; } }
 function switchTabSilent(name){
   $$('.bnav-tab').forEach(x=>x.classList.toggle('act', x.dataset.bnav===name));
   $$('.tabpane').forEach(p=>p.style.display='none');
@@ -2169,6 +2360,12 @@ function renderMenu(){
   renderIap();
   // earn tab
   renderEarn();
+  // patrol card on HOME
+  renderPatrol();
+  // battle pass on EARN
+  renderPass();
+  // monthly cards in SHOP
+  renderMonthly();
 }
 
 // ============ EARN tab ============
@@ -2300,6 +2497,359 @@ function bumpTask(key, amt){
   saveNow();
 }
 
+// ============ RENDERERS (Patrol / Pass / Monthly / Starter) ============
+function renderPatrol(){
+  const card = $('#patrolCard'); if(!card) return;
+  const hours = patrolHoursAccum();
+  const rate = PATROL_RATE_BASE * patrolBonus();
+  const pending = patrolPending();
+  $('#patrolStatus').textContent = t('patrolEarning').replace('{h}', hours.toFixed(1)).replace('{r}', Math.round(rate));
+  $('#patrolAmt').innerHTML = icon('coin',{color:'var(--gold)'}) + ' ' + pending;
+  card.classList.toggle('maxed', patrolCappedQ() && pending>0);
+  // disable claim if nothing
+  const btn = $('#claimPatrolBtn');
+  if(btn) btn.disabled = pending<1;
+  const qbtn = $('#quickPatrolBtn');
+  if(qbtn){
+    const usedToday = quickPatrolUsesToday();
+    qbtn.disabled = usedToday >= PATROL_QUICK_PER_DAY;
+    qbtn.querySelector('span').textContent = '+5h · '+(PATROL_QUICK_PER_DAY-usedToday)+'/'+PATROL_QUICK_PER_DAY+' left';
+  }
+}
+
+function renderPass(){
+  const card = $('#passCard'); if(!card) return;
+  const tier = passCurrentTier();
+  const prog = passProgressToNext();
+  $('#passTierLab').textContent = t('tier')+' '+tier;
+  if(prog.maxed){
+    $('#passXpLab').textContent = 'MAX · '+state.pass.xp+' XP';
+    $('#passBarFill').style.width = '100%';
+  } else {
+    $('#passXpLab').textContent = prog.cur+' / '+prog.need+' XP';
+    $('#passBarFill').style.width = (prog.cur/prog.need*100).toFixed(1)+'%';
+  }
+  const tag = $('#passTag');
+  if(state.pass.premium){
+    tag.textContent = t('premTag'); tag.className = 'prem-tag';
+  } else {
+    tag.textContent = t('freeTag'); tag.className = 'free-tag';
+  }
+  $('#unlockPremBtn').style.display = state.pass.premium ? 'none' : 'flex';
+  // tier list
+  const list = $('#passTierList'); list.innerHTML = '';
+  PASS_TIERS.forEach((tdef,i)=>{
+    const row = document.createElement('div');
+    row.className = 'pass-tier-row' + (i===tier?' cur':'');
+    const tdone = i < tier;
+    const fclaim = state.pass.claimedFree[i];
+    const pclaim = state.pass.claimedPrem[i];
+    const fEmpty = !tdef.free || (!tdef.free.coins && !tdef.free.gem && !tdef.free.unlock);
+    const pEmpty = !tdef.prem || (!tdef.prem.coins && !tdef.prem.gem && !tdef.prem.unlock);
+    const fLabel = passRewardLabel(tdef.free);
+    const pLabel = passRewardLabel(tdef.prem);
+    let fCls = 'rwd-cell';
+    if(fEmpty) fCls += ' locked';
+    else if(fclaim) fCls += ' done';
+    else if(tdone) fCls += ' claimable';
+    else fCls += ' locked';
+    let pCls = 'rwd-cell prem';
+    if(pEmpty) pCls += ' locked';
+    else if(pclaim) pCls += ' done';
+    else if(tdone && state.pass.premium) pCls += ' claimable';
+    else pCls += ' locked';
+    row.innerHTML = '<div class="t">'+(i+1)+'</div>'+
+      '<div class="'+fCls+'" data-tier="'+i+'" data-track="free">'+(fEmpty?'—':fLabel)+'</div>'+
+      '<div class="'+pCls+'" data-tier="'+i+'" data-track="prem">'+(pEmpty?'—':pLabel)+'</div>';
+    list.appendChild(row);
+  });
+  list.querySelectorAll('.rwd-cell.claimable').forEach(el=>{
+    el.onclick = ()=> claimPassTier(parseInt(el.dataset.tier,10), el.dataset.track==='prem');
+  });
+}
+
+function passRewardLabel(r){
+  if(!r) return '—';
+  const parts=[];
+  if(r.coins){ parts.push(icon('coin',{color:'var(--gold)'})+' '+r.coins); }
+  if(r.gem){ parts.push(icon('gem',{color:'var(--neon)'})+' '+r.gem); }
+  if(r.unlock){
+    const lbl = (CHARS[r.unlock]||STAGES[r.unlock]||{name:r.unlock}).name;
+    parts.push(icon('gift',{color:'var(--pink)'})+' '+lbl);
+  }
+  if(r.special){ parts.push(icon(r.special,{color:'var(--violet)'})); }
+  return parts.join(' ');
+}
+
+const MONTHLY_OFFERS = [
+  {tier:1, coinsPerDay:50,  stars:250, nm:'monthlyCard',  ds:{en:'+50 coins daily login · +50% patrol',ru:'+50 монет/день · +50% патруль'}, color:'var(--violet)'},
+  {tier:2, coinsPerDay:120, stars:500, nm:'superMonthly', ds:{en:'+120 coins daily login · +100% patrol',ru:'+120 монет/день · +100% патруль'}, color:'var(--gold)'},
+];
+
+function renderMonthly(){
+  const c = $('#monthlyBtns'); if(!c) return;
+  const lng = state.settings.lang;
+  c.innerHTML='';
+  for(const m of MONTHLY_OFFERS){
+    const b = document.createElement('button');
+    b.className = 'btn'+(m.tier===2?' primary':'');
+    b.style.cssText = 'display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:10px 12px;text-align:left;';
+    b.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">'+
+      '<span style="display:flex;align-items:center;gap:6px;">'+icon('calendar',{size:'lg'})+'<strong>'+t(m.nm)+'</strong></span>'+
+      '<span>'+m.stars+icon('star',{color:'var(--gold)'})+'</span></div>'+
+      '<div style="font-size:10px;opacity:0.8;letter-spacing:0.5px;text-transform:none;">'+(m.ds[lng]||m.ds.en)+'</div>';
+    b.onclick = ()=> purchaseMonthly(m.tier);
+    c.appendChild(b);
+  }
+  const lbl = $('#monthlyActiveLab');
+  if(monthlyActive()){
+    const ms = state.iap.monthlyExpireAt - Date.now();
+    const days = Math.ceil(ms / 86400000);
+    lbl.textContent = t('monthlyActive').replace('{d}', days+'d');
+    lbl.style.display='block';
+  } else {
+    lbl.style.display='none';
+  }
+}
+
+function maybeShowStarter(){
+  if(!shouldShowStarter()) return;
+  // delay slightly so it doesn't slam the screen
+  setTimeout(()=>{
+    if(shouldShowStarter()) $('#starterModal').classList.add('show');
+  }, 600);
+}
+
+// ============ PATROL (AFK farming) ============
+const PATROL_RATE_BASE = 30;     // coins/hour at L0
+const PATROL_CAP_HOURS = 24;
+const PATROL_QUICK_HOURS = 5;
+const PATROL_QUICK_COST = 30;    // Stars (Quick Patrol)
+const PATROL_QUICK_PER_DAY = 3;
+
+function patrolBonus(){
+  // scales with player progression (best level reached)
+  const bl = state.bestLevel||0;
+  let mul = 1.0;
+  if(bl>=10) mul += 0.2;
+  if(bl>=20) mul += 0.3;
+  if(bl>=30) mul += 0.5;
+  if(bl>=40) mul += 0.5;
+  // Monthly Card boost (if active)
+  if(state.iap.monthlyExpireAt > Date.now()){
+    mul += state.iap.monthlyTier===2 ? 1.0 : 0.5;
+  }
+  return mul;
+}
+
+function patrolHoursAccum(){
+  const now = Date.now();
+  const at = state.earn.patrol?.lastClaimedAt || now;
+  return Math.min(PATROL_CAP_HOURS, Math.max(0,(now-at) / 3600000));
+}
+
+function patrolPending(){
+  return Math.floor(patrolHoursAccum() * PATROL_RATE_BASE * patrolBonus());
+}
+
+function patrolCappedQ(){
+  return patrolHoursAccum() >= PATROL_CAP_HOURS - 0.01;
+}
+
+function claimPatrol(){
+  const amt = patrolPending();
+  if(amt < 1){ haptic('warn'); return; }
+  state.coins += amt;
+  state.earn.patrol.lastClaimedAt = Date.now();
+  saveNow();
+  sfx('coin'); haptic('ok');
+  toast('+'+amt+' coins from patrol','gold');
+  burstCoins();
+  renderMenu();
+}
+
+function quickPatrolUsesToday(){
+  const today = todayISO();
+  if(state.earn.patrol.quickDate !== today) return 0;
+  return state.earn.patrol.quickCount||0;
+}
+
+function quickPatrol(){
+  const used = quickPatrolUsesToday();
+  if(used >= PATROL_QUICK_PER_DAY){ haptic('warn'); toast('Quick Patrol limit reached today'); return; }
+  // Dev fallback: rewind lastClaimedAt by 5h (effectively grants 5h of patrol)
+  // Production: charge Stars first via /api/create-invoice
+  const at = state.earn.patrol.lastClaimedAt || Date.now();
+  state.earn.patrol.lastClaimedAt = Math.max(0, at - PATROL_QUICK_HOURS * 3600000);
+  state.earn.patrol.quickDate = todayISO();
+  state.earn.patrol.quickCount = used + 1;
+  saveNow();
+  sfx('coin'); haptic('ok');
+  toast('+'+PATROL_QUICK_HOURS+'h patrol (dev free)','neon');
+  renderMenu();
+}
+
+// ============ BATTLE PASS (Survivor Pass) ============
+const PASS_TIERS = [
+  { xpReq:50,   free:{coins:50},                 prem:{coins:150} },
+  { xpReq:120,  free:{coins:75},                 prem:{coins:200,gem:1} },
+  { xpReq:220,  free:{coins:100},                prem:{coins:300} },
+  { xpReq:340,  free:{},                         prem:{coins:400,gem:1} },
+  { xpReq:480,  free:{coins:150},                prem:{coins:600,special:'sparkle'} },
+  { xpReq:640,  free:{coins:200,gem:1},          prem:{coins:800,gem:2} },
+  { xpReq:820,  free:{coins:250},                prem:{coins:1000} },
+  { xpReq:1020, free:{},                         prem:{coins:1400,unlock:'storm'} },
+  { xpReq:1240, free:{coins:300},                prem:{coins:1500} },
+  { xpReq:1480, free:{coins:400,gem:2},          prem:{coins:2000,special:'starbig'} },
+  { xpReq:1740, free:{coins:500},                prem:{coins:2200} },
+  { xpReq:2020, free:{coins:600},                prem:{coins:2600} },
+  { xpReq:2320, free:{},                         prem:{coins:3200,unlock:'bone'} },
+  { xpReq:2640, free:{coins:700,gem:3},          prem:{coins:3600,gem:5} },
+  { xpReq:2980, free:{coins:800},                prem:{coins:4000,special:'gift'} },
+  { xpReq:3340, free:{coins:1000},               prem:{coins:5000} },
+  { xpReq:3720, free:{coins:1200},               prem:{coins:6000,unlock:'frost'} },
+  { xpReq:4120, free:{coins:1500},               prem:{coins:8000,gem:8} },
+  { xpReq:4540, free:{coins:2000},               prem:{coins:10000,unlock:'void'} },
+  { xpReq:5000, free:{coins:3000,gem:5},         prem:{coins:15000,special:'trophy'} },
+];
+
+function passCurrentTier(){
+  let cum=0, tier=0;
+  for(let i=0;i<PASS_TIERS.length;i++){
+    cum += PASS_TIERS[i].xpReq;
+    if(state.pass.xp < cum) break;
+    tier = i+1;
+  }
+  return tier;
+}
+function passProgressToNext(){
+  let cum=0;
+  for(let i=0;i<PASS_TIERS.length;i++){
+    const need = PASS_TIERS[i].xpReq;
+    if(state.pass.xp < cum+need){
+      return { tier:i, cur:state.pass.xp-cum, need };
+    }
+    cum += need;
+  }
+  return { tier:PASS_TIERS.length, cur:0, need:0, maxed:true };
+}
+function awardPassXp(amount){
+  state.pass.xp += Math.max(0, Math.floor(amount));
+  state.pass.tier = passCurrentTier();
+}
+function applyReward(reward, isPrem){
+  if(!reward) return;
+  if(reward.coins) state.coins += reward.coins;
+  if(reward.gem) state.iap.piggyCoins += reward.gem*10; // gems as bonus coins for now
+  if(reward.unlock){
+    if(CHARS[reward.unlock] && !state.unlocks.chars.includes(reward.unlock)){
+      state.unlocks.chars.push(reward.unlock);
+    }
+    if(STAGES[reward.unlock] && !state.unlocks.stages.includes(reward.unlock)){
+      state.unlocks.stages.push(reward.unlock);
+    }
+  }
+}
+function claimPassTier(idx, prem){
+  const tierUnlocked = passCurrentTier();
+  if(idx >= tierUnlocked){ haptic('warn'); return; }
+  const claimed = prem ? state.pass.claimedPrem : state.pass.claimedFree;
+  if(claimed[idx]){ haptic('warn'); return; }
+  if(prem && !state.pass.premium){ haptic('warn'); toast('Unlock premium pass first'); return; }
+  const reward = prem ? PASS_TIERS[idx].prem : PASS_TIERS[idx].free;
+  if(!reward || (!reward.coins && !reward.gem && !reward.unlock && !reward.special)){ haptic('warn'); return; }
+  applyReward(reward, prem);
+  claimed[idx] = Date.now();
+  saveNow();
+  sfx('coin'); haptic('ok');
+  let msg = 'Claimed tier '+(idx+1);
+  if(reward.coins) msg += ' · +'+reward.coins+' coins';
+  toast(msg,'gold');
+  burstCoins();
+  renderMenu();
+}
+function unlockPassPremium(){
+  // Dev fallback: grant immediately. Production: invoice flow.
+  state.pass.premium = true;
+  saveNow();
+  sfx('evo'); haptic('heavy');
+  celebrate();
+  toast('PREMIUM PASS UNLOCKED','gold');
+  renderMenu();
+}
+
+// ============ STARTER PACK (one-time IAP) ============
+const STARTER_REWARD = { coins:1000, passXp:250, premiumPass:false };
+function shouldShowStarter(){
+  return !state.iap.starterClaimed;
+}
+function claimStarter(){
+  // Dev fallback (no real Stars charge); production: route through invoice flow.
+  state.coins += STARTER_REWARD.coins;
+  state.pass.xp += STARTER_REWARD.passXp;
+  state.pass.tier = passCurrentTier();
+  state.iap.starterClaimed = true;
+  state.iap.firstPurchase = true;
+  saveNow();
+  $('#starterModal')?.classList.remove('show');
+  sfx('evo'); haptic('heavy');
+  celebrate();
+  toast('+'+STARTER_REWARD.coins+' coins · +'+STARTER_REWARD.passXp+' pass XP','gold');
+  renderMenu();
+}
+function dismissStarter(){
+  state.iap.starterShownAt = Date.now();
+  saveNow();
+  $('#starterModal')?.classList.remove('show');
+}
+
+// ============ MONTHLY CARD ============
+function monthlyActive(){ return state.iap.monthlyExpireAt > Date.now(); }
+function purchaseMonthly(tier){
+  // Dev fallback. tier 1 = monthly, 2 = super monthly
+  const ms = 30*24*3600*1000;
+  state.iap.monthlyExpireAt = Math.max(state.iap.monthlyExpireAt, Date.now()) + ms;
+  state.iap.monthlyTier = Math.max(state.iap.monthlyTier||1, tier);
+  saveNow();
+  toast('Monthly card active for 30 days (dev)','gold');
+  sfx('coin'); haptic('ok');
+  renderMenu();
+}
+
+// ============ CONFETTI / CELEBRATE ============
+function celebrate(){
+  // Fire DOM-based confetti from center of screen
+  const root = document.body;
+  const colors = ['#7afcff','#ffd864','#ff5fa2','#9b6cff','#54e26a','#ffa64d','#fff'];
+  for(let i=0;i<60;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti';
+    p.style.left = '50%'; p.style.top = '50%';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.setProperty('--dx',(Math.random()*2-1)*window.innerWidth*0.6+'px');
+    p.style.setProperty('--dy',(-window.innerHeight*(0.3+Math.random()*0.5))+'px');
+    p.style.setProperty('--rot',(Math.random()*720-360)+'deg');
+    p.style.setProperty('--dur',(0.9+Math.random()*0.7)+'s');
+    root.appendChild(p);
+    setTimeout(()=>p.remove(),1800);
+  }
+}
+
+// Coin burst (lighter — for shop/patrol claims)
+function burstCoins(){
+  const root = document.body;
+  for(let i=0;i<14;i++){
+    const p = document.createElement('div');
+    p.className = 'coinpop';
+    p.style.left = '50%'; p.style.top = '60%';
+    p.style.setProperty('--dx',(Math.random()*2-1)*180+'px');
+    p.style.setProperty('--dy',(-120-Math.random()*120)+'px');
+    p.style.setProperty('--dur',(0.7+Math.random()*0.5)+'s');
+    root.appendChild(p);
+    setTimeout(()=>p.remove(),1200);
+  }
+}
+
 function setupDaily(){
   const today=new Date().toISOString().slice(0,10);
   if(state.daily.date!==today){
@@ -2341,6 +2891,14 @@ $$('.bnav-tab').forEach(t=>{
 });
 // invite button
 $('#inviteBtn')?.addEventListener('click', inviteFriends);
+// patrol buttons
+$('#claimPatrolBtn')?.addEventListener('click', claimPatrol);
+$('#quickPatrolBtn')?.addEventListener('click', quickPatrol);
+// battle pass premium unlock
+$('#unlockPremBtn')?.addEventListener('click', unlockPassPremium);
+// starter pack
+$('#starterClaimBtn')?.addEventListener('click', claimStarter);
+$('#starterDismiss')?.addEventListener('click', dismissStarter);
 
 // menu buttons
 $('#playBtn').addEventListener('click',()=>{ startRun({}); });
