@@ -818,13 +818,13 @@ const STRINGS={
    patrolTitle:'PATROL',quickPatrol:'+5h · 30⭐',patrolMax:'MAXED — claim now!',patrolEarning:'Earning {h}h / 24h · +{r}/h',passTitle:'SURVIVOR PASS',freeTag:'FREE',premTag:'PREMIUM',unlockPrem:'UNLOCK PREMIUM · 500⭐',monthlyTitle:'Monthly Cards',monthlyDs:'Daily login coins + boosted patrol earnings for 30 days.',monthlyCard:'Monthly Card',superMonthly:'Super Monthly',monthlyActive:'Active · expires {d}',starterBadge:'ONE-TIME OFFER',starterTitle:'STARTER PACK',starterSub:'Head start to becoming the storm',starterBonus:'Instant tier 2 unlock',starterSavings:'75% OFF',passXp:'pass XP',maybeLater:'Maybe later',tier:'Tier',
    prophecyToday:'TODAY\'S PROPHECY',prophecyFulfilled:'PROPHECY FULFILLED',prophecyReward:'Reward: 3× run coins + 1 Token',prophecyClaimed:'Claimed',
    wCalm:'CALM',wRain:'RAIN',wStorm:'STORM',
-   surgeReady:'STORM SURGE READY',surgeUnleashed:'STORM SURGE'},
+   surgeReady:'STORM SURGE READY',surgeUnleashed:'STORM SURGE',surgeNotReady:'Storm Surge not ready!'},
  ru:{tagline:'Стань грозой. Выживи в орде.',play:'ИГРАТЬ',hero:'ГЕРОЙ',stage:'АРЕНА',shop:'ШОП',ach:'ДОСТ.',set:'⚙',pickHero:'Выбери героя',pickStage:'Выбери арену',permUp:'Улучшения',getCoins:'Получить монеты',sound:'Звук',soundDs:'Музыка и эффекты',haptic:'Вибрация',hapticDs:'Тактильный отклик',dmgn:'Числа урона',dmgnDs:'Показывать урон',lang:'Язык',reset:'Сброс',resetDs:'Стереть прогресс',about:'О игре',privacy:'Приватность',terms:'Правила',paused:'ПАУЗА',resume:'ПРОДОЛЖИТЬ',quitRun:'ВЫЙТИ',levelUp:'НОВЫЙ УРОВЕНЬ!',pickPower:'ВЫБЕРИ СИЛУ',reroll:'Перебросить (раз в день)',time:'Время',kills:'Убийств',lvl:'УР',coins:'Монеты',revive:'Возрождение — 20 Stars',retry:'ЕЩЁ',menu:'МЕНЮ',dailyTitle:'Ежедневный вызов',defeated:'ПОРАЖЕНИЕ',victory:'ПОБЕДА!',unlocked:'Открыто!',coinsEarned:'+{n} монет',newRecord:'Новый рекорд!',NEW:'НОВО',EVO:'ЭВО',MAX:'МАКС',
    navHome:'ДОМ',navEarn:'БОНУС',navSettings:'НАСТР.',earnTitle:'БОНУСЫ',earnFree:'Бесплатные монеты каждый день',earnSub:'Заходи, приглашай, выполняй задачи',dailyLogin:'Вход',inviteTitle:'Пригласи друзей',inviteDs:'Поделись ГРОЗА. Каждый друг, открывший игру, приносит +100 монет (когда сервер запущен).',inviteCta:'ПОДЕЛИТЬСЯ',tasksTitle:'Задачи дня',claim:'ВЗЯТЬ',claimed:'ВЗЯТО',taskPlay3:'Сыграй 3 забега',taskLv15:'Достигни 15 ур. за забег',taskKill200:'Сделай 200 убийств за забег',shareText:'⚡ ГРОЗА — выживалка с автострельбой. Управляй одним пальцем, стань грозой. Играй со мной!',
    patrolTitle:'ПАТРУЛЬ',quickPatrol:'+5ч · 30⭐',patrolMax:'МАКС — забери!',patrolEarning:'Идёт {h}ч / 24ч · +{r}/ч',passTitle:'ПРОПУСК',freeTag:'БЕСПЛ.',premTag:'ПРЕМИУМ',unlockPrem:'ОТКРЫТЬ ПРЕМИУМ · 500⭐',monthlyTitle:'Месячная карта',monthlyDs:'Ежедневные монеты + ускоренный патруль 30 дней.',monthlyCard:'Карта',superMonthly:'Супер Карта',monthlyActive:'Активна · до {d}',starterBadge:'ОДНОРАЗОВО',starterTitle:'СТАРТЕР НАБОР',starterSub:'Стартовый буст к мощи',starterBonus:'Мгновенный тир 2',starterSavings:'-75%',passXp:'опыт пропуска',maybeLater:'Позже',tier:'Тир',
    prophecyToday:'ПРОРОЧЕСТВО ДНЯ',prophecyFulfilled:'ПРОРОЧЕСТВО СБЫЛОСЬ',prophecyReward:'Награда: 3× монет + 1 Жетон',prophecyClaimed:'Получено',
    wCalm:'ШТИЛЬ',wRain:'ДОЖДЬ',wStorm:'ГРОЗА',
-   surgeReady:'ГРОЗОВОЙ УДАР ГОТОВ',surgeUnleashed:'ГРОЗОВОЙ УДАР'}
+   surgeReady:'ГРОЗОВОЙ УДАР ГОТОВ',surgeUnleashed:'ГРОЗОВОЙ УДАР',surgeNotReady:'Грозовой Удар не готов!'}
 };
 // other langs fallback to en
 LANGS.forEach(l=>{ if(!STRINGS[l]) STRINGS[l]=STRINGS.en; });
@@ -1053,6 +1053,20 @@ function sfx(name){
     case 'evo':   playTone(660,0.1,'sawtooth',0.15); setTimeout(()=>playTone(880,0.1,'sawtooth',0.15),80); setTimeout(()=>playTone(1100,0.15,'sawtooth',0.15),160); setTimeout(()=>playTone(1320,0.2,'sawtooth',0.18),240); break;
     case 'click': playTone(900,0.04,'square',0.06); break;
     case 'die':   playTone(220,0.25,'sawtooth',0.15); setTimeout(()=>playTone(165,0.3,'sawtooth',0.15),120); setTimeout(()=>playTone(110,0.5,'sawtooth',0.15),260); break;
+    case 'surge': {
+      // Layered thunderclap: sub-bass boom + crackle + thunder rumble + high zap
+      playTone(60,0.6,'sine',0.35);                 // sub boom
+      playTone(110,0.45,'sine',0.28);               // low boom
+      playNoise(0.55,0.42,5500);                    // bright crackle (lightning hiss)
+      playTone(2400,0.07,'sawtooth',0.22);          // high zap onset
+      setTimeout(()=>playTone(1800,0.10,'sawtooth',0.18),55);
+      setTimeout(()=>playNoise(0.35,0.32,8000),80); // sharper hiss layer
+      setTimeout(()=>playNoise(0.75,0.32,1100),170);// thunder rumble
+      setTimeout(()=>playTone(520,0.28,'sine',0.20),200); // sustain hum
+      setTimeout(()=>playNoise(0.55,0.20,650),320); // rolling thunder tail
+      setTimeout(()=>playTone(140,0.40,'sine',0.16),350); // bass tail
+      break;
+    }
   }
 }
 
@@ -1749,8 +1763,9 @@ function onKill(e){
       if(w){ w.hp=Math.max(1,Math.floor(w.hp*0.4)); w.maxHp=w.hp; w.r=Math.max(8,w.r*0.8); }
     }
   }
-  // particles
-  for(let i=0;i<6;i++){
+  // particles — scale down under heavy load so mass-deaths from surge don't tank framerate
+  const sparkCount = game.particles.length > 180 ? 2 : (game.particles.length > 100 ? 3 : 6);
+  for(let i=0;i<sparkCount;i++){
     game.particles.push({kind:'spark', x:e.x, y:e.y, vx:rand(-220,220), vy:rand(-260,-30), life:0.6, color:e.color});
   }
   sfx('kill');
@@ -1947,6 +1962,10 @@ function applyPassives(){
 
 // ============ particles ============
 function updateParticles(dt){
+  // Hard cap — drops oldest under load to keep the frame budget bounded.
+  if(game.particles.length > 280){
+    game.particles.splice(0, game.particles.length - 280);
+  }
   for(let i=game.particles.length-1;i>=0;i--){
     const p=game.particles[i];
     p.life-=dt;
@@ -2159,20 +2178,32 @@ function drawParticles(){
       const a=worldToScreen(p.x,p.y);
       const b=worldToScreen(p.x2,p.y2);
       ctx.save(); ctx.globalCompositeOperation='lighter';
-      ctx.strokeStyle=p.color||'#7afcff'; ctx.shadowColor=ctx.strokeStyle; ctx.shadowBlur=14;
-      ctx.lineWidth=3;
       ctx.globalAlpha=clamp(p.life*4,0,1);
-      ctx.beginPath();
-      // jagged lightning
+      ctx.lineCap='round'; ctx.lineJoin='round';
+      // Build the jagged path once (offsets cached at creation for perf — re-rand each frame was costly)
       const segs=6;
-      ctx.moveTo(a.x,a.y);
+      const offs = p.offsets;
+      const path = new Path2D();
+      path.moveTo(a.x,a.y);
       for(let i=1;i<segs;i++){
         const f=i/segs;
-        const x=lerp(a.x,b.x,f)+rand(-8,8);
-        const y=lerp(a.y,b.y,f)+rand(-8,8);
-        ctx.lineTo(x,y);
+        const o = offs ? offs[i-1] : [rand(-8,8), rand(-8,8)];
+        path.lineTo(lerp(a.x,b.x,f)+o[0], lerp(a.y,b.y,f)+o[1]);
       }
-      ctx.lineTo(b.x,b.y); ctx.stroke();
+      path.lineTo(b.x,b.y);
+      if(p.noShadow){
+        // Cheap glow: layered strokes instead of shadowBlur (avoids GPU thrash with many bolts)
+        ctx.strokeStyle=p.color||'#7afcff';
+        ctx.globalAlpha *= 0.5;
+        ctx.lineWidth=10; ctx.stroke(path);
+        ctx.globalAlpha = clamp(p.life*4,0,1) * 0.85;
+        ctx.lineWidth=5; ctx.stroke(path);
+        ctx.lineWidth=2; ctx.strokeStyle='#fff'; ctx.stroke(path);
+      } else {
+        ctx.strokeStyle=p.color||'#7afcff';
+        ctx.shadowColor=ctx.strokeStyle; ctx.shadowBlur=14;
+        ctx.lineWidth=3; ctx.stroke(path);
+      }
       ctx.restore();
     }
   }
@@ -2676,28 +2707,34 @@ function addSurge(amt){
 }
 
 function fireSurge(){
-  if((game.surge||0) < SURGE_MAX || game.over || !game.running) return;
+  // Guard: dead/paused/draft modal up
+  if(game.over || !game.running || game.paused || game.awaitingDraft) return;
+  // Not ready → toast + bail
+  if((game.surge||0) < SURGE_MAX){
+    toast(t('surgeNotReady'),'red');
+    haptic('warn');
+    sfx('click');
+    return;
+  }
   game.surge = 0;
   game.surgeUses = (game.surgeUses||0) + 1;
   // Prophecy: surge while Titan (final boss) on screen
   if(game.boss && (game.boss.type==='boss2'||game.boss.isFinal)) game.surgeOnTitan = true;
   const btn = $('#surgeBtn');
-  if(btn){ btn.classList.remove('ready'); btn.style.setProperty('--p','0%'); }
+  if(btn){ btn.classList.remove('ready'); btn.style.setProperty('--p','0%'); btn.setAttribute('data-pct','0%'); }
   // Visual flash
   const flash = $('#surgeFlash');
   if(flash){ flash.classList.remove('fire'); void flash.offsetWidth; flash.classList.add('fire'); }
   // Big shake + hit-stop
   game.shake = 22;
   game.hitStop = 0.18;
-  sfx('boss'); sfx('evo');
+  sfx('surge');
   haptic('heavy');
-  // Lightning forks from player to every visible enemy + damage them
+
   const p = game.player;
-  const sp = worldToScreen(p.x, p.y);
   const dmg = Math.floor(800 * (p.dmgMul||1));
-  let killed = 0;
-  // collect targets (visible on screen + a margin)
   const margin = 80;
+  // Visible targets only
   const targets = [];
   for(const e of game.enemies){
     if(e.hp<=0) continue;
@@ -2706,25 +2743,30 @@ function fireSurge(){
       targets.push(e);
     }
   }
-  targets.forEach((e,i)=>{
-    // staggered fork — visual fan-out, not instant
-    setTimeout(()=>{
-      if(e.hp<=0) return;
-      game.particles.push({kind:'bolt-line', x:p.x, y:p.y, x2:e.x, y2:e.y, life:0.32, color:'#fff'});
-      // a second jagged bolt for thickness
-      game.particles.push({kind:'bolt-line', x:p.x, y:p.y, x2:e.x, y2:e.y, life:0.32, color:'#ffd864'});
-      dealDamage(e, dmg, e.x, e.y);
-      if(e.hp<=0) killed++;
-      // tiny burst on hit
-      for(let k=0;k<5;k++){
-        game.particles.push({kind:'spark', x:e.x, y:e.y, vx:rand(-260,260), vy:rand(-300,-40), life:0.5, color:'#ffd864'});
-      }
-    }, i*8);
+  // Damage EVERY target immediately (no stagger on logic — only visuals stagger)
+  // Cap visual bolts to keep frame budget sane on dense screens.
+  const MAX_BOLTS = 28;
+  // Pre-pick visual targets — prioritize closer ones for nicer fan
+  const px = p.x, py = p.y;
+  const sorted = targets.slice().sort((a,b)=> ((a.x-px)*(a.x-px)+(a.y-py)*(a.y-py)) - ((b.x-px)*(b.x-px)+(b.y-py)*(b.y-py)));
+  const visualSet = new Set(sorted.slice(0, MAX_BOLTS));
+  visualSet.forEach(e=>{
+    // Pre-compute jagged offsets ONCE at creation (was re-randomized per frame — costly)
+    const segs=6, offsets=[];
+    for(let i=1;i<segs;i++) offsets.push([rand(-9,9), rand(-9,9)]);
+    game.particles.push({kind:'bolt-line', x:px, y:py, x2:e.x, y2:e.y, life:0.22, color:'#ffd864', offsets, noShadow:true});
   });
-  // Shockwave ring from player
-  game.particles.push({kind:'ring', x:p.x, y:p.y, r:0, maxR:Math.max(W,H)*1.1, life:0.8, color:'#ffd864', big:true});
-  // Toast
+  // Apply damage to ALL targets (off-screen still dies — feels like screen clear)
+  let killed = 0;
+  for(const e of targets){
+    if(e.hp<=0) continue;
+    dealDamage(e, dmg, e.x, e.y);
+    if(e.hp<=0) killed++;
+  }
+  // Single shockwave ring
+  game.particles.push({kind:'ring', x:px, y:py, r:0, maxR:Math.max(W,H)*1.1, life:0.7, color:'#ffd864', big:true});
   toast(t('surgeUnleashed'), 'gold');
+  // Throttled — won't double up with level-up confetti that fires moments later
   celebrate();
 }
 
@@ -3223,11 +3265,15 @@ function purchaseMonthly(tier){
 }
 
 // ============ CONFETTI / CELEBRATE ============
+let _lastCelebrateAt = 0;
 function celebrate(){
-  // Fire DOM-based confetti from center of screen
+  // Throttle — burst FX should never stack within 500ms (avoids 120+ DOM nodes from surge+level-up combo)
+  const now = performance.now();
+  if(now - _lastCelebrateAt < 500) return;
+  _lastCelebrateAt = now;
   const root = document.body;
   const colors = ['#7afcff','#ffd864','#ff5fa2','#9b6cff','#54e26a','#ffa64d','#fff'];
-  for(let i=0;i<60;i++){
+  for(let i=0;i<36;i++){
     const p = document.createElement('div');
     p.className = 'confetti';
     p.style.left = '50%'; p.style.top = '50%';

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>GROZA — Logo Generator (1024×1024)</title>
+<style>
+  body{margin:0;padding:30px 20px;background:#0a0418;color:#e7e3ff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:20px;}
+  h1{margin:0;font-weight:900;letter-spacing:2px;background:linear-gradient(180deg,#ffd864,#ff7a3a);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  p{margin:0;color:#a89dd6;font-size:13px;text-align:center;max-width:520px;line-height:1.5;}
+  canvas{max-width:90vmin;max-height:90vmin;width:512px;height:512px;border-radius:18px;box-shadow:0 0 40px rgba(122,252,255,0.2);background:#000;}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  button{background:rgba(255,216,100,0.1);color:#ffd864;border:1.5px solid rgba(255,216,100,0.55);border-radius:12px;padding:14px 22px;font-weight:800;font-size:14px;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;text-shadow:0 0 8px currentColor;box-shadow:0 0 16px rgba(255,216,100,0.3);}
+  button:active{transform:scale(0.97);background:rgba(255,216,100,0.22);}
+  button.alt{color:#7afcff;border-color:rgba(122,252,255,0.55);background:rgba(122,252,255,0.08);box-shadow:0 0 16px rgba(122,252,255,0.25);}
+  .hint{font-size:11px;color:#7d72b0;}
+</style>
+</head>
+<body>
+<h1>GROZA · LOGO 1024×1024</h1>
+<p>The canvas below is rendered at full 1024×1024 (displayed scaled down). Click <b>Download PNG</b> to save the original-resolution file. Use it for the Telegram bot avatar, App Store icon, share image, etc.</p>
+<canvas id="logo" width="1024" height="1024"></canvas>
+<div class="actions">
+  <button id="dl">Download PNG (1024×1024)</button>
+  <button class="alt" id="dlSquareNoText">Download Symbol Only</button>
+</div>
+<div class="hint">Symbol-only version is best for small sizes (channel avatar, favicon).</div>
+
+<script>
+const SIZE = 1024;
+
+function drawBackground(ctx, W, H){
+  // deep purple radial gradient
+  const bg = ctx.createRadialGradient(W/2, H*0.42, 10, W/2, H/2, W*0.72);
+  bg.addColorStop(0, '#3d2188');
+  bg.addColorStop(0.35, '#1d0e4a');
+  bg.addColorStop(0.85, '#0a0418');
+  bg.addColorStop(1, '#040108');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // subtle grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.035)';
+  ctx.lineWidth = 1;
+  const g = 64;
+  for(let x=g; x<W; x+=g){ ctx.beginPath(); ctx.moveTo(x+0.5, 0); ctx.lineTo(x+0.5, H); ctx.stroke(); }
+  for(let y=g; y<H; y+=g){ ctx.beginPath(); ctx.moveTo(0, y+0.5); ctx.lineTo(W, y+0.5); ctx.stroke(); }
+
+  // sparkle dots for texture
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  const seed = 12345;
+  let s = seed;
+  function nrand(){ s = (s*9301 + 49297) % 233280; return s/233280; }
+  for(let i=0; i<140; i++){
+    const x = nrand()*W;
+    const y = nrand()*H;
+    const r = 0.6 + nrand()*1.8;
+    const a = 0.04 + nrand()*0.18;
+    ctx.globalAlpha = a;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // halo behind the bolt
+  const halo = ctx.createRadialGradient(W/2, H*0.38, 0, W/2, H*0.38, W*0.48);
+  halo.addColorStop(0, 'rgba(255,216,100,0.42)');
+  halo.addColorStop(0.25, 'rgba(122,252,255,0.18)');
+  halo.addColorStop(0.6, 'rgba(155,108,255,0.10)');
+  halo.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = halo;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// Stylized lightning bolt path — a chunky, jagged "Z" bolt
+function drawBolt(ctx, cx, cy, scale){
+  // Path defined in a normalized box where height ~ 900 and width ~ 540
+  const pts = [
+    [ 120, -460],   // top right
+    [-260,  -10],   // mid left dent
+    [  20,  -10],   // mid notch
+    [-160,  460],   // bottom point
+    [ 260,  100],   // mid-right notch
+    [   0,  100],   // mid-right back
+    [ 120, -460],   // close
+  ];
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(scale, scale);
+
+  // Outer glow pass (multiple shadow draws for thick neon)
+  for(let pass=0; pass<3; pass++){
+    ctx.shadowColor = '#ffd864';
+    ctx.shadowBlur = [120, 70, 30][pass];
+    ctx.beginPath();
+    pts.forEach((p,i)=>{ if(i===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); });
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255,216,100,0.18)';
+    ctx.fill();
+  }
+  ctx.shadowBlur = 0;
+
+  // Main fill — gold-white gradient
+  const g = ctx.createLinearGradient(0, -460, 0, 460);
+  g.addColorStop(0, '#fff8d4');
+  g.addColorStop(0.18, '#ffe28a');
+  g.addColorStop(0.55, '#ffb84d');
+  g.addColorStop(1, '#c66c1a');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  pts.forEach((p,i)=>{ if(i===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); });
+  ctx.closePath();
+  ctx.fill();
+
+  // White inner core (smaller polygon)
+  ctx.save();
+  ctx.beginPath();
+  pts.forEach((p,i)=>{ const sx=p[0]*0.78, sy=p[1]*0.85; if(i===0) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy); });
+  ctx.closePath();
+  const g2 = ctx.createLinearGradient(0, -460, 0, 460);
+  g2.addColorStop(0, 'rgba(255,255,255,0.95)');
+  g2.addColorStop(0.5, 'rgba(255,255,255,0.55)');
+  g2.addColorStop(1, 'rgba(255,255,255,0.0)');
+  ctx.fillStyle = g2;
+  ctx.fill();
+  ctx.restore();
+
+  // Crisp outline
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = '#fff';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  pts.forEach((p,i)=>{ if(i===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); });
+  ctx.closePath();
+  ctx.stroke();
+
+  // Sharp inner highlight
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function drawWordmark(ctx, W){
+  // GROZA — bold Latin wordmark
+  ctx.save();
+  ctx.font = '900 178px "Arial Black", "Impact", "Helvetica Neue", system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const y = 790;
+  // glow pass
+  ctx.shadowColor = '#ffd864';
+  ctx.shadowBlur = 36;
+  const wg = ctx.createLinearGradient(0, y-90, 0, y+90);
+  wg.addColorStop(0, '#fff8d4');
+  wg.addColorStop(0.5, '#ffd864');
+  wg.addColorStop(1, '#e26b1f');
+  ctx.fillStyle = wg;
+  ctx.fillText('GROZA', W/2, y);
+  // crisp redraw
+  ctx.shadowBlur = 0;
+  ctx.fillText('GROZA', W/2, y);
+  // outer stroke
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+  ctx.strokeText('GROZA', W/2, y);
+  ctx.restore();
+
+  // ГРОЗА Cyrillic subtitle
+  ctx.save();
+  ctx.font = '800 62px "Arial", "Helvetica Neue", system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const y2 = 912;
+  ctx.shadowColor = '#7afcff';
+  ctx.shadowBlur = 22;
+  ctx.fillStyle = '#7afcff';
+  ctx.fillText('Г Р О З А', W/2, y2);
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#cfeffd';
+  ctx.fillText('Г Р О З А', W/2, y2);
+  ctx.restore();
+}
+
+function drawVignette(ctx, W, H){
+  const v = ctx.createRadialGradient(W/2, H/2, W*0.32, W/2, H/2, W*0.74);
+  v.addColorStop(0, 'rgba(0,0,0,0)');
+  v.addColorStop(1, 'rgba(0,0,0,0.55)');
+  ctx.fillStyle = v;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function drawFullLogo(ctx, W, H){
+  ctx.clearRect(0, 0, W, H);
+  drawBackground(ctx, W, H);
+  drawBolt(ctx, W/2, H*0.38, 1.0);
+  drawWordmark(ctx, W);
+  drawVignette(ctx, W, H);
+}
+
+function drawSymbolOnly(ctx, W, H){
+  ctx.clearRect(0, 0, W, H);
+  drawBackground(ctx, W, H);
+  // bolt larger, centered
+  drawBolt(ctx, W/2, H*0.5, 1.35);
+  drawVignette(ctx, W, H);
+}
+
+const cvs = document.getElementById('logo');
+const ctx = cvs.getContext('2d');
+drawFullLogo(ctx, SIZE, SIZE);
+
+function download(filename){
+  const a = document.createElement('a');
+  a.download = filename;
+  a.href = cvs.toDataURL('image/png');
+  a.click();
+}
+
+document.getElementById('dl').addEventListener('click', ()=>{
+  drawFullLogo(ctx, SIZE, SIZE);
+  download('groza-logo-1024.png');
+});
+document.getElementById('dlSquareNoText').addEventListener('click', ()=>{
+  drawSymbolOnly(ctx, SIZE, SIZE);
+  // give browser a beat to render before snapshot
+  requestAnimationFrame(()=>{
+    download('groza-symbol-1024.png');
+    // restore full logo afterwards
+    setTimeout(()=>drawFullLogo(ctx, SIZE, SIZE), 100);
+  });
+});
+</script>
+</body>
+</html>
