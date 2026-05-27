@@ -19,8 +19,8 @@
     /* Telegram WebView reports contentSafeAreaInset via JS; CSS env() returns 0 inside the WebView. JS sets these vars on :root from tg.contentSafeAreaInset. We use max() to fall back to env() outside TG. */
     --tg-safe-top:0px;
     --tg-safe-bot:0px;
-    --safe-top:max(44px, var(--tg-safe-top), env(safe-area-inset-top,0px));
-    --safe-bot:max(12px, var(--tg-safe-bot), env(safe-area-inset-bottom,0px));
+    --safe-top:max(60px, var(--tg-safe-top), env(safe-area-inset-top,0px));
+    --safe-bot:max(16px, var(--tg-safe-bot), env(safe-area-inset-bottom,0px));
     --bnav-h:64px; /* bottom nav height (without safe-bot) */
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;}
@@ -40,19 +40,19 @@
   .pill.timer .val{color:#fff;}
   .pill.lvl{background:linear-gradient(180deg,#5b3aa8,#3b2275);border-color:rgba(255,255,255,0.25);}
 
-  .hp-wrap{position:absolute;left:10px;right:10px;top:calc(var(--safe-top) + 50px);display:flex;flex-direction:column;gap:4px;pointer-events:none;}
+  .hp-wrap{position:absolute;left:10px;right:10px;top:calc(var(--safe-top) + 78px);display:flex;flex-direction:column;gap:4px;pointer-events:none;}
   .bar{position:relative;height:10px;background:rgba(0,0,0,0.5);border:1px solid var(--stroke);border-radius:6px;overflow:hidden;}
   .bar > .fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:5px;transition:width 120ms linear;}
   .bar.hp .fill{background:linear-gradient(90deg,#ff7a7a,#ff3060);box-shadow:0 0 8px #ff3060 inset;}
   .bar.xp{height:6px;}
   .bar.xp .fill{background:linear-gradient(90deg,#7afcff,#3a78ff);box-shadow:0 0 6px #7afcff inset;}
 
-  .weapons{position:absolute;left:10px;top:calc(var(--safe-top) + 78px);display:flex;flex-direction:column;gap:4px;pointer-events:none;}
+  .weapons{position:absolute;left:10px;top:calc(var(--safe-top) + 108px);display:flex;flex-direction:column;gap:4px;pointer-events:none;}
   .wslot{display:flex;align-items:center;gap:6px;background:rgba(8,4,24,0.55);border:1px solid var(--stroke);border-radius:8px;padding:3px 8px 3px 4px;font-size:11px;color:var(--ink);font-weight:700;}
   .wslot .ic{width:18px;height:18px;border-radius:5px;background:#222;display:flex;align-items:center;justify-content:center;font-size:11px;}
   .wslot .lv{color:var(--gold);font-variant-numeric:tabular-nums;}
 
-  .pauseBtn{position:absolute;right:10px;top:calc(var(--safe-top) + 50px);width:38px;height:38px;border-radius:50%;background:rgba(8,4,24,0.55);border:1px solid var(--stroke);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;pointer-events:auto;cursor:pointer;}
+  .pauseBtn{position:absolute;right:10px;top:calc(var(--safe-top) + 44px);width:32px;height:32px;border-radius:50%;background:rgba(8,4,24,0.55);border:1px solid var(--stroke);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;pointer-events:auto;cursor:pointer;z-index:7;}
 
   /* joystick visual */
   .joy{position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.18);pointer-events:none;opacity:0;transition:opacity 120ms;}
@@ -267,8 +267,10 @@
   @keyframes coinFly{0%{transform:translate(-50%,-50%) scale(0.5);opacity:0;}10%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(0.5);opacity:0;}}
 
   /* ============ STORM SURGE ULTIMATE ============ */
-  .surge-btn{position:absolute;right:14px;bottom:calc(var(--safe-bot) + 18px);width:78px;height:78px;border-radius:50%;background:rgba(10,4,24,0.5);border:2px solid rgba(122,252,255,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#7afcff66;z-index:20;pointer-events:auto;transition:all 0.2s;backdrop-filter:blur(6px);}
-  .surge-btn .ic-svg{width:34px;height:34px;}
+  .surge-btn{position:absolute;right:14px;bottom:calc(var(--safe-bot) + 18px);width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(122,252,255,0.18),rgba(20,10,50,0.78) 70%);border:2px solid rgba(122,252,255,0.6);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(122,252,255,0.85);z-index:20;pointer-events:auto;transition:all 0.2s;backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(122,252,255,0.25),inset 0 0 12px rgba(122,252,255,0.1);}
+  .surge-btn .ic-svg{width:32px;height:32px;}
+  .surge-btn::after{content:attr(data-pct);position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:900;color:var(--neon);letter-spacing:1px;text-shadow:0 0 5px var(--neon);white-space:nowrap;background:rgba(10,4,24,0.7);padding:2px 7px;border-radius:8px;border:1px solid rgba(122,252,255,0.4);}
+  .surge-btn.ready::after{color:var(--gold);text-shadow:0 0 5px var(--gold);border-color:var(--gold);}
   .surge-btn .meter{position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(from -90deg, var(--neon) calc(var(--p,0%)), transparent 0);mask:radial-gradient(circle, transparent 65%, black 67%);-webkit-mask:radial-gradient(circle, transparent 65%, black 67%);}
   .surge-btn.ready{color:#fff;background:rgba(255,216,100,0.18);border-color:var(--gold);box-shadow:0 0 28px var(--gold),inset 0 0 24px rgba(255,216,100,0.25);animation:surgeReady 1.1s ease-in-out infinite;}
   .surge-btn.ready .ic-svg{filter:drop-shadow(0 0 10px var(--gold)) drop-shadow(0 0 4px var(--gold));color:var(--gold);}
@@ -280,7 +282,7 @@
   @keyframes surgeFlash{0%{opacity:0;transform:scale(0.4);}15%{opacity:1;transform:scale(1.2);}100%{opacity:0;transform:scale(2.4);}}
 
   /* ============ WEATHER PHASES ============ */
-  .weather-pill{position:absolute;left:50%;top:calc(var(--safe-top) + 8px);transform:translateX(-50%);background:rgba(8,4,24,0.55);backdrop-filter:blur(8px);border:1px solid var(--stroke);border-radius:14px;padding:6px 12px;font-weight:800;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px;pointer-events:none;z-index:6;}
+  .weather-pill{position:absolute;left:50%;top:calc(var(--safe-top) + 46px);transform:translateX(-50%);background:rgba(8,4,24,0.62);backdrop-filter:blur(8px);border:1px solid var(--stroke);border-radius:12px;padding:4px 10px;font-weight:800;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px;pointer-events:none;z-index:6;}
   .weather-pill .ic-svg{width:14px;height:14px;}
   .weather-pill.calm{color:var(--neon);border-color:rgba(122,252,255,0.4);box-shadow:0 0 12px rgba(122,252,255,0.25);}
   .weather-pill.rain{color:#9bf;border-color:rgba(155,191,255,0.5);box-shadow:0 0 12px rgba(120,150,255,0.3);}
@@ -786,7 +788,7 @@ function syncTgSafeArea(){
 }
 syncTgSafeArea();
 ['contentSafeAreaChanged','safeAreaChanged','fullscreenChanged','viewportChanged'].forEach(ev=>{
-  try{ tg?.onEvent?.(ev, syncTgSafeArea); }catch(_){}
+  try{ tg?.onEvent?.(ev, ()=>{ syncTgSafeArea(); if(typeof resize==='function') resize(); }); }catch(_){}
 });
 function haptic(kind){ if(!state.settings.haptics) return; try{ if(kind==='light') tg?.HapticFeedback?.impactOccurred?.('light'); else if(kind==='med') tg?.HapticFeedback?.impactOccurred?.('medium'); else if(kind==='heavy') tg?.HapticFeedback?.impactOccurred?.('heavy'); else if(kind==='ok') tg?.HapticFeedback?.notificationOccurred?.('success'); else if(kind==='warn') tg?.HapticFeedback?.notificationOccurred?.('warning'); else if(kind==='err') tg?.HapticFeedback?.notificationOccurred?.('error'); }catch(_){} }
 
@@ -1283,8 +1285,11 @@ function startRun(opts){
   const startW=(CHARS[state.selectedChar]||CHARS.spark).startWeapon;
   addWeapon(startW);
 
-  // hide menu, show hud
-  hideAll(); refreshHud();
+  // hide menu, show in-game hud explicitly
+  hideAll();
+  const sbE=$('#surgeBtn');
+  if(sbE){ sbE.style.display='flex'; sbE.style.setProperty('--p','0%'); sbE.setAttribute('data-pct','0%'); sbE.classList.remove('ready'); }
+  refreshHud();
   // pause music init on first input
   audioInit();
   if(audio.ctx?.state==='suspended') audio.ctx.resume();
@@ -1293,9 +1298,7 @@ function startRun(opts){
 function endRun(won){
   game.over=true; game.won=!!won; game.running=false;
   // Hide gameplay HUD bits
-  const sb=$('#surgeBtn'); if(sb) sb.style.display='none';
-  const wp=$('#weatherPill'); if(wp) wp.style.display='none';
-  const wo=$('#weatherOverlay'); if(wo) wo.className='weather-overlay';
+  hideGameHud();
   // Prophecy check
   const fulfilled = checkProphecyOnEndRun();
   // award coins (3× multiplier if today's prophecy fulfilled this run)
@@ -2365,13 +2368,15 @@ function hideAll(){
   $('#draftScreen').classList.remove('show');
   $('#overModal').classList.remove('show');
   $('#bottomNav').classList.remove('show');
-  // Hide in-game-only HUD when on menu screens
+}
+function hideGameHud(){
   const sb=$('#surgeBtn'); if(sb) sb.style.display='none';
   const wp=$('#weatherPill'); if(wp) wp.style.display='none';
   const wo=$('#weatherOverlay'); if(wo) wo.className='weather-overlay';
 }
 function showMenu(){
   hideAll();
+  hideGameHud();
   $('#menuScreen').classList.add('show');
   $('#bottomNav').classList.add('show');
   // default to HOME tab
@@ -2649,7 +2654,9 @@ function addSurge(amt){
   game.surge = Math.min(SURGE_MAX, (game.surge||0) + amt);
   const btn = $('#surgeBtn');
   if(btn){
-    btn.style.setProperty('--p', (game.surge/SURGE_MAX*100)+'%');
+    const pct = Math.floor(game.surge/SURGE_MAX*100);
+    btn.style.setProperty('--p', pct+'%');
+    btn.setAttribute('data-pct', game.surge >= SURGE_MAX ? 'READY' : (pct+'%'));
     btn.classList.toggle('ready', game.surge >= SURGE_MAX);
   }
 }
