@@ -43,14 +43,13 @@
   .pill.lvl{background:linear-gradient(180deg,#5b3aa8,#3b2275);border-color:rgba(255,255,255,0.25);}
 
   .hp-wrap{position:absolute;left:10px;right:10px;top:calc(var(--safe-top) + 78px);display:flex;flex-direction:column;gap:4px;pointer-events:none;}
-  .bar{position:relative;height:10px;background:rgba(0,0,0,0.5);border:1px solid var(--stroke);border-radius:6px;overflow:hidden;}
-  .bar > .fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:5px;transition:width 120ms linear;}
-  .bar.hp .fill{background:linear-gradient(90deg,#ff7a7a,#ff3060);box-shadow:0 0 8px #ff3060 inset;}
-  .bar.xp{height:6px;}
-  .bar.xp .fill{background:linear-gradient(90deg,#7afcff,#3a78ff);box-shadow:0 0 6px #7afcff inset;}
+  .bar{position:relative;background:rgba(0,0,0,0.55);border:1px solid var(--stroke);border-radius:8px;overflow:hidden;}
+  .bar > .fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:7px;transition:width 140ms linear;}
+  .bar.xp{height:14px;}
+  .bar.xp .fill{background:linear-gradient(90deg,#54e26a,#2a9d8f);box-shadow:0 0 10px #54e26a inset,0 0 6px rgba(84,226,106,0.4);}
 
   /* In-run minimal weapon HUD — icons only */
-  .weapons{position:absolute;left:10px;right:10px;top:calc(var(--safe-top) + 108px);display:flex;flex-direction:row;flex-wrap:wrap;gap:5px;pointer-events:none;}
+  .weapons{position:absolute;left:10px;right:10px;top:calc(var(--safe-top) + 100px);display:flex;flex-direction:row;flex-wrap:wrap;gap:5px;pointer-events:none;}
   .wchip{width:30px;height:30px;border-radius:8px;background:rgba(8,4,24,0.55);border:1px solid var(--stroke);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
   .wchip .ic-svg{width:18px;height:18px;}
   .wchip.evo{border-color:var(--gold);box-shadow:0 0 10px rgba(255,216,100,0.45),inset 0 0 6px rgba(255,216,100,0.12);}
@@ -258,6 +257,20 @@
   .pass-tier-row .rwd-cell.done{opacity:0.4;}
   .pass-tier-row .rwd-cell.locked{opacity:0.55;}
   @keyframes claimPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.25);}}
+
+  /* SLOT MACHINE modal (Golden Chest) */
+  .slot-modal{position:fixed;inset:0;z-index:115;display:none;background:rgba(5,2,14,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:calc(var(--safe-top) + 16px) 16px calc(var(--safe-bot) + 16px);}
+  .slot-modal.show{display:flex;}
+  .slot-modal .body{background:linear-gradient(180deg,rgba(40,20,80,0.95),rgba(20,10,50,0.95));border:2px solid var(--gold);border-radius:18px;padding:20px;max-width:380px;width:100%;text-align:center;box-shadow:0 0 32px rgba(255,216,100,0.55),inset 0 0 22px rgba(255,216,100,0.10);}
+  .slot-modal h2{font-size:24px;font-weight:900;letter-spacing:3px;background:linear-gradient(180deg,#ffd864,#ff7a3a);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0 0 12px;}
+  .slot-reels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0;}
+  .slot-col{height:60px;border:1.5px solid var(--gold);border-radius:10px;overflow:hidden;background:rgba(0,0,0,0.55);box-shadow:0 0 14px rgba(255,216,100,0.32),inset 0 0 10px rgba(255,216,100,0.08);position:relative;}
+  .slot-col::before,.slot-col::after{content:"";position:absolute;left:0;right:0;height:18px;z-index:2;pointer-events:none;}
+  .slot-col::before{top:0;background:linear-gradient(180deg,rgba(0,0,0,0.85),transparent);}
+  .slot-col::after{bottom:0;background:linear-gradient(0deg,rgba(0,0,0,0.85),transparent);}
+  .slot-strip{display:flex;flex-direction:column;will-change:transform;}
+  .slot-cell{height:60px;display:flex;align-items:center;justify-content:center;}
+  .slot-cell .ic-svg{width:34px;height:34px;}
 
   /* STARTER PACK modal */
   .starter-modal{position:fixed;inset:0;z-index:120;display:none;background:rgba(5,2,14,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:calc(var(--safe-top) + 16px) 16px calc(var(--safe-bot) + 16px);}
@@ -472,7 +485,6 @@
       <div class="pill kills"><span class="lab" data-i18n="kills">KILLS</span><span class="val" id="killsVal">0</span></div>
     </div>
     <div class="hp-wrap">
-      <div class="bar hp"><div class="fill" id="hpFill"></div></div>
       <div class="bar xp"><div class="fill" id="xpFill"></div></div>
     </div>
     <div class="weapons" id="weaponsHud"></div>
@@ -670,6 +682,20 @@
         </div>
       </div>
       <div class="footer">v0.2.0 · <span class="small-link" data-i18n="privacy">Privacy</span> · <span class="small-link" data-i18n="terms">Terms</span></div>
+    </div>
+  </div>
+
+  <!-- Slot Machine modal (Golden Chest reward) -->
+  <div class="slot-modal" id="slotModal">
+    <div class="body">
+      <h2>GOLDEN CHEST</h2>
+      <div class="slot-reels">
+        <div class="slot-col"><div class="slot-strip" id="slotR1"></div></div>
+        <div class="slot-col"><div class="slot-strip" id="slotR2"></div></div>
+        <div class="slot-col"><div class="slot-strip" id="slotR3"></div></div>
+      </div>
+      <div id="slotResult" style="font-weight:900;color:var(--gold);font-size:14px;height:20px;letter-spacing:1.5px;text-shadow:0 0 8px var(--gold);"></div>
+      <button class="btn primary" id="slotClaimBtn" style="margin-top:12px;display:none;width:100%;"><span>CLAIM</span></button>
     </div>
   </div>
 
@@ -1296,6 +1322,7 @@ function startRun(opts){
   game.running=true; game.paused=false; game.over=false; game.won=false;
   game.t=0; game.lastT=performance.now()/1000;
   game.enemies.length=0; game.projectiles.length=0; game.gems.length=0; game.coins.length=0; game.particles.length=0; game.dmgNumbers.length=0; game.hazards.length=0;
+  game.pickupItems = [];
   game.cam={x:0,y:0}; game.spawnTimer=0; game.spawnBudget=0;
   game.level=1; game.xp=0; game.xpNext=nextXpFor(1); game.kills=0; game.runCoins=state.meta.startCoin*25; game.score=0;
   game.weapons.length=0; game.passives={};
@@ -1409,6 +1436,281 @@ function spawnGem(x,y,xpVal){
 }
 function spawnCoin(x,y){
   game.coins.push({x,y,vx:rand(-50,50),vy:rand(-80,-30),t:0,life:9});
+}
+
+// ============ MAP PICKUP ITEMS (food, magnet, chests) ============
+const PICKUP_DEFS = {
+  food:   { color:'#ff5470', life:25, r:14 },
+  magnet: { color:'#9b6cff', life:25, r:14 },
+  chestW: { color:'#c9905a', life:35, r:16 },
+  chestG: { color:'#ffd864', life:60, r:18 },
+};
+
+function spawnPickupItem(type, x, y){
+  const def = PICKUP_DEFS[type]; if(!def) return;
+  if(!game.pickupItems) game.pickupItems = [];
+  game.pickupItems.push({ type, x, y, t:0, life:def.life, vx:rand(-60,60), vy:rand(-100,-40), settled:false, def });
+}
+
+function updatePickupItems(dt){
+  if(!game.pickupItems) return;
+  const p = game.player;
+  for(let i=game.pickupItems.length-1; i>=0; i--){
+    const it = game.pickupItems[i];
+    it.t += dt;
+    it.life -= dt;
+    if(it.life <= 0){ game.pickupItems.splice(i,1); continue; }
+    // Initial scatter physics
+    if(!it.settled){
+      it.x += it.vx*dt; it.y += it.vy*dt;
+      it.vy += 280*dt;
+      it.vx *= 0.92; it.vy *= 0.95;
+      if(Math.abs(it.vx)<5 && Math.abs(it.vy)<5){ it.settled = true; }
+    }
+    // Collect if player walks over
+    const pr = (p.r + it.def.r);
+    if(dist2(it.x, it.y, p.x, p.y) < pr*pr){
+      applyPickup(it.type, it.x, it.y);
+      game.pickupItems.splice(i,1);
+    }
+  }
+}
+
+function applyPickup(type, x, y){
+  switch(type){
+    case 'food': {
+      const heal = Math.floor(game.player.maxHp * 0.30);
+      game.player.hp = Math.min(game.player.maxHp, game.player.hp + heal);
+      toast('+'+heal+' HP', 'gold');
+      sfx('coin'); haptic('ok');
+      // green burst
+      for(let i=0;i<12;i++){
+        game.particles.push({kind:'spark', x, y, vx:rand(-180,180), vy:rand(-220,-30), life:0.5, color:'#54e26a'});
+      }
+      break;
+    }
+    case 'magnet': {
+      // Pull every gem and coin instantly toward player
+      for(const g of game.gems){ g.t = 1.0; }
+      for(const c of game.coins){ c.t = 1.0; }
+      // Visual ring
+      game.particles.push({kind:'ring', x:game.player.x, y:game.player.y, r:0, maxR:Math.max(W,H), life:0.6, color:'#9b6cff', big:true});
+      toast('MAGNET', 'neon');
+      sfx('xp'); haptic('ok');
+      break;
+    }
+    case 'chestW': {
+      openWoodenChest(x, y);
+      break;
+    }
+    case 'chestG': {
+      openGoldenChest();
+      break;
+    }
+  }
+}
+
+function drawPickupItems(){
+  if(!game.pickupItems) return;
+  for(const it of game.pickupItems){
+    const s = worldToScreen(it.x, it.y);
+    if(s.x < -40 || s.x > W+40 || s.y < -40 || s.y > H+40) continue;
+    const def = it.def;
+    const yOff = it.settled ? Math.sin(it.t*3)*3 : 0;
+    const cx = s.x, cy = s.y + yOff;
+    const alpha = it.life < 3 ? (0.4 + Math.sin(it.life*9)*0.5) : 1;
+    // Halo
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.globalCompositeOperation = 'lighter';
+    const grad = ctx.createRadialGradient(cx, cy, 2, cx, cy, 26);
+    grad.addColorStop(0, def.color);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(cx-28, cy-28, 56, 56);
+    ctx.restore();
+    // Shape per type
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    drawPickupShape(cx, cy, it.type, def);
+    ctx.restore();
+  }
+}
+
+function drawPickupShape(cx, cy, type, def){
+  if(type==='food'){
+    // Healing crystal — red rounded square with white +
+    ctx.fillStyle = '#1a0408';
+    roundRect(ctx, cx-12, cy-12, 24, 24, 6); ctx.fill();
+    ctx.fillStyle = def.color;
+    ctx.shadowColor = def.color; ctx.shadowBlur = 10;
+    roundRect(ctx, cx-10, cy-10, 20, 20, 5); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(cx-2, cy-7, 4, 14);
+    ctx.fillRect(cx-7, cy-2, 14, 4);
+  } else if(type==='magnet'){
+    // U-shape magnet — violet/white tips
+    ctx.strokeStyle = def.color;
+    ctx.lineWidth = 5; ctx.lineCap='round';
+    ctx.shadowColor = def.color; ctx.shadowBlur = 14;
+    ctx.beginPath();
+    ctx.arc(cx, cy+2, 9, Math.PI, 0);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.lineWidth = 4; ctx.strokeStyle = '#fff';
+    ctx.beginPath();
+    ctx.moveTo(cx-9, cy+2); ctx.lineTo(cx-9, cy+7);
+    ctx.moveTo(cx+9, cy+2); ctx.lineTo(cx+9, cy+7);
+    ctx.stroke();
+  } else if(type==='chestW' || type==='chestG'){
+    // Treasure chest
+    const isG = type==='chestG';
+    const bodyLight = isG ? '#ffd864' : '#a16635';
+    const bodyDark  = isG ? '#c79a2d' : '#6b4423';
+    const lid       = isG ? '#fff2c0' : '#c98a4d';
+    const stroke    = isG ? '#7a5a10' : '#3a2010';
+    const w = isG ? 26 : 22, hb = 13, hl = 9;
+    // body
+    ctx.fillStyle = bodyDark;
+    roundRect(ctx, cx-w/2, cy-1, w, hb, 2); ctx.fill();
+    ctx.fillStyle = bodyLight;
+    ctx.fillRect(cx-w/2+2, cy+1, w-4, hb-3);
+    // lid
+    ctx.fillStyle = lid;
+    roundRect(ctx, cx-w/2, cy-hl-1, w, hl+2, 3); ctx.fill();
+    ctx.fillStyle = bodyDark;
+    ctx.fillRect(cx-w/2+2, cy-hl+1, w-4, hl-3);
+    // outline + glow
+    ctx.strokeStyle = stroke; ctx.lineWidth = 1.5;
+    ctx.shadowColor = isG ? '#ffd864' : 'rgba(0,0,0,0)';
+    ctx.shadowBlur = isG ? 14 : 0;
+    roundRect(ctx, cx-w/2, cy-hl-1, w, hb+hl+2, 3); ctx.stroke();
+    ctx.shadowBlur = 0;
+    // lock
+    ctx.fillStyle = isG ? '#ffd864' : '#c98a4d';
+    ctx.fillRect(cx-2, cy-2, 4, 6);
+    if(isG){
+      // gem on top
+      ctx.fillStyle = '#7afcff';
+      ctx.shadowColor = '#7afcff'; ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy-hl-7); ctx.lineTo(cx+4, cy-hl-2); ctx.lineTo(cx, cy-hl+2); ctx.lineTo(cx-4, cy-hl-2);
+      ctx.closePath(); ctx.fill();
+    }
+  }
+}
+
+function roundRect(c, x, y, w, h, r){
+  c.beginPath();
+  c.moveTo(x+r, y);
+  c.lineTo(x+w-r, y);
+  c.quadraticCurveTo(x+w, y, x+w, y+r);
+  c.lineTo(x+w, y+h-r);
+  c.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  c.lineTo(x+r, y+h);
+  c.quadraticCurveTo(x, y+h, x, y+h-r);
+  c.lineTo(x, y+r);
+  c.quadraticCurveTo(x, y, x+r, y);
+  c.closePath();
+}
+
+// Wooden chest → small random reward, no modal
+function openWoodenChest(x, y){
+  const r = Math.random();
+  if(r < 0.20){
+    applyPickup('food', x, y);
+  } else if(r < 0.40){
+    applyPickup('magnet', x, y);
+  } else {
+    const c = 30 + irand(0, 70);
+    state.coins += c; game.runCoins += c;
+    toast('+'+c+' coins · CHEST', 'gold');
+    for(let i=0;i<6;i++) spawnCoin(x + rand(-18,18), y + rand(-18,18));
+    sfx('coin'); haptic('ok');
+  }
+}
+
+// Golden chest → slot machine modal
+function openGoldenChest(){
+  if(game.over) return;
+  game.paused = true;
+  const modal = $('#slotModal');
+  if(!modal) return;
+  modal.classList.add('show');
+  $('#slotResult').textContent = '';
+  $('#slotClaimBtn').style.display = 'none';
+  // Decide outcome
+  const roll = Math.random();
+  let outcome;
+  if(roll < 0.12) outcome = 'jackpot';
+  else if(roll < 0.40) outcome = 'weapon';
+  else if(roll < 0.55) outcome = 'evolveBoost'; // grants pass XP and coins
+  else outcome = 'coins';
+  // Settled symbols per outcome
+  const SYM = ['coin','gem','star','sword','bolt','heart','trophy'];
+  const settled = {
+    jackpot:     ['coin','coin','coin'],
+    weapon:      ['bolt','bolt','bolt'],
+    evolveBoost: ['star','star','star'],
+    coins:       [SYM[irand(0,SYM.length-1)], SYM[irand(0,SYM.length-1)], 'coin'],
+  }[outcome];
+  // Build reels
+  const reelCount = 14;
+  for(let r=0; r<3; r++){
+    const strip = $('#slotR'+(r+1));
+    strip.innerHTML = '';
+    strip.style.transition = 'none';
+    strip.style.transform = 'translateY(0)';
+    const cells = [];
+    for(let j=0; j<reelCount-1; j++) cells.push(SYM[irand(0,SYM.length-1)]);
+    cells.push(settled[r]);
+    strip.innerHTML = cells.map(s=>'<div class="slot-cell" style="color:var(--gold)">'+icon(s,{size:'lg'})+'</div>').join('');
+    // Spin
+    const totalH = reelCount * 60;
+    const dist = totalH - 60;
+    requestAnimationFrame(()=>{
+      strip.style.transition = 'transform '+(1.2 + r*0.35)+'s cubic-bezier(.13,.78,.32,1)';
+      strip.style.transform = 'translateY(-'+dist+'px)';
+    });
+  }
+  sfx('coin');
+  // After last reel stops
+  setTimeout(()=>{
+    let msg, apply;
+    if(outcome === 'jackpot'){
+      msg = 'JACKPOT! +1000 coins';
+      apply = ()=>{ state.coins += 1000; game.runCoins += 1000; };
+    } else if(outcome === 'weapon'){
+      msg = 'WEAPON LEVEL UP!';
+      apply = ()=>{
+        const elig = game.weapons.filter(w => w.level < MAX_WLEVEL && !w.evolved);
+        if(elig.length){ levelWeapon(elig[irand(0,elig.length-1)]); }
+        else if(game.weapons.length){
+          state.coins += 500; game.runCoins += 500;
+        }
+      };
+    } else if(outcome === 'evolveBoost'){
+      msg = '+200 PASS XP +300 COINS';
+      apply = ()=>{ awardPassXp(200); state.coins += 300; game.runCoins += 300; };
+    } else {
+      const c = 80 + irand(0, 180);
+      msg = '+'+c+' coins';
+      apply = ()=>{ state.coins += c; game.runCoins += c; };
+    }
+    $('#slotResult').textContent = msg;
+    const btn = $('#slotClaimBtn');
+    btn.style.display = 'flex';
+    btn.onclick = ()=>{
+      apply();
+      saveNow();
+      modal.classList.remove('show');
+      game.paused = false;
+      sfx('evo'); haptic('heavy');
+      celebrate();
+    };
+    sfx('level');
+  }, 2400);
 }
 
 // ============ enemy AI / movement ============
@@ -1737,6 +2039,22 @@ function onKill(e){
     spawnGem(e.x+rand(-8,8), e.y+rand(-8,8), 1);
   }
   if(Math.random()<e.coinChance) spawnCoin(e.x,e.y);
+  // Map pickup drops — SurvivorIO-style. Higher chance from elites, guaranteed gold chest from bosses.
+  const tier = e.isBoss ? 'boss' : (e.type==='elite' ? 'elite' : 'normal');
+  if(tier==='boss'){
+    spawnPickupItem('chestG', e.x, e.y);
+  } else {
+    // Try one pickup roll — prioritized food → magnet → wooden chest
+    const rolls = [
+      ['food',   tier==='elite' ? 0.08 : 0.010],
+      ['magnet', tier==='elite' ? 0.05 : 0.007],
+      ['chestW', tier==='elite' ? 0.10 : 0.004],
+      ['chestG', tier==='elite' ? 0.03 : 0.000],
+    ];
+    for(const [k,p] of rolls){
+      if(Math.random() < p){ spawnPickupItem(k, e.x, e.y); break; }
+    }
+  }
   game.kills++; game.score+=e.score||1;
   // Storm-surge charge from kills
   if(e.isBoss) addSurge(SURGE_PER_BOSS);
@@ -2058,6 +2376,37 @@ function drawPlayer(){
   // magnet ring (faint)
   ctx.strokeStyle='rgba(255,255,255,0.04)';
   ctx.beginPath(); ctx.arc(s.x,s.y,p.magnetR,0,TAU); ctx.stroke();
+
+  // HP bar above hero — green > yellow > red, pulses when low
+  const ratio = clamp(p.hp/p.maxHp, 0, 1);
+  const hpW = 40, hpH = 5;
+  const hpX = s.x - hpW/2;
+  const hpY = s.y - p.r - 11;
+  let hpColor;
+  if(ratio > 0.6) hpColor = '#54e26a';
+  else if(ratio > 0.3) hpColor = '#ffd864';
+  else hpColor = '#ff5470';
+  // outline + bg
+  ctx.fillStyle = 'rgba(0,0,0,0.75)';
+  ctx.fillRect(hpX-1, hpY-1, hpW+2, hpH+2);
+  // fill
+  ctx.fillStyle = hpColor;
+  ctx.fillRect(hpX, hpY, hpW*ratio, hpH);
+  // glow if low
+  if(ratio < 0.3){
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = 0.35 + Math.sin(game.t*14) * 0.35;
+    ctx.fillStyle = hpColor;
+    ctx.shadowColor = hpColor;
+    ctx.shadowBlur = 10;
+    ctx.fillRect(hpX, hpY, hpW*ratio, hpH);
+    ctx.restore();
+  } else {
+    // subtle highlight stripe
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.fillRect(hpX, hpY, hpW*ratio, 1.5);
+  }
 }
 
 function drawEnemies(){
@@ -2140,7 +2489,7 @@ function drawPickups(){
     const s=worldToScreen(g.x,g.y);
     if(s.x<-20||s.x>W+20||s.y<-20||s.y>H+20) continue;
     ctx.save(); ctx.globalCompositeOperation='lighter';
-    ctx.fillStyle='#7afcff'; ctx.shadowColor='#7afcff'; ctx.shadowBlur=10;
+    ctx.fillStyle='#54e26a'; ctx.shadowColor='#54e26a'; ctx.shadowBlur=10;
     ctx.translate(s.x,s.y); ctx.rotate(game.t*4);
     ctx.fillRect(-3,-3,6,6);
     ctx.restore();
@@ -2229,7 +2578,7 @@ function refreshHud(){
   $('#lvVal').textContent=game.level;
   $('#timeVal').textContent=fmtTime(game.t);
   $('#killsVal').textContent=game.kills;
-  $('#hpFill').style.width=clamp((game.player?.hp/game.player?.maxHp)*100,0,100)+'%';
+  // HP bar is drawn on canvas above the player (see drawPlayer)
   $('#xpFill').style.width=clamp((game.xp/game.xpNext)*100,0,100)+'%';
   if(game.boss){
     $('#bossHpFill').style.width = clamp(game.boss.hp/game.boss.maxHp*100,0,100)+'%';
@@ -2365,6 +2714,7 @@ function step(dt){
   updateEnemies(dt);
   updateProjectiles(dt);
   updateGems(dt);
+  updatePickupItems(dt);
   updateParticles(dt);
 
   // shake decay
@@ -2380,6 +2730,7 @@ function drawFrame(){
   }
   drawBg();
   drawPickups();
+  drawPickupItems();
   drawProjectiles();
   drawEnemies();
   drawPlayer();
