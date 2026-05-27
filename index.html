@@ -19,9 +19,9 @@
     /* Telegram WebView reports contentSafeAreaInset via JS; CSS env() returns 0 inside the WebView. JS sets these vars on :root from tg.contentSafeAreaInset. We use max() to fall back to env() outside TG. */
     --tg-safe-top:0px;
     --tg-safe-bot:0px;
-    /* Min 130px clears iPhone status bar + Telegram's Close/Menu chrome on notched devices.
+    /* 110px clears iPhone status bar + Telegram's Close/Menu chrome with minimal padding.
        tg.contentSafeAreaInset overrides via JS when available. */
-    --safe-top:max(130px, var(--tg-safe-top), env(safe-area-inset-top,0px));
+    --safe-top:max(110px, var(--tg-safe-top), env(safe-area-inset-top,0px));
     --safe-bot:max(20px, var(--tg-safe-bot), env(safe-area-inset-bottom,0px));
     --bnav-h:64px; /* bottom nav height (without safe-bot) */
   }
@@ -269,7 +269,7 @@
   @keyframes coinFly{0%{transform:translate(-50%,-50%) scale(0.5);opacity:0;}10%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(0.5);opacity:0;}}
 
   /* ============ STORM SURGE ULTIMATE ============ */
-  .surge-btn{position:absolute;right:14px;bottom:calc(var(--safe-bot) + 18px);width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(122,252,255,0.18),rgba(20,10,50,0.78) 70%);border:2px solid rgba(122,252,255,0.6);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(122,252,255,0.85);z-index:20;pointer-events:auto;transition:all 0.2s;backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(122,252,255,0.25),inset 0 0 12px rgba(122,252,255,0.1);}
+  .surge-btn{position:absolute;left:14px;bottom:calc(var(--safe-bot) + 18px);width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(122,252,255,0.18),rgba(20,10,50,0.78) 70%);border:2px solid rgba(122,252,255,0.6);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(122,252,255,0.85);z-index:20;pointer-events:auto;transition:all 0.2s;backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(122,252,255,0.25),inset 0 0 12px rgba(122,252,255,0.1);}
   .surge-btn .ic-svg{width:32px;height:32px;}
   .surge-btn::after{content:attr(data-pct);position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:900;color:var(--neon);letter-spacing:1px;text-shadow:0 0 5px var(--neon);white-space:nowrap;background:rgba(10,4,24,0.7);padding:2px 7px;border-radius:8px;border:1px solid rgba(122,252,255,0.4);}
   .surge-btn.ready::after{color:var(--gold);text-shadow:0 0 5px var(--gold);border-color:var(--gold);}
