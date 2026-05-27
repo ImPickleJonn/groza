@@ -49,10 +49,24 @@
   .bar.xp{height:6px;}
   .bar.xp .fill{background:linear-gradient(90deg,#7afcff,#3a78ff);box-shadow:0 0 6px #7afcff inset;}
 
-  .weapons{position:absolute;left:10px;top:calc(var(--safe-top) + 108px);display:flex;flex-direction:column;gap:4px;pointer-events:none;}
-  .wslot{display:flex;align-items:center;gap:6px;background:rgba(8,4,24,0.55);border:1px solid var(--stroke);border-radius:8px;padding:3px 8px 3px 4px;font-size:11px;color:var(--ink);font-weight:700;}
-  .wslot .ic{width:18px;height:18px;border-radius:5px;background:#222;display:flex;align-items:center;justify-content:center;font-size:11px;}
-  .wslot .lv{color:var(--gold);font-variant-numeric:tabular-nums;}
+  /* In-run minimal weapon HUD — icons only */
+  .weapons{position:absolute;left:10px;right:10px;top:calc(var(--safe-top) + 108px);display:flex;flex-direction:row;flex-wrap:wrap;gap:5px;pointer-events:none;}
+  .wchip{width:30px;height:30px;border-radius:8px;background:rgba(8,4,24,0.55);border:1px solid var(--stroke);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+  .wchip .ic-svg{width:18px;height:18px;}
+  .wchip.evo{border-color:var(--gold);box-shadow:0 0 10px rgba(255,216,100,0.45),inset 0 0 6px rgba(255,216,100,0.12);}
+
+  /* Pause modal — current build list */
+  .build-list{display:flex;flex-direction:column;gap:6px;margin:12px 0;max-height:55vh;overflow-y:auto;}
+  .build-list h4{margin:8px 0 4px;font-size:11px;font-weight:800;color:var(--ink-d);text-transform:uppercase;letter-spacing:1.5px;display:flex;align-items:center;gap:6px;}
+  .build-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid var(--stroke);border-radius:10px;padding:6px 10px;}
+  .build-row.evo{border-color:var(--gold);background:rgba(255,216,100,0.08);box-shadow:0 0 10px rgba(255,216,100,0.2);}
+  .build-row .ic-cell{width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .build-row .ic-cell .ic-svg{width:20px;height:20px;}
+  .build-row .meta{flex:1;min-width:0;}
+  .build-row .nm{font-weight:800;font-size:12px;color:#fff;display:flex;align-items:center;gap:5px;}
+  .build-row .nm .star-svg{width:11px;height:11px;color:var(--gold);}
+  .build-row .ds{font-size:10px;color:var(--ink-d);line-height:1.3;margin-top:1px;}
+  .build-row .lv{font-weight:900;font-size:11px;color:var(--gold);font-variant-numeric:tabular-nums;letter-spacing:0.5px;flex-shrink:0;}
 
   .pauseBtn{position:absolute;right:10px;top:calc(var(--safe-top) + 44px);width:32px;height:32px;border-radius:50%;background:rgba(8,4,24,0.55);border:1px solid var(--stroke);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;pointer-events:auto;cursor:pointer;z-index:7;}
 
@@ -704,6 +718,7 @@
   <div class="modal" id="pauseModal">
     <div class="body">
       <h2 data-i18n="paused">PAUSED</h2>
+      <div class="build-list" id="pauseBuildList"></div>
       <button class="btn primary" id="resumeBtn" style="margin-bottom:8px;" data-i18n="resume">RESUME</button>
       <button class="btn ghost" id="quitBtn" data-i18n="quitRun">QUIT RUN</button>
     </div>
@@ -2191,15 +2206,12 @@ function refreshHud(){
 }
 function refreshWeaponHud(){
   const el=$('#weaponsHud'); el.innerHTML='';
-  const lng=state.settings.lang;
   for(const w of game.weapons){
     const d=el.appendChild(document.createElement('div'));
-    d.className='wslot';
+    d.className='wchip' + (w.evolved?' evo':'');
     const id=w.evolved?w.def.evo.icon:w.def.icon;
     const color=w.evolved?'var(--gold)':'var(--neon)';
-    const nm=w.evolved?(w.def.evo.name[lng]||w.def.evo.name.en):(w.def.name[lng]||w.def.name.en);
-    const starHtml = w.evolved?icon('star',{color:'var(--gold)'}):'';
-    d.innerHTML=`<div class="ic">${icon(id,{color})}</div><span>${nm}</span> <span class="lv">L${w.level}${starHtml?(' '+starHtml):''}</span>`;
+    d.innerHTML=icon(id,{color});
   }
 }
 
@@ -3312,7 +3324,47 @@ $('#menuBtn').addEventListener('click',()=>{ showMenu(); });
 function pauseGame(p){
   game.paused=p;
   $('#pauseModal').classList.toggle('show', p);
+  if(p) renderPauseBuild();
   haptic('light');
+}
+
+function renderPauseBuild(){
+  const el = $('#pauseBuildList'); if(!el) return;
+  const lng = state.settings.lang;
+  let html = '';
+  // Weapons section
+  if(game.weapons && game.weapons.length){
+    html += '<h4>'+icon('bolt',{color:'var(--neon)'})+'<span>WEAPONS</span></h4>';
+    for(const w of game.weapons){
+      const id = w.evolved ? w.def.evo.icon : w.def.icon;
+      const color = w.evolved ? 'var(--gold)' : 'var(--neon)';
+      const nm = w.evolved ? (w.def.evo.name[lng]||w.def.evo.name.en) : (w.def.name[lng]||w.def.name.en);
+      const ds = w.evolved ? (w.def.evo.ds[lng]||w.def.evo.ds.en) : (w.def.ds[lng]||w.def.ds.en);
+      const starHtml = w.evolved ? '<svg class="ic-svg star-svg"><use href="#i-star"></use></svg>' : '';
+      html += '<div class="build-row'+(w.evolved?' evo':'')+'">'+
+        '<div class="ic-cell" style="color:'+color+'">'+icon(id)+'</div>'+
+        '<div class="meta"><div class="nm">'+nm+' '+starHtml+'</div><div class="ds">'+ds+'</div></div>'+
+        '<div class="lv">L'+w.level+'</div></div>';
+    }
+  }
+  // Passives section
+  const passEntries = Object.entries(game.passives||{}).filter(([_,lv])=>lv>0);
+  if(passEntries.length){
+    html += '<h4>'+icon('power',{color:'var(--pink)'})+'<span>PASSIVES</span></h4>';
+    for(const [id,lv] of passEntries){
+      const d = PASSIVES[id]; if(!d) continue;
+      const nm = d.name[lng]||d.name.en;
+      const ds = d.ds[lng]||d.ds.en;
+      html += '<div class="build-row">'+
+        '<div class="ic-cell" style="color:'+(d.color||'var(--ink)')+'">'+icon(d.icon)+'</div>'+
+        '<div class="meta"><div class="nm">'+nm+'</div><div class="ds">'+ds+'</div></div>'+
+        '<div class="lv">L'+lv+'</div></div>';
+    }
+  }
+  if(!html){
+    html = '<div style="text-align:center;color:var(--ink-d);font-size:12px;padding:14px;">No skills picked yet</div>';
+  }
+  el.innerHTML = html;
 }
 
 // settings switches
