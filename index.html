@@ -266,6 +266,50 @@
   .coinpop{position:fixed;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8d4,#ffd864 50%,#c79a2d 100%);box-shadow:0 0 10px var(--gold);z-index:200;pointer-events:none;animation:coinFly var(--dur,0.9s) cubic-bezier(.2,.7,.4,1) forwards;}
   @keyframes coinFly{0%{transform:translate(-50%,-50%) scale(0.5);opacity:0;}10%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(0.5);opacity:0;}}
 
+  /* ============ STORM SURGE ULTIMATE ============ */
+  .surge-btn{position:absolute;right:14px;bottom:calc(var(--safe-bot) + 18px);width:78px;height:78px;border-radius:50%;background:rgba(10,4,24,0.5);border:2px solid rgba(122,252,255,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#7afcff66;z-index:20;pointer-events:auto;transition:all 0.2s;backdrop-filter:blur(6px);}
+  .surge-btn .ic-svg{width:34px;height:34px;}
+  .surge-btn .meter{position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(from -90deg, var(--neon) calc(var(--p,0%)), transparent 0);mask:radial-gradient(circle, transparent 65%, black 67%);-webkit-mask:radial-gradient(circle, transparent 65%, black 67%);}
+  .surge-btn.ready{color:#fff;background:rgba(255,216,100,0.18);border-color:var(--gold);box-shadow:0 0 28px var(--gold),inset 0 0 24px rgba(255,216,100,0.25);animation:surgeReady 1.1s ease-in-out infinite;}
+  .surge-btn.ready .ic-svg{filter:drop-shadow(0 0 10px var(--gold)) drop-shadow(0 0 4px var(--gold));color:var(--gold);}
+  .surge-btn.ready .meter{background:conic-gradient(from -90deg, var(--gold) 100%, transparent 0);}
+  .surge-btn:active.ready{transform:scale(0.92);}
+  @keyframes surgeReady{0%,100%{box-shadow:0 0 28px var(--gold),inset 0 0 24px rgba(255,216,100,0.25);}50%{box-shadow:0 0 48px var(--gold),inset 0 0 34px rgba(255,216,100,0.45);}}
+  .surge-flash{position:fixed;inset:0;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.95) 0%, rgba(122,252,255,0.5) 30%, rgba(255,216,100,0.2) 60%, transparent 100%);z-index:25;pointer-events:none;opacity:0;}
+  .surge-flash.fire{animation:surgeFlash 0.55s ease-out forwards;}
+  @keyframes surgeFlash{0%{opacity:0;transform:scale(0.4);}15%{opacity:1;transform:scale(1.2);}100%{opacity:0;transform:scale(2.4);}}
+
+  /* ============ WEATHER PHASES ============ */
+  .weather-pill{position:absolute;left:50%;top:calc(var(--safe-top) + 8px);transform:translateX(-50%);background:rgba(8,4,24,0.55);backdrop-filter:blur(8px);border:1px solid var(--stroke);border-radius:14px;padding:6px 12px;font-weight:800;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px;pointer-events:none;z-index:6;}
+  .weather-pill .ic-svg{width:14px;height:14px;}
+  .weather-pill.calm{color:var(--neon);border-color:rgba(122,252,255,0.4);box-shadow:0 0 12px rgba(122,252,255,0.25);}
+  .weather-pill.rain{color:#9bf;border-color:rgba(155,191,255,0.5);box-shadow:0 0 12px rgba(120,150,255,0.3);}
+  .weather-pill.storm{color:var(--pink);border-color:rgba(255,95,162,0.6);box-shadow:0 0 14px rgba(255,95,162,0.4);animation:stormShimmer 0.8s ease-in-out infinite;}
+  @keyframes stormShimmer{0%,100%{filter:brightness(1);}50%{filter:brightness(1.35);}}
+  .weather-overlay{position:absolute;inset:0;pointer-events:none;z-index:3;mix-blend-mode:screen;opacity:0;transition:opacity 1.5s,background 1.5s;}
+  .weather-overlay.calm{opacity:0.18;background:radial-gradient(ellipse at 50% 30%, rgba(122,252,255,0.45) 0%, transparent 70%);}
+  .weather-overlay.rain{opacity:0.32;background:radial-gradient(ellipse at 50% 40%, rgba(80,90,180,0.55) 0%, rgba(30,20,80,0.4) 60%, transparent 100%);mix-blend-mode:multiply;}
+  .weather-overlay.storm{opacity:0.4;background:radial-gradient(ellipse at 50% 20%, rgba(255,95,162,0.4) 0%, rgba(120,30,80,0.45) 50%, transparent 100%);mix-blend-mode:screen;animation:stormFlicker 4s infinite;}
+  @keyframes stormFlicker{0%,92%,100%{filter:brightness(1);}93%{filter:brightness(2.5);}94%{filter:brightness(1);}95%{filter:brightness(2);}96%{filter:brightness(1);}}
+
+  /* ============ PROPHECY card ============ */
+  .prophecy-card{background:linear-gradient(135deg,rgba(155,108,255,0.18),rgba(255,95,162,0.14));border:1.5px solid rgba(155,108,255,0.45);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;box-shadow:0 0 18px rgba(155,108,255,0.25),inset 0 0 14px rgba(155,108,255,0.05);position:relative;overflow:hidden;}
+  .prophecy-card::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg, transparent 30%, rgba(255,216,100,0.08) 50%, transparent 70%);transform:translateX(-100%);animation:prophecyShimmer 3.5s infinite;pointer-events:none;}
+  @keyframes prophecyShimmer{0%{transform:translateX(-100%);}55%,100%{transform:translateX(100%);}}
+  .prophecy-card .ic-wrap{width:44px;height:44px;border-radius:11px;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;color:var(--violet);flex-shrink:0;}
+  .prophecy-card .meta{flex:1;min-width:0;}
+  .prophecy-card .lab{font-size:10px;font-weight:900;letter-spacing:2px;color:var(--violet);text-transform:uppercase;text-shadow:0 0 6px var(--violet);}
+  .prophecy-card .nm{font-weight:900;font-size:14px;color:#fff;margin-top:2px;line-height:1.25;}
+  .prophecy-card .ds{font-size:11px;color:var(--ink-d);margin-top:3px;line-height:1.35;}
+  .prophecy-card .reward{font-size:11px;color:var(--gold);font-weight:800;margin-top:4px;display:flex;align-items:center;gap:4px;text-shadow:0 0 5px var(--gold);}
+  .prophecy-card.fulfilled{border-color:var(--gold);box-shadow:0 0 22px rgba(255,216,100,0.5),inset 0 0 16px rgba(255,216,100,0.1);animation:prophecyPulse 1.6s ease-in-out infinite;}
+  .prophecy-card.fulfilled .ic-wrap{color:var(--gold);}
+  .prophecy-card.fulfilled .lab{color:var(--gold);text-shadow:0 0 8px var(--gold);}
+  .prophecy-card.claimed{opacity:0.55;}
+  @keyframes prophecyPulse{0%,100%{box-shadow:0 0 22px rgba(255,216,100,0.5);}50%{box-shadow:0 0 38px rgba(255,216,100,0.85);}}
+  .prophecy-banner{position:fixed;left:0;right:0;top:35%;text-align:center;font-weight:900;font-size:28px;letter-spacing:3px;color:var(--gold);text-shadow:0 0 18px var(--gold),0 0 36px var(--gold);opacity:0;transform:scale(0.6);transition:opacity 240ms,transform 240ms;pointer-events:none;z-index:80;}
+  .prophecy-banner.show{opacity:1;transform:scale(1);}
+
   /* settings */
   .set-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);}
   .set-row:last-child{border-bottom:none;}
@@ -393,6 +437,10 @@
 <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5M14 14c2 0 5 1.5 5 4.5"/></symbol>
 <symbol id="i-task" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 12l3 3 7-7"/></symbol>
 <symbol id="i-house" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v11h14V10"/></symbol>
+<symbol id="i-surge" viewBox="0 0 24 24"><path d="M13 1L3 14h7l-2 9 11-13h-7l1-9z" fill="currentColor" stroke="currentColor" stroke-linejoin="round"/></symbol>
+<symbol id="i-rain" viewBox="0 0 24 24"><path d="M6 11c-3 0-3-5 0-5 1-2 5-2 6 0 3-1 6 1 5 5 3 0 3 4 0 4H7c-3 0-3-4 0-4z M8 17l-1 4 M12 17l-1 4 M16 17l-1 4"/></symbol>
+<symbol id="i-calm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></symbol>
+<symbol id="i-prophecy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 3M8 8l8 8" stroke-width="1.6"/></symbol>
 </defs>
 </svg>
 
@@ -413,7 +461,26 @@
     <div class="pauseBtn" id="pauseBtn" style="color:#fff"><svg class="ic-svg" style="width:18px;height:18px"><use href="#i-pause"></use></svg></div>
     <div class="bossHP" id="bossHpBar"><div class="lbl" id="bossLbl">BOSS</div><div class="fill" id="bossHpFill"></div></div>
     <div class="bossBanner" id="bossBanner">BOSS!</div>
+
+    <!-- Weather phase pill -->
+    <div class="weather-pill calm" id="weatherPill" style="display:none">
+      <svg class="ic-svg"><use href="#i-calm" id="weatherIconRef"></use></svg>
+      <span id="weatherName">CALM</span>
+      <span id="weatherTime" style="opacity:0.7;font-weight:600;">0:30</span>
+    </div>
+
+    <!-- Storm Surge ultimate button -->
+    <div class="surge-btn" id="surgeBtn" style="display:none">
+      <div class="meter" id="surgeMeter"></div>
+      <svg class="ic-svg"><use href="#i-surge"></use></svg>
+    </div>
+
+    <div class="prophecy-banner" id="prophecyBanner">PROPHECY FULFILLED</div>
   </div>
+
+  <!-- Weather overlay (sits between canvas and HUD) -->
+  <div class="weather-overlay" id="weatherOverlay"></div>
+  <div class="surge-flash" id="surgeFlash"></div>
 
   <div class="joy" id="joy"></div>
 
@@ -434,6 +501,17 @@
           <div class="ds" id="dailyDesc">+50% spawn rate · win 200 coins</div>
         </div>
         <div class="cta" id="dailyCta" data-i18n="play">PLAY</div>
+      </div>
+
+      <!-- Daily Prophecy -->
+      <div class="prophecy-card" id="prophecyCard">
+        <div class="ic-wrap"><svg class="ic-svg ic-lg" style="width:26px;height:26px"><use href="#i-prophecy"></use></svg></div>
+        <div class="meta">
+          <div class="lab" data-i18n="prophecyToday">TODAY'S PROPHECY</div>
+          <div class="nm" id="prophecyName">—</div>
+          <div class="ds" id="prophecyDs">—</div>
+          <div class="reward" id="prophecyReward"></div>
+        </div>
       </div>
 
       <!-- Patrol (AFK) card -->
@@ -718,10 +796,16 @@ const LANG_NAMES={en:'English',ru:'Русский',es:'Español',pt:'Português'
 const STRINGS={
  en:{tagline:'Become the storm. Survive the swarm.',play:'PLAY',hero:'HERO',stage:'STAGE',shop:'SHOP',ach:'FEATS',set:'⚙',pickHero:'Pick your hero',pickStage:'Pick your stage',permUp:'Permanent Upgrades',getCoins:'Get Coins',sound:'Sound',soundDs:'Background music & SFX',haptic:'Haptics',hapticDs:'Vibration feedback',dmgn:'Damage numbers',dmgnDs:'Show damage popups',lang:'Language',reset:'Reset',resetDs:'Wipe all save data',about:'About',privacy:'Privacy',terms:'Terms',paused:'PAUSED',resume:'RESUME',quitRun:'QUIT RUN',levelUp:'LEVEL UP!',pickPower:'CHOOSE YOUR POWER',reroll:'Reroll (free, daily)',time:'Time',kills:'Kills',lvl:'LV',coins:'Coins',revive:'Revive — 20 Stars',retry:'RETRY',menu:'MENU',dailyTitle:'Daily Challenge',defeated:'DEFEATED',victory:'VICTORY!',unlocked:'Unlocked!',coinsEarned:'+{n} coins',newRecord:'New record!',NEW:'NEW',EVO:'EVO',MAX:'MAX',
    navHome:'HOME',navEarn:'EARN',navSettings:'SET',earnTitle:'EARN',earnFree:'Free coins, daily',earnSub:'Login, invite, complete tasks',dailyLogin:'Daily Login',inviteTitle:'Invite Friends',inviteDs:'Share GROZA. Each friend that opens the game gives you +100 coins (when server tracking is on).',inviteCta:'SHARE INVITE LINK',tasksTitle:'Daily Tasks',claim:'CLAIM',claimed:'CLAIMED',taskPlay3:'Play 3 runs',taskLv15:'Reach level 15 in a run',taskKill200:'Get 200 kills in a run',shareText:'⚡ GROZA — bullet-heaven survivor. Move with one finger, become the storm. Play with me!',
-   patrolTitle:'PATROL',quickPatrol:'+5h · 30⭐',patrolMax:'MAXED — claim now!',patrolEarning:'Earning {h}h / 24h · +{r}/h',passTitle:'SURVIVOR PASS',freeTag:'FREE',premTag:'PREMIUM',unlockPrem:'UNLOCK PREMIUM · 500⭐',monthlyTitle:'Monthly Cards',monthlyDs:'Daily login coins + boosted patrol earnings for 30 days.',monthlyCard:'Monthly Card',superMonthly:'Super Monthly',monthlyActive:'Active · expires {d}',starterBadge:'ONE-TIME OFFER',starterTitle:'STARTER PACK',starterSub:'Head start to becoming the storm',starterBonus:'Instant tier 2 unlock',starterSavings:'75% OFF',passXp:'pass XP',maybeLater:'Maybe later',tier:'Tier'},
+   patrolTitle:'PATROL',quickPatrol:'+5h · 30⭐',patrolMax:'MAXED — claim now!',patrolEarning:'Earning {h}h / 24h · +{r}/h',passTitle:'SURVIVOR PASS',freeTag:'FREE',premTag:'PREMIUM',unlockPrem:'UNLOCK PREMIUM · 500⭐',monthlyTitle:'Monthly Cards',monthlyDs:'Daily login coins + boosted patrol earnings for 30 days.',monthlyCard:'Monthly Card',superMonthly:'Super Monthly',monthlyActive:'Active · expires {d}',starterBadge:'ONE-TIME OFFER',starterTitle:'STARTER PACK',starterSub:'Head start to becoming the storm',starterBonus:'Instant tier 2 unlock',starterSavings:'75% OFF',passXp:'pass XP',maybeLater:'Maybe later',tier:'Tier',
+   prophecyToday:'TODAY\'S PROPHECY',prophecyFulfilled:'PROPHECY FULFILLED',prophecyReward:'Reward: 3× run coins + 1 Token',prophecyClaimed:'Claimed',
+   wCalm:'CALM',wRain:'RAIN',wStorm:'STORM',
+   surgeReady:'STORM SURGE READY',surgeUnleashed:'STORM SURGE'},
  ru:{tagline:'Стань грозой. Выживи в орде.',play:'ИГРАТЬ',hero:'ГЕРОЙ',stage:'АРЕНА',shop:'ШОП',ach:'ДОСТ.',set:'⚙',pickHero:'Выбери героя',pickStage:'Выбери арену',permUp:'Улучшения',getCoins:'Получить монеты',sound:'Звук',soundDs:'Музыка и эффекты',haptic:'Вибрация',hapticDs:'Тактильный отклик',dmgn:'Числа урона',dmgnDs:'Показывать урон',lang:'Язык',reset:'Сброс',resetDs:'Стереть прогресс',about:'О игре',privacy:'Приватность',terms:'Правила',paused:'ПАУЗА',resume:'ПРОДОЛЖИТЬ',quitRun:'ВЫЙТИ',levelUp:'НОВЫЙ УРОВЕНЬ!',pickPower:'ВЫБЕРИ СИЛУ',reroll:'Перебросить (раз в день)',time:'Время',kills:'Убийств',lvl:'УР',coins:'Монеты',revive:'Возрождение — 20 Stars',retry:'ЕЩЁ',menu:'МЕНЮ',dailyTitle:'Ежедневный вызов',defeated:'ПОРАЖЕНИЕ',victory:'ПОБЕДА!',unlocked:'Открыто!',coinsEarned:'+{n} монет',newRecord:'Новый рекорд!',NEW:'НОВО',EVO:'ЭВО',MAX:'МАКС',
    navHome:'ДОМ',navEarn:'БОНУС',navSettings:'НАСТР.',earnTitle:'БОНУСЫ',earnFree:'Бесплатные монеты каждый день',earnSub:'Заходи, приглашай, выполняй задачи',dailyLogin:'Вход',inviteTitle:'Пригласи друзей',inviteDs:'Поделись ГРОЗА. Каждый друг, открывший игру, приносит +100 монет (когда сервер запущен).',inviteCta:'ПОДЕЛИТЬСЯ',tasksTitle:'Задачи дня',claim:'ВЗЯТЬ',claimed:'ВЗЯТО',taskPlay3:'Сыграй 3 забега',taskLv15:'Достигни 15 ур. за забег',taskKill200:'Сделай 200 убийств за забег',shareText:'⚡ ГРОЗА — выживалка с автострельбой. Управляй одним пальцем, стань грозой. Играй со мной!',
-   patrolTitle:'ПАТРУЛЬ',quickPatrol:'+5ч · 30⭐',patrolMax:'МАКС — забери!',patrolEarning:'Идёт {h}ч / 24ч · +{r}/ч',passTitle:'ПРОПУСК',freeTag:'БЕСПЛ.',premTag:'ПРЕМИУМ',unlockPrem:'ОТКРЫТЬ ПРЕМИУМ · 500⭐',monthlyTitle:'Месячная карта',monthlyDs:'Ежедневные монеты + ускоренный патруль 30 дней.',monthlyCard:'Карта',superMonthly:'Супер Карта',monthlyActive:'Активна · до {d}',starterBadge:'ОДНОРАЗОВО',starterTitle:'СТАРТЕР НАБОР',starterSub:'Стартовый буст к мощи',starterBonus:'Мгновенный тир 2',starterSavings:'-75%',passXp:'опыт пропуска',maybeLater:'Позже',tier:'Тир'}
+   patrolTitle:'ПАТРУЛЬ',quickPatrol:'+5ч · 30⭐',patrolMax:'МАКС — забери!',patrolEarning:'Идёт {h}ч / 24ч · +{r}/ч',passTitle:'ПРОПУСК',freeTag:'БЕСПЛ.',premTag:'ПРЕМИУМ',unlockPrem:'ОТКРЫТЬ ПРЕМИУМ · 500⭐',monthlyTitle:'Месячная карта',monthlyDs:'Ежедневные монеты + ускоренный патруль 30 дней.',monthlyCard:'Карта',superMonthly:'Супер Карта',monthlyActive:'Активна · до {d}',starterBadge:'ОДНОРАЗОВО',starterTitle:'СТАРТЕР НАБОР',starterSub:'Стартовый буст к мощи',starterBonus:'Мгновенный тир 2',starterSavings:'-75%',passXp:'опыт пропуска',maybeLater:'Позже',tier:'Тир',
+   prophecyToday:'ПРОРОЧЕСТВО ДНЯ',prophecyFulfilled:'ПРОРОЧЕСТВО СБЫЛОСЬ',prophecyReward:'Награда: 3× монет + 1 Жетон',prophecyClaimed:'Получено',
+   wCalm:'ШТИЛЬ',wRain:'ДОЖДЬ',wStorm:'ГРОЗА',
+   surgeReady:'ГРОЗОВОЙ УДАР ГОТОВ',surgeUnleashed:'ГРОЗОВОЙ УДАР'}
 };
 // other langs fallback to en
 LANGS.forEach(l=>{ if(!STRINGS[l]) STRINGS[l]=STRINGS.en; });
@@ -739,6 +823,8 @@ const DEFAULT_SAVE={
   earn:{lastLoginDate:'',streak:0,claimedToday:false,tasksDate:'',tasks:{play:0,lv:0,kills:0},taskClaimed:{play3:false,lv15:false,kill200:false},patrol:{lastClaimedAt:0,quickCount:0,quickDate:''}},
   pass:{xp:0,tier:0,premium:false,claimedFree:{},claimedPrem:{},season:1,seasonExpire:0},
   iap:{starterClaimed:false,starterShownAt:0,firstPurchase:false,monthlyExpireAt:0,monthlyTier:0,piggyCoins:0},
+  prophecy:{date:'',idx:0,fulfilled:false,claimed:false},
+  prophecyTokens:0,
   bestTime:0,bestKills:0,bestLevel:0,
   settings:{sound:true,haptics:true,dmgNumbers:true,lang:'en'},
   selectedChar:'spark',
@@ -768,6 +854,7 @@ function loadSave(){
         claimedPrem:Object.assign({},(p.pass||{}).claimedPrem||{}),
       }),
       iap:Object.assign({},DEFAULT_SAVE.iap,p.iap||{}),
+      prophecy:Object.assign({},DEFAULT_SAVE.prophecy,p.prophecy||{}),
     });
   }catch(_){ return JSON.parse(JSON.stringify(DEFAULT_SAVE)); }
 }
@@ -1023,6 +1110,8 @@ function levelWeapon(w){
     if(game.passives[need] && game.passives[need]>=EVO_PASSIVE_REQ){
       w.evolved=true;
       game.evolved=true;
+      game.evolveCount = (game.evolveCount||0) + 1;
+      if(!game.firstEvoT) game.firstEvoT = game.t;
       sfx('evo'); haptic('heavy');
       celebrate(); // burst FX
       toast(t('EVO')+' '+(w.def.evo.name[state.settings.lang]||w.def.evo.name.en),'gold');
@@ -1115,6 +1204,7 @@ function spawnDriver(dt){
   // Survivor.io-style: dense early so player kills fast & levels up. Aggressive ramp.
   let rate = 2.0 + tmin*1.4;
   rate *= stage.spawnMult || 1;
+  rate *= currentPhase().spawnMul || 1; // weather: storm cranks, calm chills
   if(state.daily && state.daily.modKey==='swarm') rate*=1.5;
 
   game.spawnTimer -= dt;
@@ -1150,8 +1240,26 @@ function spawnWaveOne(tmin){
 function startRun(opts){
   opts=opts||{};
   stopPatrolTicker();
-  // Reset boss timeline index
+  // Reset boss timeline + storm-surge + run-prophecy trackers
   game.bossIdx = 0;
+  game.surge = 0;
+  game.surgeUses = 0;
+  game.surgeOnTitan = false;
+  game.bossesKilled = 0;
+  game.eliteKills = 0;
+  game.evolveCount = 0;
+  game.firstEvoT = 0;
+  game.firstHitT = -1;
+  game.killsAt60 = 0;
+  game.killsAt180 = 0;
+  game.lvAt90 = 0;
+  game.stormsCleanCount = 0;
+  game.milestone60 = false;
+  game.milestone90 = false;
+  game.milestone180 = false;
+  initWeather();
+  // Reveal surge button, reset meter
+  const sb = $('#surgeBtn'); if(sb){ sb.style.display='flex'; sb.style.setProperty('--p','0%'); sb.classList.remove('ready'); }
   game.running=true; game.paused=false; game.over=false; game.won=false;
   game.t=0; game.lastT=performance.now()/1000;
   game.enemies.length=0; game.projectiles.length=0; game.gems.length=0; game.coins.length=0; game.particles.length=0; game.dmgNumbers.length=0; game.hazards.length=0;
@@ -1184,8 +1292,15 @@ function startRun(opts){
 
 function endRun(won){
   game.over=true; game.won=!!won; game.running=false;
-  // award coins
-  const earned = game.runCoins + Math.floor(game.kills*0.4) + (won?500:0);
+  // Hide gameplay HUD bits
+  const sb=$('#surgeBtn'); if(sb) sb.style.display='none';
+  const wp=$('#weatherPill'); if(wp) wp.style.display='none';
+  const wo=$('#weatherOverlay'); if(wo) wo.className='weather-overlay';
+  // Prophecy check
+  const fulfilled = checkProphecyOnEndRun();
+  // award coins (3× multiplier if today's prophecy fulfilled this run)
+  let earned = game.runCoins + Math.floor(game.kills*0.4) + (won?500:0);
+  if(fulfilled){ earned = earned * 3; showProphecyBanner(); }
   state.coins += earned;
   state.totalRuns++;
   state.totalKills += game.kills;
@@ -1274,7 +1389,7 @@ function updateEnemies(dt){
     }
     if(e.flash>0) e.flash-=dt;
     if(e.slowT>0){ e.slowT-=dt; if(e.slowT<=0){ e.slow=0; } }
-    const speed = e.spd*(1-e.slow);
+    const speed = e.spd*(1-e.slow)*(currentPhase().speedMul||1);
     let dx=p.x-e.x, dy=p.y-e.y, d=Math.hypot(dx,dy)||1;
     // ranged enemies keep distance and shoot
     if(e.ranged){
@@ -1330,7 +1445,12 @@ function updateEnemies(dt){
 
 function damagePlayer(amount){
   if(game.player.invuln>0) return;
+  // Weather: storm increases incoming damage
+  amount *= currentPhase().dmgMul || 1;
   game.player.hp -= amount;
+  // Prophecy hooks: first-hit time + storm-clean flag
+  if(game.firstHitT===-1 && amount>1) game.firstHitT = game.t;
+  if(currentPhase().id==='storm' && amount>1 && game.weather) game.weather.tookDmgInStorm = true;
   if(amount>2){ game.shake=Math.min(game.shake+amount*0.15, 14); }
   if(amount>4) haptic('warn');
   // brief invuln
@@ -1584,7 +1704,12 @@ function onKill(e){
   }
   if(Math.random()<e.coinChance) spawnCoin(e.x,e.y);
   game.kills++; game.score+=e.score||1;
+  // Storm-surge charge from kills
+  if(e.isBoss) addSurge(SURGE_PER_BOSS);
+  else if(e.type==='elite'){ addSurge(SURGE_PER_ELITE); game.eliteKills=(game.eliteKills||0)+1; }
+  else addSurge(SURGE_PER_KILL);
   if(e.isBoss){
+    game.bossesKilled = (game.bossesKilled||0) + 1;
     if(e.type==='boss'){ game.killedBoss1=true; }
     if(e.isFinal||e.type==='boss2'){ game.killedBoss2=true; game.won=true; }
     game.boss=null; hideBossHud();
@@ -1658,7 +1783,8 @@ function updateGems(dt){
 function gainXp(amount){
   // Early-game ramp boost: 2× XP first 30s, 1.5× XP first 60s (Survivor.io fast power feel)
   const ramp = game.t<30 ? 2.0 : (game.t<60 ? 1.5 : 1.0);
-  game.xp += amount * game.player.xpMul * ramp;
+  const wm = (game.weather?currentPhase().xpMul:1) || 1; // storm = 1.5×
+  game.xp += amount * game.player.xpMul * ramp * wm;
   while(game.xp>=game.xpNext){
     game.xp -= game.xpNext;
     game.level++;
@@ -1764,7 +1890,7 @@ function chooseDraft(pk){
   if(pk.kind==='weapon'){
     let w=getWeapon(pk.id);
     if(!w){ w=addWeapon(pk.id); }
-    else if(pk.evo){ w.evolved=true; game.evolved=true; sfx('evo'); toast(t('EVO')+' '+(w.def.evo.name[state.settings.lang]||w.def.evo.name.en)); }
+    else if(pk.evo){ w.evolved=true; game.evolved=true; game.evolveCount=(game.evolveCount||0)+1; if(!game.firstEvoT) game.firstEvoT=game.t; sfx('evo'); celebrate(); toast(t('EVO')+' '+(w.def.evo.name[state.settings.lang]||w.def.evo.name.en),'gold'); }
     else { levelWeapon(w); }
     if(w && w.level>=MAX_WLEVEL) game.maxedWeapon=true;
   } else {
@@ -2150,8 +2276,17 @@ function step(dt){
   } else p.moving=false;
   // invuln decay
   if(p.invuln>0) p.invuln-=dt;
-  // regen
-  if(p.regen>0) p.hp=Math.min(p.maxHp, p.hp + p.regen*dt);
+  // regen — passive vitality + weather (calm phase regens 1 HP/sec)
+  const phaseRegen = currentPhase().regen||0;
+  if(p.regen>0 || phaseRegen>0) p.hp=Math.min(p.maxHp, p.hp + (p.regen + phaseRegen)*dt);
+  // Weather phase tick
+  tickWeather(dt);
+  // Run-prophecy milestone checks
+  if(!game.milestone60 && game.t>=60){ game.killsAt60 = game.kills; game.milestone60=true; }
+  if(!game.milestone90 && game.t>=90){ game.lvAt90 = game.level; game.milestone90=true; }
+  if(!game.milestone180 && game.t>=180){ game.killsAt180 = game.kills; game.milestone180=true; }
+  // Surge-on-Titan tracking: if surge was fired this step while Titan is on screen
+  // (handled in fireSurge by reading game.boss type)
   // camera follow
   game.cam.x = lerp(game.cam.x, p.x, 0.15);
   game.cam.y = lerp(game.cam.y, p.y, 0.15);
@@ -2230,6 +2365,10 @@ function hideAll(){
   $('#draftScreen').classList.remove('show');
   $('#overModal').classList.remove('show');
   $('#bottomNav').classList.remove('show');
+  // Hide in-game-only HUD when on menu screens
+  const sb=$('#surgeBtn'); if(sb) sb.style.display='none';
+  const wp=$('#weatherPill'); if(wp) wp.style.display='none';
+  const wo=$('#weatherOverlay'); if(wo) wo.className='weather-overlay';
 }
 function showMenu(){
   hideAll();
@@ -2366,6 +2505,8 @@ function renderMenu(){
   renderPass();
   // monthly cards in SHOP
   renderMonthly();
+  // daily prophecy on HOME
+  renderProphecy();
 }
 
 // ============ EARN tab ============
@@ -2495,6 +2636,250 @@ function bumpTask(key, amt){
   ensureEarnDay();
   state.earn.tasks[key] = (state.earn.tasks[key]||0) + (amt||1);
   saveNow();
+}
+
+// ============ STORM SURGE ULTIMATE ============
+const SURGE_MAX = 100;
+const SURGE_PER_KILL = 3;
+const SURGE_PER_ELITE = 12;
+const SURGE_PER_BOSS = 40;
+
+function addSurge(amt){
+  if(!game.running||game.over) return;
+  game.surge = Math.min(SURGE_MAX, (game.surge||0) + amt);
+  const btn = $('#surgeBtn');
+  if(btn){
+    btn.style.setProperty('--p', (game.surge/SURGE_MAX*100)+'%');
+    btn.classList.toggle('ready', game.surge >= SURGE_MAX);
+  }
+}
+
+function fireSurge(){
+  if((game.surge||0) < SURGE_MAX || game.over || !game.running) return;
+  game.surge = 0;
+  game.surgeUses = (game.surgeUses||0) + 1;
+  // Prophecy: surge while Titan (final boss) on screen
+  if(game.boss && (game.boss.type==='boss2'||game.boss.isFinal)) game.surgeOnTitan = true;
+  const btn = $('#surgeBtn');
+  if(btn){ btn.classList.remove('ready'); btn.style.setProperty('--p','0%'); }
+  // Visual flash
+  const flash = $('#surgeFlash');
+  if(flash){ flash.classList.remove('fire'); void flash.offsetWidth; flash.classList.add('fire'); }
+  // Big shake + hit-stop
+  game.shake = 22;
+  game.hitStop = 0.18;
+  sfx('boss'); sfx('evo');
+  haptic('heavy');
+  // Lightning forks from player to every visible enemy + damage them
+  const p = game.player;
+  const sp = worldToScreen(p.x, p.y);
+  const dmg = Math.floor(800 * (p.dmgMul||1));
+  let killed = 0;
+  // collect targets (visible on screen + a margin)
+  const margin = 80;
+  const targets = [];
+  for(const e of game.enemies){
+    if(e.hp<=0) continue;
+    const es = worldToScreen(e.x, e.y);
+    if(es.x>=-margin && es.x<=W+margin && es.y>=-margin && es.y<=H+margin){
+      targets.push(e);
+    }
+  }
+  targets.forEach((e,i)=>{
+    // staggered fork — visual fan-out, not instant
+    setTimeout(()=>{
+      if(e.hp<=0) return;
+      game.particles.push({kind:'bolt-line', x:p.x, y:p.y, x2:e.x, y2:e.y, life:0.32, color:'#fff'});
+      // a second jagged bolt for thickness
+      game.particles.push({kind:'bolt-line', x:p.x, y:p.y, x2:e.x, y2:e.y, life:0.32, color:'#ffd864'});
+      dealDamage(e, dmg, e.x, e.y);
+      if(e.hp<=0) killed++;
+      // tiny burst on hit
+      for(let k=0;k<5;k++){
+        game.particles.push({kind:'spark', x:e.x, y:e.y, vx:rand(-260,260), vy:rand(-300,-40), life:0.5, color:'#ffd864'});
+      }
+    }, i*8);
+  });
+  // Shockwave ring from player
+  game.particles.push({kind:'ring', x:p.x, y:p.y, r:0, maxR:Math.max(W,H)*1.1, life:0.8, color:'#ffd864', big:true});
+  // Toast
+  toast(t('surgeUnleashed'), 'gold');
+  celebrate();
+}
+
+// ============ WEATHER PHASES ============
+const WEATHER_PHASES = [
+  { id:'calm',  dur:45, label:'wCalm',  spawnMul:0.7,  speedMul:1.0, xpMul:1.0, dmgMul:1.0, regen:1.0, icon:'i-calm'  },
+  { id:'rain',  dur:60, label:'wRain',  spawnMul:1.0,  speedMul:0.7, xpMul:1.0, dmgMul:1.0, regen:0,   icon:'i-rain'  },
+  { id:'storm', dur:90, label:'wStorm', spawnMul:1.8,  speedMul:1.0, xpMul:1.5, dmgMul:1.2, regen:0,   icon:'i-storm' },
+];
+
+function currentPhase(){
+  if(!game.weather) return WEATHER_PHASES[0];
+  return WEATHER_PHASES[game.weather.phaseIdx] || WEATHER_PHASES[0];
+}
+
+function initWeather(){
+  game.weather = { phaseIdx:0, phaseT:0, lastPhase:'' };
+  applyWeatherVisual();
+}
+
+function tickWeather(dt){
+  if(!game.weather) return;
+  const phase = currentPhase();
+  game.weather.phaseT += dt;
+  if(game.weather.phaseT >= phase.dur){
+    game.weather.phaseT = 0;
+    game.weather.phaseIdx = (game.weather.phaseIdx + 1) % WEATHER_PHASES.length;
+    onPhaseChange(currentPhase());
+  }
+  // Update HUD pill every 0.2s
+  if(!game.weather.lastDisp || performance.now()-game.weather.lastDisp > 200){
+    game.weather.lastDisp = performance.now();
+    const pill = $('#weatherPill');
+    if(pill){
+      const np = currentPhase();
+      pill.className = 'weather-pill ' + np.id;
+      pill.style.display = 'flex';
+      $('#weatherName').textContent = t(np.label);
+      const remain = Math.max(0, Math.ceil(np.dur - game.weather.phaseT));
+      $('#weatherTime').textContent = pad2(Math.floor(remain/60))+':'+pad2(remain%60);
+      const useEl = pill.querySelector('use'); if(useEl) useEl.setAttribute('href', '#'+np.icon);
+    }
+  }
+}
+
+function onPhaseChange(phase){
+  applyWeatherVisual();
+  if(phase.id==='storm'){
+    showBossBanner(t('wStorm').toUpperCase());
+    game.shake = 6;
+    sfx('boss');
+  }
+  // Track storm-clears for prophecy
+  if(phase.id==='calm' && game.weather.lastPhase==='storm' && !game.weather.tookDmgInStorm){
+    game.stormsCleanCount = (game.stormsCleanCount||0)+1;
+  }
+  if(phase.id==='storm'){
+    game.weather.tookDmgInStorm = false;
+  }
+  game.weather.lastPhase = phase.id;
+}
+
+function applyWeatherVisual(){
+  const ov = $('#weatherOverlay'); if(!ov) return;
+  const phase = currentPhase();
+  ov.className = 'weather-overlay ' + phase.id;
+}
+
+// ============ PROPHECY SYSTEM ============
+// Each prophecy is checked at end of run against the run-stats snapshot.
+const PROPHECIES = [
+  { id:'sparkGenius', nm:{en:'Spark of Genius',ru:'Искра гения'},     ds:{en:'Reach level 10 before 1:30',ru:'Достигни 10 ур. до 1:30'},                check:s=>s.lvAt90>=10 },
+  { id:'untouched',   nm:{en:'Untouched',ru:'Неприкосновенный'},      ds:{en:'Take zero damage in the first 90 seconds',ru:'Ни одного удара за 90 секунд'}, check:s=>s.firstHitT>90 || s.firstHitT===-1 },
+  { id:'evoRush',     nm:{en:'Evolution Rush',ru:'Рывок Эволюции'},   ds:{en:'Evolve a weapon before 3:00',ru:'Эволюционируй оружие до 3:00'},          check:s=>s.firstEvoT>0 && s.firstEvoT<180 },
+  { id:'bloodbath',   nm:{en:'Bloodbath',ru:'Кровавая баня'},         ds:{en:'200 kills before 3:00',ru:'200 убийств до 3:00'},                          check:s=>s.killsAt180>=200 },
+  { id:'pyromaniac',  nm:{en:'Storm Caller',ru:'Зовущий Грозу'},      ds:{en:'Unleash Storm Surge 5+ times',ru:'5+ Грозовых Ударов за забег'},          check:s=>s.surgeUses>=5 },
+  { id:'marathon',    nm:{en:'Marathon',ru:'Марафон'},                ds:{en:'Survive 5 minutes',ru:'Выживи 5 минут'},                                  check:s=>s.runTime>=300 },
+  { id:'reaperEx',    nm:{en:'Reaper of Reapers',ru:'Жнец жнецов'},   ds:{en:'Kill 10 elites in one run',ru:'10 элиток за забег'},                       check:s=>s.eliteKills>=10 },
+  { id:'stormWalk',   nm:{en:'Storm Walker',ru:'Идущий в Грозе'},     ds:{en:'Survive 2 STORM phases without taking a hit',ru:'2 фазы ГРОЗА без урона'}, check:s=>s.stormsClean>=2 },
+  { id:'ironWill',    nm:{en:'Iron Will',ru:'Стальная Воля'},         ds:{en:'Kill the Berserker boss',ru:'Убей босса Берсерка'},                       check:s=>s.bossesKilled>=3 },
+  { id:'coinTycoon',  nm:{en:'Coin Tycoon',ru:'Магнат Монет'},        ds:{en:'Collect 500 coins in one run',ru:'500 монет за забег'},                   check:s=>s.runCoins>=500 },
+  { id:'bossHunter',  nm:{en:'Boss Hunter',ru:'Охотник на Боссов'},   ds:{en:'Kill all 4 bosses (WIN)',ru:'Убей всех 4 боссов (ПОБЕДА)'},               check:s=>s.bossesKilled>=4 && s.won },
+  { id:'hoarder',     nm:{en:'Ascendant',ru:'Вознесённый'},           ds:{en:'Reach level 30 in a run',ru:'Достигни 30 ур.'},                            check:s=>s.runLevel>=30 },
+  { id:'doubleEvo',   nm:{en:'Twin Storms',ru:'Двойная Гроза'},       ds:{en:'Evolve 2 weapons in one run',ru:'Эволюционируй 2 оружия'},                check:s=>s.evolveCount>=2 },
+  { id:'lightningLord',nm:{en:'Lightning Lord',ru:'Властелин Молний'},ds:{en:'Cast Storm Surge while Titan is on screen',ru:'Удар во время Титана'},   check:s=>s.surgeOnTitan },
+  { id:'speedDemon',  nm:{en:'Speed Demon',ru:'Демон Скорости'},      ds:{en:'Reach 100 kills before 1:00',ru:'100 убийств до 1:00'},                    check:s=>s.killsAt60>=100 },
+];
+
+function todayProphecyIdx(){
+  const d = new Date();
+  const seed = d.getDate() + d.getMonth()*31 + d.getFullYear()*372;
+  return seed % PROPHECIES.length;
+}
+
+function ensureProphecy(){
+  const today = todayISO();
+  if(state.prophecy.date !== today){
+    state.prophecy = { date:today, idx: todayProphecyIdx(), fulfilled:false, claimed:false };
+    saveNow();
+  }
+}
+
+function checkProphecyOnEndRun(){
+  ensureProphecy();
+  if(state.prophecy.fulfilled) return false; // already done today
+  const p = PROPHECIES[state.prophecy.idx];
+  const stats = {
+    runKills:    game.kills,
+    runLevel:    game.level,
+    runTime:     game.t,
+    runCoins:    game.runCoins,
+    won:         game.won,
+    bossesKilled:(game.killedBoss1?1:0) + (game.bossesKilled||0),
+    eliteKills:  game.eliteKills||0,
+    evolveCount: game.evolveCount||0,
+    surgeUses:   game.surgeUses||0,
+    surgeOnTitan:!!game.surgeOnTitan,
+    stormsClean: game.stormsCleanCount||0,
+    firstEvoT:   game.firstEvoT||0,
+    firstHitT:   game.firstHitT===undefined?-1:game.firstHitT,
+    killsAt60:   game.killsAt60||0,
+    killsAt180:  game.killsAt180||0,
+    lvAt90:      game.lvAt90||0,
+  };
+  if(p.check(stats)){
+    state.prophecy.fulfilled = true;
+    saveNow();
+    // Auto-grant on next render of game-over modal — claim happens there
+    return true;
+  }
+  return false;
+}
+
+function claimProphecy(){
+  if(!state.prophecy.fulfilled || state.prophecy.claimed) return;
+  state.prophecy.claimed = true;
+  state.prophecyTokens = (state.prophecyTokens||0) + 1;
+  state.coins += 300; // flat bonus on claim
+  saveNow();
+  sfx('coin'); haptic('ok');
+  celebrate();
+  toast(t('prophecyFulfilled')+' · +300 coins · +1 Token','gold');
+  renderMenu();
+}
+
+function renderProphecy(){
+  ensureProphecy();
+  const card = $('#prophecyCard'); if(!card) return;
+  const lng = state.settings.lang;
+  const p = PROPHECIES[state.prophecy.idx];
+  if(!p) return;
+  $('#prophecyName').textContent = p.nm[lng]||p.nm.en;
+  $('#prophecyDs').textContent = p.ds[lng]||p.ds.en;
+  card.classList.toggle('fulfilled', state.prophecy.fulfilled && !state.prophecy.claimed);
+  card.classList.toggle('claimed', state.prophecy.claimed);
+  const reward = $('#prophecyReward');
+  if(state.prophecy.claimed){
+    reward.innerHTML = '<span style="color:var(--green)">'+t('prophecyClaimed')+'</span>';
+    card.onclick = null;
+  } else if(state.prophecy.fulfilled){
+    reward.innerHTML = '<span style="color:var(--gold);font-weight:900;letter-spacing:1.5px;">CLAIM</span> · +300 '+icon('coin',{color:'var(--gold)'})+' · +1 '+icon('prophecy',{color:'var(--violet)'});
+    card.onclick = claimProphecy;
+    card.style.cursor = 'pointer';
+  } else {
+    reward.innerHTML = t('prophecyReward');
+    card.onclick = null;
+    card.style.cursor = 'default';
+  }
+}
+
+function showProphecyBanner(){
+  const el = $('#prophecyBanner');
+  if(!el) return;
+  el.textContent = t('prophecyFulfilled');
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 2400);
 }
 
 // ============ RENDERERS (Patrol / Pass / Monthly / Starter) ============
@@ -2903,6 +3288,13 @@ $('#starterDismiss')?.addEventListener('click', dismissStarter);
 // menu buttons
 $('#playBtn').addEventListener('click',()=>{ startRun({}); });
 $('#pauseBtn').addEventListener('click',()=>{ pauseGame(true); });
+// Storm Surge ultimate — tap and pointerdown both, stop propagation so joystick doesn't fire
+const surgeBtnEl = $('#surgeBtn');
+if(surgeBtnEl){
+  const fire = (e)=>{ e.preventDefault(); e.stopPropagation(); fireSurge(); };
+  surgeBtnEl.addEventListener('touchstart', fire, {passive:false});
+  surgeBtnEl.addEventListener('click', fire);
+}
 $('#resumeBtn').addEventListener('click',()=>{ pauseGame(false); });
 $('#quitBtn').addEventListener('click',()=>{ endRun(false); });
 $('#retryBtn').addEventListener('click',()=>{ $('#overModal').classList.remove('show'); startRun({}); });
